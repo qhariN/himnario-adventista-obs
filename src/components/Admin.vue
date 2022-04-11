@@ -93,7 +93,6 @@ function setSceneItemRender(sourceName: string, render: boolean) {
 function setSourceText(sourceName: string, text: string | undefined) {
   obs.send('SetSourceSettings', {
     sourceName: sourceName,
-    sourceType: 'text_gdiplus_v2',
     sourceSettings: {
       text: text
     }
