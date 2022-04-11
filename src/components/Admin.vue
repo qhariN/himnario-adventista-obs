@@ -120,7 +120,7 @@ function setSourceText(sourceName: string, text: string | undefined) {
         <button @click="hymnIndex--" :disabled="hymnIndex < 1" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/previous.svg" alt="search">
         </button>
-        <button @click="hymnIndex++" :disabled="hymnIndex >= hymnData?.history.length" type="button" class="btn w-7 h-7">
+        <button @click="hymnIndex++" :disabled="hymnData? hymnIndex >= hymnData.history.length : true" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/next.svg" alt="search">
         </button>
       </div>
