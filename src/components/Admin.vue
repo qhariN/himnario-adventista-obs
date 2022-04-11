@@ -37,8 +37,7 @@ function searchHymn() {
       hymnData.value = hymn
       player.value?.load()
       player.value?.play()
-      showTitle()
-      setCurrentScene('Hymn')
+      hymnIndex.value = 0
     })
   } else {
     alert('Please enter a hymn number')
