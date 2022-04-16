@@ -37,7 +37,7 @@ function searchHymn() {
       hymnData.value = hymn
       player.value?.load()
       player.value?.play()
-      hymnIndex.value = 0
+      goHome()
     })
   } else {
     alert('Please enter a hymn number')
@@ -45,14 +45,17 @@ function searchHymn() {
 }
 
 watch(hymnIndex, index => {
-  if(index === 0) {
-    showTitle()
-    setCurrentScene('Hymn')
-  } else {
+  if(index > 0) {
     showVerse(index - 1)
     setCurrentScene('Hymn')
   }
 })
+
+function goHome() {
+  hymnIndex.value = 0
+  showTitle()
+  setCurrentScene('Hymn')
+}
 
 function showTitle() {
   setSceneItemRender('hymn_number', true)
@@ -101,7 +104,7 @@ function setSourceText(sourceName: string, text: string | undefined) {
 
 <template>
   <main class="flex flex-col gap-2 px-3 py-2 dark:text-white text-xs">
-    <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3">
+    <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 hover:bg-neutral-700">
       <div class="rounded-full w-2 h-2" :class="connected? 'bg-green-600' : 'bg-red-600'"></div>
       <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
       <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
@@ -115,6 +118,9 @@ function setSourceText(sourceName: string, text: string | undefined) {
       </div>
       <div class="flex items-center gap-3">
         <span>Letra:</span>
+        <button @click="goHome()" :disabled="hymnIndex < 1" type="button" class="btn w-7 h-7">
+          <img class="dark:invert" src="/svg/home.svg" alt="search">
+        </button>
         <button @click="hymnIndex--" :disabled="hymnIndex < 1" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/previous.svg" alt="search">
         </button>
