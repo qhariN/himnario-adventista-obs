@@ -2,12 +2,14 @@
 import { Ref, ref, watch } from 'vue'
 import ObsWebSocket from 'obs-websocket-js'
 import sHymn from '../services/HymnService'
-import { HymnHistory } from '../models/hymn';
+import { HymnHistory } from '../models/hymn'
+import { store } from '../store'
 
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
+const local: Ref<boolean> = ref(false)
 const hymnNumber: Ref<number | string> = ref('')
-const hymnData: Ref<HymnHistory | null> = ref(null)
+const hymnData: Ref<HymnHistory | undefined> = ref(void(0))
 const hymnIndex: Ref<number> = ref(0)
 const player: Ref<HTMLAudioElement | null> = ref(null)
 
@@ -29,6 +31,10 @@ function disconnectObs() {
   obs.disconnect()
   connected.value = false
   alert('Disconnected from OBS')
+}
+
+function setLocal() {
+  store.local = local.value
 }
 
 function searchHymn() {
@@ -100,15 +106,26 @@ function setSourceText(sourceName: string, text: string | undefined) {
     }
   })
 }
+
+function FileUrl(fileName: string) {
+  const musicUrl = store.localMusicUrl
+  return `${musicUrl}/${encodeURIComponent(fileName)}`
+}
 </script>
 
 <template>
   <main class="flex flex-col gap-2 px-3 py-2 dark:text-white text-xs">
-    <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 hover:bg-neutral-700">
-      <div class="rounded-full w-2 h-2" :class="connected? 'bg-green-600' : 'bg-red-600'"></div>
-      <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
-      <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
-    </button>
+    <div class="flex items-center">
+      <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 hover:bg-neutral-700">
+        <div class="rounded-full w-2 h-2" :class="connected? 'bg-green-600' : 'bg-red-600'"></div>
+        <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
+        <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
+      </button>
+      <div class="ml-auto flex items-center gap-1">
+        <input v-model="local" @change="setLocal()" type="checkbox" id="local">
+        <label for="local">local</label>
+      </div>
+    </div>
     <div class="flex items-center gap-6">
       <div class="flex gap-3">
         <input v-model="hymnNumber" type="number" min="1" max="613" class="text-sm w-16 border border-neutral-700 dark:text-black rounded px-2 py-1" name="number" id="number">
@@ -132,7 +149,7 @@ function setSourceText(sourceName: string, text: string | undefined) {
     <div class="space-y-2">
       <p>Música: <span class="text-neutral-400">{{ hymnData?.hymn.title }}</span></p>
       <audio ref="player" controls>
-        <source :src="hymnData?.hymn.mp3" type="audio/mpeg">
+        <source :src="hymnData && store.local? FileUrl(hymnData.hymn.mp3Filename) : hymnData?.hymn.mp3Url" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
     </div>

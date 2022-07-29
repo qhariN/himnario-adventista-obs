@@ -14,8 +14,9 @@ export interface Verse {
 }
 
 export interface Hymn {
-  id:     number;
-  number: number;
-  title:  string;
-  mp3:    string;
+  id:          number;
+  number:      number;
+  title:       string;
+  mp3Url:      string;
+  mp3Filename: string;
 }

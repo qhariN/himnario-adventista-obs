@@ -1,5 +1,5 @@
 export const apiUrl = {
-  hymn: 'https://himnario-adventista-api.herokuapp.com/hymn'
+  hymn: 'https://adventist-hymnal-api.up.railway.app/hymn'
 }
 
 const Fetch = (endpoint: string) => {
