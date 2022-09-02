@@ -4,10 +4,10 @@ import ObsWebSocket from 'obs-websocket-js'
 import sHymn from '../services/HymnService'
 import { HymnHistory } from '../models/hymn'
 import { store } from '../store'
+import Settings from './Settings.vue'
 
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
-const local: Ref<boolean> = ref(false)
 const hymnNumber: Ref<number | string> = ref('')
 const hymnData: Ref<HymnHistory | undefined> = ref(void(0))
 const hymnIndex: Ref<number> = ref(0)
@@ -31,10 +31,6 @@ function disconnectObs() {
   obs.disconnect()
   connected.value = false
   alert('Disconnected from OBS')
-}
-
-function setLocal() {
-  store.local = local.value
 }
 
 function searchHymn() {
@@ -121,33 +117,30 @@ function FileUrl(fileName: string) {
         <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
         <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
       </button>
-      <div class="ml-auto flex items-center gap-1">
-        <input v-model="local" @change="setLocal()" type="checkbox" id="local">
-        <label for="local">local</label>
-      </div>
+      <!-- <Settings></Settings> -->
     </div>
     <div class="flex items-center gap-6">
-      <div class="flex gap-3">
+      <div class="flex gap-2">
         <input v-model="hymnNumber" type="number" min="1" max="613" class="text-sm w-16 border border-neutral-700 dark:text-black rounded px-2 py-1" name="number" id="number">
-        <button @click="searchHymn()" type="button" class="btn w-8 h-8">
+        <button @click="searchHymn()" title="Search" type="button" class="btn w-8 h-8">
           <img class="dark:invert" src="/svg/search.svg" alt="search">
         </button>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
         <span>Letra:</span>
-        <button @click="goHome()" :disabled="hymnIndex < 1" type="button" class="btn w-7 h-7">
+        <button @click="goHome()" title="Beginning" :disabled="hymnIndex < 1" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/home.svg" alt="search">
         </button>
-        <button @click="hymnIndex--" :disabled="hymnIndex < 1" type="button" class="btn w-7 h-7">
+        <button @click="hymnIndex--" title="Previous verse" :disabled="hymnIndex < 2" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/previous.svg" alt="search">
         </button>
-        <button @click="hymnIndex++" :disabled="hymnData? hymnIndex >= hymnData.history.length : true" type="button" class="btn w-7 h-7">
+        <button @click="hymnIndex++" title="Next verse" :disabled="hymnData? hymnIndex >= hymnData.history.length : true" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/next.svg" alt="search">
         </button>
       </div>
     </div>
     <div class="space-y-2">
-      <p>Música: <span class="text-neutral-400">{{ hymnData?.hymn.title }}</span></p>
+      <p>Playing: <span class="text-neutral-400">{{ hymnData?.hymn.title }}</span></p>
       <audio ref="player" controls>
         <source :src="hymnData && store.local? FileUrl(hymnData.hymn.mp3Filename) : hymnData?.hymn.mp3Url" type="audio/mpeg">
         Your browser does not support the audio element.
