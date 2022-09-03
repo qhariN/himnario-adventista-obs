@@ -1,10 +1,6 @@
-export const apiUrl = {
-  hymn: 'https://adventist-hymnal-api.up.railway.app/hymn'
-}
-
-const Fetch = (endpoint: string) => {
-  return fetch(endpoint)
-    .then(response => response.json())
+const Fetch = async (endpoint: string) => {
+  const response = await fetch(endpoint)
+  return await response.json()
 }
 
 export default Fetch

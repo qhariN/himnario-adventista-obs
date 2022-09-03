@@ -1,20 +1,32 @@
 <script setup lang="ts">
 import { Ref, ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue'
-import { store } from '../store'
+import { store, defaultValues } from '../store'
 
 const isOpen = ref(false)
 const local: Ref<boolean> = ref(false)
+const obsWebsocketUrl: Ref<string> = ref(store.obsWebsocketUrl)
+const musicHostUrl: Ref<string> = ref(store.musicHostUrl)
+const hymnalApiUrl: Ref<string> = ref(store.hymnalApiUrl)
 
 function closeModal() {
+  localStorage.setItem('obsWebsocketUrl', obsWebsocketUrl.value)
+  localStorage.setItem('musicHostUrl', musicHostUrl.value)
+  localStorage.setItem('hymnalApiUrl', hymnalApiUrl.value)
   isOpen.value = false
 }
 function openModal() {
   isOpen.value = true
 }
 
-function setLocal() {
-  store.local = local.value
+function setObsWebsocketUrl() {
+  store.obsWebsocketUrl = obsWebsocketUrl.value
+}
+function setMusicHostUrl() {
+  store.musicHostUrl = musicHostUrl.value
+}
+function setHymnalApiUrl() {
+  store.hymnalApiUrl = hymnalApiUrl.value
 }
 </script>
 
@@ -34,49 +46,47 @@ function setLocal() {
             <div class="mb-2">
               <h3 class="font-bold">On search:</h3>
               <div class="flex items-center gap-1">
-                <label for="local">Autoplay music</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+                <label for="local">Only instrumental</label>
+                <input v-model="local" type="checkbox" id="local" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
-                <label for="local">Switch to scene</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+                <label for="local">Autoplay music</label>
+                <input v-model="local" type="checkbox" id="local" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
                 <label for="local">Autodrive verses</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+                <input v-model="local" type="checkbox" id="local" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
                 <label for="local">Split verse (for long verses)</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+                <input v-model="local" type="checkbox" id="local" class="ml-auto">
+              </div>
+              <div class="flex items-center gap-1">
+                <label for="local">Switch to scene</label>
+                <input v-model="local" type="checkbox" id="local" class="ml-auto">
               </div>
             </div>
             <div class="mb-2">
               <h3 class="font-bold">On music end:</h3>
               <div class="flex items-center gap-1">
                 <label for="local">Switch to scene</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+                <input v-model="local" type="checkbox" id="local" class="ml-auto">
               </div>  
             </div>
             <div class="mb-2">
               <h3 class="font-bold">Network:</h3>
-              <div class="flex items-center gap-1">
-                <label for="local">Custom OBS websocket URL</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+              <div class="flex flex-col">
+                <label for="local">Custom OBS websocket</label>
+                <input v-model="obsWebsocketUrl" @change="setObsWebsocketUrl()" type="text" class="input__text" id="local" :placeholder="defaultValues.obsWebsocketUrl">
               </div>  
-              <div class="flex items-center gap-1">
+              <div class="flex flex-col">
                 <label for="local">Custom music host</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+                <input v-model="musicHostUrl" @change="setMusicHostUrl()" type="text" class="input__text" id="local" placeholder="default">
               </div>  
-              <div class="flex items-center gap-1">
-                <label for="local">Custom hymnal API URL</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
+              <div class="flex flex-col">
+                <label for="local">Custom hymnal API</label>
+                <input v-model="hymnalApiUrl" @change="setHymnalApiUrl()" type="text" class="input__text" id="local" :placeholder="defaultValues.hymnalApiUrl">
               </div>  
-            </div>
-            <div>
-              <div class="flex items-center gap-1">
-                <label for="local">Only instrumental</label>
-                <input v-model="local" @change="setLocal()" type="checkbox" id="local" class="ml-auto">
-              </div>
             </div>
           </DialogDescription>
           <div class="mt-4 flex">
@@ -93,5 +103,9 @@ function setLocal() {
 <style scoped>
 .btn {
   @apply border border-neutral-700 dark:bg-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-600 active:bg-gray-200 dark:active:bg-neutral-500 rounded px-2 py-1 disabled:opacity-50 disabled:pointer-events-none
+}
+
+.input__text {
+  @apply text-sm border border-neutral-700 dark:text-black rounded px-2 py-1
 }
 </style>

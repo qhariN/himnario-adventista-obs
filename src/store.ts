@@ -1,7 +1,12 @@
 import { reactive } from 'vue'
 
 export const store = reactive({
-  local: false,
-  localApiUrl: 'http://localhost:5000/hymn',
-  localMusicUrl: 'http://localhost:8080',
+  obsWebsocketUrl: localStorage.getItem('obsWebsocketUrl') || '',
+  musicHostUrl: localStorage.getItem('musicHostUrl') || '',
+  hymnalApiUrl: localStorage.getItem('hymnalApiUrl') || ''
 })
+
+export const defaultValues = {
+  obsWebsocketUrl: 'localhost:4444',
+  hymnalApiUrl: 'https://hymnal.up.railway.app'
+}

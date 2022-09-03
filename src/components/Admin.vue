@@ -103,9 +103,10 @@ function setSourceText(sourceName: string, text: string | undefined) {
   })
 }
 
-function FileUrl(fileName: string) {
-  const musicUrl = store.localMusicUrl
-  return `${musicUrl}/${encodeURIComponent(fileName)}`
+function FileUrl() {
+  return store.musicHostUrl
+    ? `${store.musicHostUrl}/${encodeURIComponent(hymnData.value!.hymn.mp3Filename)}`
+    : hymnData.value!.hymn.mp3Url
 }
 </script>
 
@@ -120,12 +121,12 @@ function FileUrl(fileName: string) {
       <!-- <Settings></Settings> -->
     </div>
     <div class="flex items-center gap-6">
-      <div class="flex gap-2">
+      <form class="flex gap-2" onsubmit="return false">
         <input v-model="hymnNumber" type="number" min="1" max="613" class="text-sm w-16 border border-neutral-700 dark:text-black rounded px-2 py-1" name="number" id="number">
-        <button @click="searchHymn()" title="Search" type="button" class="btn w-8 h-8">
+        <button @click="searchHymn()" title="Search" type="submit" class="btn w-8 h-8">
           <img class="dark:invert" src="/svg/search.svg" alt="search">
         </button>
-      </div>
+      </form>
       <div class="flex items-center gap-2">
         <span>Letra:</span>
         <button @click="goHome()" title="Beginning" :disabled="hymnIndex < 1" type="button" class="btn w-7 h-7">
@@ -142,7 +143,7 @@ function FileUrl(fileName: string) {
     <div class="space-y-2">
       <p>Playing: <span class="text-neutral-400">{{ hymnData?.hymn.title }}</span></p>
       <audio ref="player" controls>
-        <source :src="hymnData && store.local? FileUrl(hymnData.hymn.mp3Filename) : hymnData?.hymn.mp3Url" type="audio/mpeg">
+        <source :src="hymnData && FileUrl()" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
     </div>

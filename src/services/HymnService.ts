@@ -1,9 +1,10 @@
 import { HymnHistory } from '../models/hymn'
-import Fetch, { apiUrl } from './api'
+import { defaultValues, store } from '../store'
+import Fetch from './api'
 
 const sHymn = {
   byNumber(_number: number): Promise<HymnHistory> {
-    return Fetch(`${apiUrl.hymn}/${_number}`)
+    return Fetch(`${store.hymnalApiUrl || defaultValues.hymnalApiUrl}/hymn/${_number}`)
   }
 }
 
