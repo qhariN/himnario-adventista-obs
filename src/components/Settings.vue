@@ -4,12 +4,23 @@ import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui
 import { store, defaultValues } from '../store'
 
 const isOpen = ref(false)
-const local: Ref<boolean> = ref(false)
+const onlyInstrumental: Ref<boolean> = ref(store.onlyInstrumental)
+const autoplayMusic: Ref<boolean> = ref(store.autoplayMusic)
+const autodriveVerses: Ref<boolean> = ref(store.autodriveVerses)
+const splitVerses: Ref<boolean> = ref(store.splitVerses)
+const onSearchSwitchToScene: Ref<string> = ref(store.onSearchSwitchToScene)
+const onMusicEndSwitchToScene: Ref<string> = ref(store.onMusicEndSwitchToScene)
 const obsWebsocketUrl: Ref<string> = ref(store.obsWebsocketUrl)
 const musicHostUrl: Ref<string> = ref(store.musicHostUrl)
 const hymnalApiUrl: Ref<string> = ref(store.hymnalApiUrl)
 
 function closeModal() {
+  localStorage.setItem('onlyInstrumental', `${onlyInstrumental.value}`)
+  localStorage.setItem('autoplayMusic', `${autoplayMusic.value}`)
+  localStorage.setItem('autodriveVerses', `${autodriveVerses.value}`)
+  localStorage.setItem('splitVerses', `${splitVerses.value}`)
+  localStorage.setItem('onSearchSwitchToScene', onSearchSwitchToScene.value)
+  localStorage.setItem('onMusicEndSwitchToScene', onMusicEndSwitchToScene.value)
   localStorage.setItem('obsWebsocketUrl', obsWebsocketUrl.value)
   localStorage.setItem('musicHostUrl', musicHostUrl.value)
   localStorage.setItem('hymnalApiUrl', hymnalApiUrl.value)
@@ -19,6 +30,24 @@ function openModal() {
   isOpen.value = true
 }
 
+function setOnlyInstrumental() {
+  store.onlyInstrumental = onlyInstrumental.value
+}
+function setAutoplayMusic() {
+  store.autoplayMusic = autoplayMusic.value
+}
+function setAutodriveVerses() {
+  store.autodriveVerses = autodriveVerses.value
+}
+function setSplitVerses() {
+  store.splitVerses = splitVerses.value
+}
+function setOnSearchSwitchToScene() {
+  store.onSearchSwitchToScene = onSearchSwitchToScene.value
+}
+function setOnMusicEndSwitchToScene() {
+  store.onMusicEndSwitchToScene = onMusicEndSwitchToScene.value
+}
 function setObsWebsocketUrl() {
   store.obsWebsocketUrl = obsWebsocketUrl.value
 }
@@ -46,46 +75,54 @@ function setHymnalApiUrl() {
             <div class="mb-2">
               <h3 class="font-bold">On search:</h3>
               <div class="flex items-center gap-1">
-                <label for="local">Only instrumental</label>
-                <input v-model="local" type="checkbox" id="local" class="ml-auto">
+                <label for="ol">Only instrumental</label>
+                <input v-model="onlyInstrumental" @change="setOnlyInstrumental()" type="checkbox" id="ol" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
-                <label for="local">Autoplay music</label>
-                <input v-model="local" type="checkbox" id="local" class="ml-auto">
+                <label for="am">Autoplay music</label>
+                <input v-model="autoplayMusic" @change="setAutoplayMusic()" type="checkbox" id="am" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
-                <label for="local">Autodrive verses</label>
-                <input v-model="local" type="checkbox" id="local" class="ml-auto">
+                <label for="av">Autodrive verses</label>
+                <input v-model="autodriveVerses" @change="setAutodriveVerses()" type="checkbox" id="av" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
-                <label for="local">Split verse (for long verses)</label>
-                <input v-model="local" type="checkbox" id="local" class="ml-auto">
+                <label for="sv">Split verses (for long verses)</label>
+                <input v-model="splitVerses" @change="setSplitVerses()" type="checkbox" id="sv" class="ml-auto">
               </div>
-              <div class="flex items-center gap-1">
-                <label for="local">Switch to scene</label>
-                <input v-model="local" type="checkbox" id="local" class="ml-auto">
+              <div class="flex flex-col">
+                <label for="sss">Switch to scene</label>
+                <select v-model="onSearchSwitchToScene" @change="setOnSearchSwitchToScene()" class="input__text !px-1" id="sss">
+                  <option value="none">None</option>
+                  <option value="1">scene 1</option>
+                  <option value="2">scene 2</option>
+                </select>
               </div>
             </div>
             <div class="mb-2">
               <h3 class="font-bold">On music end:</h3>
-              <div class="flex items-center gap-1">
-                <label for="local">Switch to scene</label>
-                <input v-model="local" type="checkbox" id="local" class="ml-auto">
+              <div class="flex flex-col">
+                <label for="mess">Switch to scene</label>
+                <select v-model="onMusicEndSwitchToScene" @change="setOnMusicEndSwitchToScene()" class="input__text !px-1" id="mess">
+                  <option value="none">None</option>
+                  <option value="1">scene 1</option>
+                  <option value="2">scene 2</option>
+                </select>
               </div>  
             </div>
             <div class="mb-2">
               <h3 class="font-bold">Network:</h3>
               <div class="flex flex-col">
-                <label for="local">Custom OBS websocket</label>
-                <input v-model="obsWebsocketUrl" @change="setObsWebsocketUrl()" type="text" class="input__text" id="local" :placeholder="defaultValues.obsWebsocketUrl">
+                <label for="ow">Custom OBS websocket</label>
+                <input v-model="obsWebsocketUrl" @change="setObsWebsocketUrl()" type="text" class="input__text" id="ow" :placeholder="defaultValues.obsWebsocketUrl">
               </div>  
               <div class="flex flex-col">
-                <label for="local">Custom music host</label>
-                <input v-model="musicHostUrl" @change="setMusicHostUrl()" type="text" class="input__text" id="local" placeholder="default">
+                <label for="mh">Custom music host</label>
+                <input v-model="musicHostUrl" @change="setMusicHostUrl()" type="text" class="input__text" id="mh" placeholder="default">
               </div>  
               <div class="flex flex-col">
-                <label for="local">Custom hymnal API</label>
-                <input v-model="hymnalApiUrl" @change="setHymnalApiUrl()" type="text" class="input__text" id="local" :placeholder="defaultValues.hymnalApiUrl">
+                <label for="ha">Custom hymnal API</label>
+                <input v-model="hymnalApiUrl" @change="setHymnalApiUrl()" type="text" class="input__text" id="ha" :placeholder="defaultValues.hymnalApiUrl">
               </div>  
             </div>
           </DialogDescription>
