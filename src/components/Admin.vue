@@ -19,6 +19,10 @@ function connectObs() {
   }).then(() => {
     connected.value = true
     alert('Connected to OBS')
+    obs.send('GetSceneList').then(data => {
+      const { scenes } = data
+      store.sceneList = scenes
+    })
   }).catch(error => {
     alert(`Connection failed: ${error.error}`)
   })

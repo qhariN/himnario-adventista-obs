@@ -1,6 +1,8 @@
 import { reactive } from 'vue'
+import { Scene } from 'obs-websocket-js'
 
 export const store = reactive({
+  sceneList: [] as Scene[],
   onlyInstrumental: (localStorage.getItem('onlyInstrumental') === 'true') || false,
   autoplayMusic: (localStorage.getItem('autoplayMusic') === 'true') || false,
   autodriveVerses: (localStorage.getItem('autodriveVerses') === 'true') || false,
