@@ -94,6 +94,7 @@ function setHymnalApiUrl() {
                 <label for="sss">Switch to scene</label>
                 <select v-model="onSearchSwitchToScene" @change="setOnSearchSwitchToScene()" class="input__text !px-1" id="sss">
                   <option value="none">none</option>
+                  <option class="hidden" :value="onSearchSwitchToScene">{{ onSearchSwitchToScene }}</option>
                   <option v-for="scene in store.sceneList" :value="scene.name">{{ scene.name }}</option>
                 </select>
               </div>
@@ -104,6 +105,7 @@ function setHymnalApiUrl() {
                 <label for="mess">Switch to scene</label>
                 <select v-model="onMusicEndSwitchToScene" @change="setOnMusicEndSwitchToScene()" class="input__text !px-1" id="mess">
                   <option value="none">none</option>
+                  <option class="hidden" :value="onMusicEndSwitchToScene">{{ onMusicEndSwitchToScene }}</option>
                   <option v-for="scene in store.sceneList" :value="scene.name">{{ scene.name }}</option>
                 </select>
               </div>  
