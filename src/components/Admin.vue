@@ -108,9 +108,11 @@ function setSourceText(sourceName: string, text: string | undefined) {
 }
 
 function FileUrl() {
-  return store.musicHostUrl
-    ? `${store.musicHostUrl}/${encodeURIComponent(hymnData.value!.hymn.mp3Filename)}`
+  const hymnUrl = store.onlyInstrumental
+    ? hymnData.value!.hymn.mp3UrlInstr
     : hymnData.value!.hymn.mp3Url
+  const hostUrl = `${store.musicHostUrl}/${store.onlyInstrumental? 'instrumental' : 'cantado'}/${encodeURIComponent(hymnData.value!.hymn.mp3Filename)}`
+  return store.musicHostUrl? hostUrl : hymnUrl
 }
 </script>
 

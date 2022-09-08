@@ -18,5 +18,6 @@ export interface Hymn {
   number:      number;
   title:       string;
   mp3Url:      string;
+  mp3UrlInstr: string;
   mp3Filename: string;
 }
