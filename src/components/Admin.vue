@@ -42,8 +42,8 @@ function searchHymn() {
     sHymn.byNumber(+hymnNumber.value).then(hymn => {
       hymnData.value = hymn
       player.value?.load()
-      player.value?.play()
       goHome()
+      if (store.autoplayMusic) player.value?.play()
     })
   } else {
     alert('Please enter a hymn number')
