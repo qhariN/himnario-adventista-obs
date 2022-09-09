@@ -9,6 +9,7 @@ const autoplayMusic: Ref<boolean> = ref(store.autoplayMusic)
 const autodriveVerses: Ref<boolean> = ref(store.autodriveVerses)
 const splitVerses: Ref<boolean> = ref(store.splitVerses)
 const onSearchSwitchToScene: Ref<string> = ref(store.onSearchSwitchToScene)
+const onSearchHymnScene: Ref<string> = ref(store.onSearchHymnScene)
 const onMusicEndSwitchToScene: Ref<string> = ref(store.onMusicEndSwitchToScene)
 const obsWebsocketUrl: Ref<string> = ref(store.obsWebsocketUrl)
 const musicHostUrl: Ref<string> = ref(store.musicHostUrl)
@@ -44,6 +45,9 @@ function setSplitVerses() {
 }
 function setOnSearchSwitchToScene() {
   store.onSearchSwitchToScene = onSearchSwitchToScene.value
+}
+function setOnSearchHymnScene() {
+  store.onSearchHymnScene = onSearchHymnScene.value
 }
 function setOnMusicEndSwitchToScene() {
   store.onMusicEndSwitchToScene = onMusicEndSwitchToScene.value
@@ -91,9 +95,17 @@ function setHymnalApiUrl() {
                 <input v-model="splitVerses" @change="setSplitVerses()" type="checkbox" id="sv" class="ml-auto">
               </div>
               <div class="flex flex-col">
+                <label for="sss">Hymn scene</label>
+                <select v-model="onSearchHymnScene" @change="setOnSearchHymnScene()" class="input__text !px-1" id="shs">
+                  <option value="">none</option>
+                  <option class="hidden" :value="onSearchHymnScene">{{ onSearchHymnScene }}</option>
+                  <option v-for="scene in store.sceneList" :value="scene.name">{{ scene.name }}</option>
+                </select>
+              </div>
+              <div class="flex flex-col">
                 <label for="sss">Switch to scene</label>
                 <select v-model="onSearchSwitchToScene" @change="setOnSearchSwitchToScene()" class="input__text !px-1" id="sss">
-                  <option value="none">none</option>
+                  <option value="">none</option>
                   <option class="hidden" :value="onSearchSwitchToScene">{{ onSearchSwitchToScene }}</option>
                   <option v-for="scene in store.sceneList" :value="scene.name">{{ scene.name }}</option>
                 </select>
@@ -104,7 +116,7 @@ function setHymnalApiUrl() {
               <div class="flex flex-col">
                 <label for="mess">Switch to scene</label>
                 <select v-model="onMusicEndSwitchToScene" @change="setOnMusicEndSwitchToScene()" class="input__text !px-1" id="mess">
-                  <option value="none">none</option>
+                  <option value="">none</option>
                   <option class="hidden" :value="onMusicEndSwitchToScene">{{ onMusicEndSwitchToScene }}</option>
                   <option v-for="scene in store.sceneList" :value="scene.name">{{ scene.name }}</option>
                 </select>
