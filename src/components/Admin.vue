@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref, watch } from 'vue'
+import { onMounted, Ref, ref, watch } from 'vue'
 import ObsWebSocket from 'obs-websocket-js'
 import sHymn from '../services/HymnService'
 import { HymnHistory } from '../models/hymn'
@@ -12,6 +12,10 @@ const hymnNumber: Ref<number | string> = ref('')
 const hymnData: Ref<HymnHistory | undefined> = ref(void(0))
 const hymnIndex: Ref<number> = ref(0)
 const player: Ref<HTMLAudioElement | null> = ref(null)
+
+onMounted(() => {
+  player.value!.addEventListener('ended', handleMusicEnd)
+})
 
 function connectObs() {
   obs.connect({
@@ -48,6 +52,10 @@ function searchHymn() {
   } else {
     alert('Please enter a hymn number')
   }
+}
+
+function handleMusicEnd() {
+  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
 }
 
 watch(hymnIndex, index => {
