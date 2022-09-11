@@ -8,7 +8,7 @@ const onlyInstrumental: Ref<boolean> = ref(store.onlyInstrumental)
 const autoplayMusic: Ref<boolean> = ref(store.autoplayMusic)
 const autodriveVerses: Ref<boolean> = ref(store.autodriveVerses)
 const splitVerses: Ref<boolean> = ref(store.splitVerses)
-const onSearchSwitchToScene: Ref<string> = ref(store.onSearchSwitchToScene)
+const onSearchSwitchToHymnScene: Ref<boolean> = ref(store.onSearchSwitchToHymnScene)
 const onSearchHymnScene: Ref<string> = ref(store.onSearchHymnScene)
 const onMusicEndSwitchToScene: Ref<string> = ref(store.onMusicEndSwitchToScene)
 const obsWebsocketUrl: Ref<string> = ref(store.obsWebsocketUrl)
@@ -20,7 +20,8 @@ function closeModal() {
   localStorage.setItem('autoplayMusic', `${autoplayMusic.value}`)
   localStorage.setItem('autodriveVerses', `${autodriveVerses.value}`)
   localStorage.setItem('splitVerses', `${splitVerses.value}`)
-  localStorage.setItem('onSearchSwitchToScene', onSearchSwitchToScene.value)
+  localStorage.setItem('onSearchSwitchToHymnScene', `${onSearchSwitchToHymnScene.value}`)
+  localStorage.setItem('onSearchHymnScene', `${onSearchHymnScene.value}`)
   localStorage.setItem('onMusicEndSwitchToScene', onMusicEndSwitchToScene.value)
   localStorage.setItem('obsWebsocketUrl', obsWebsocketUrl.value)
   localStorage.setItem('musicHostUrl', musicHostUrl.value)
@@ -43,8 +44,8 @@ function setAutodriveVerses() {
 function setSplitVerses() {
   store.splitVerses = splitVerses.value
 }
-function setOnSearchSwitchToScene() {
-  store.onSearchSwitchToScene = onSearchSwitchToScene.value
+function setOnSearchSwitchToHymnScene() {
+  store.onSearchSwitchToHymnScene = onSearchSwitchToHymnScene.value
 }
 function setOnSearchHymnScene() {
   store.onSearchHymnScene = onSearchHymnScene.value
@@ -94,19 +95,15 @@ function setHymnalApiUrl() {
                 <label for="sv">Split verses (for long verses)</label>
                 <input v-model="splitVerses" @change="setSplitVerses()" type="checkbox" id="sv" class="ml-auto">
               </div>
-              <div class="flex flex-col">
-                <label for="sss">Hymn scene</label>
-                <select v-model="onSearchHymnScene" @change="setOnSearchHymnScene()" class="input__text !px-1" id="shs">
-                  <option value="">none</option>
-                  <option class="hidden" :value="onSearchHymnScene">{{ onSearchHymnScene }}</option>
-                  <option v-for="scene in store.sceneList" :value="scene.name">{{ scene.name }}</option>
-                </select>
+              <div class="flex items-center gap-1">
+                <label for="shs">Switch to hymn scene</label>
+                <input v-model="onSearchSwitchToHymnScene" @change="setOnSearchSwitchToHymnScene()" type="checkbox" id="shs" class="ml-auto">
               </div>
               <div class="flex flex-col">
-                <label for="sss">Switch to scene</label>
-                <select v-model="onSearchSwitchToScene" @change="setOnSearchSwitchToScene()" class="input__text !px-1" id="sss">
+                <label for="hs">Hymn scene</label>
+                <select v-model="onSearchHymnScene" @change="setOnSearchHymnScene()" class="input__text !px-1" id="hs">
                   <option value="">none</option>
-                  <option class="hidden" :value="onSearchSwitchToScene">{{ onSearchSwitchToScene }}</option>
+                  <option class="hidden" :value="onSearchHymnScene">{{ onSearchHymnScene }}</option>
                   <option v-for="scene in store.sceneList" :value="scene.name">{{ scene.name }}</option>
                 </select>
               </div>

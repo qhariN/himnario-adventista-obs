@@ -45,8 +45,9 @@ function searchHymn() {
   if(hymnNumber.value) {
     sHymn.byNumber(+hymnNumber.value).then(hymn => {
       hymnData.value = hymn
+      hymnIndex.value = 0
       player.value!.load()
-      if (store.onSearchHymnScene) goTitle()
+      if (store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
       if (store.autoplayMusic) player.value!.play()
     })
   } else {
@@ -143,13 +144,13 @@ function FileUrl() {
       </form>
       <div class="flex items-center gap-2">
         <span>Letra:</span>
-        <button @click="goTitle()" title="Beginning" :disabled="!store.onSearchHymnScene || hymnIndex < 1" type="button" class="btn w-7 h-7">
+        <button @click="goTitle()" title="Beginning" :disabled="!connected || !store.onSearchHymnScene || hymnIndex < 1" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/home.svg" alt="search">
         </button>
-        <button @click="hymnIndex--" title="Previous verse" :disabled="!store.onSearchHymnScene || hymnIndex < 2" type="button" class="btn w-7 h-7">
+        <button @click="hymnIndex--" title="Previous verse" :disabled="!connected || !store.onSearchHymnScene || hymnIndex < 2" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/previous.svg" alt="search">
         </button>
-        <button @click="hymnIndex++" title="Next verse" :disabled="!store.onSearchHymnScene || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
+        <button @click="hymnIndex++" title="Next verse" :disabled="!connected || !store.onSearchHymnScene || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/next.svg" alt="search">
         </button>
       </div>

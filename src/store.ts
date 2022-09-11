@@ -7,7 +7,7 @@ export const store = reactive({
   autoplayMusic: (localStorage.getItem('autoplayMusic') === 'true') || false,
   autodriveVerses: (localStorage.getItem('autodriveVerses') === 'true') || false,
   splitVerses: (localStorage.getItem('splitVerses') === 'true') || false,
-  onSearchSwitchToScene: localStorage.getItem('onSearchSwitchToScene') || '',
+  onSearchSwitchToHymnScene: (localStorage.getItem('onSearchSwitchToHymnScene') === 'true') || false,
   onSearchHymnScene: localStorage.getItem('onSearchHymnScene') || '',
   onMusicEndSwitchToScene: localStorage.getItem('onMusicEndSwitchToScene') || '',
   obsWebsocketUrl: localStorage.getItem('obsWebsocketUrl') || '',
