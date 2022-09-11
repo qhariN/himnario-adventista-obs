@@ -133,7 +133,7 @@ function FileUrl() {
         <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
         <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
       </button>
-      <!-- <Settings></Settings> -->
+      <Settings></Settings>
     </div>
     <div class="flex items-center gap-6">
       <form class="flex gap-2" onsubmit="return false">

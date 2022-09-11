@@ -87,11 +87,11 @@ function setHymnalApiUrl() {
                 <label for="am">Autoplay music</label>
                 <input v-model="autoplayMusic" @change="setAutoplayMusic()" type="checkbox" id="am" class="ml-auto">
               </div>
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-1 hidden">
                 <label for="av">Autodrive verses</label>
                 <input v-model="autodriveVerses" @change="setAutodriveVerses()" type="checkbox" id="av" class="ml-auto">
               </div>
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-1 hidden">
                 <label for="sv">Split verses (for long verses)</label>
                 <input v-model="splitVerses" @change="setSplitVerses()" type="checkbox" id="sv" class="ml-auto">
               </div>
@@ -119,7 +119,7 @@ function setHymnalApiUrl() {
                 </select>
               </div>  
             </div>
-            <div class="mb-2">
+            <div class="mb-2 hidden">
               <h3 class="font-bold">Network:</h3>
               <div class="flex flex-col">
                 <label for="ow">Custom OBS websocket</label>
