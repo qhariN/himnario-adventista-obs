@@ -119,7 +119,7 @@ function setHymnalApiUrl() {
                 </select>
               </div>  
             </div>
-            <div class="mb-2 hidden">
+            <div class="mb-2">
               <h3 class="font-bold">Network:</h3>
               <div class="flex flex-col">
                 <label for="ow">Custom OBS websocket</label>

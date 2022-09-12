@@ -3,7 +3,7 @@ import { onMounted, Ref, ref, watch } from 'vue'
 import ObsWebSocket from 'obs-websocket-js'
 import sHymn from '../services/HymnService'
 import { HymnHistory } from '../models/hymn'
-import { store } from '../store'
+import { defaultValues, store } from '../store'
 import Settings from './Settings.vue'
 
 const obs = new ObsWebSocket()
@@ -19,7 +19,7 @@ onMounted(() => {
 
 function connectObs() {
   obs.connect({
-    address: 'localhost:4444'
+    address: store.obsWebsocketUrl || defaultValues.obsWebsocketUrl
   }).then(() => {
     connected.value = true
     alert('Connected to OBS')
