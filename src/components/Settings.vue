@@ -87,7 +87,7 @@ function setHymnalApiUrl() {
                 <label for="am">Autoplay music</label>
                 <input v-model="autoplayMusic" @change="setAutoplayMusic()" type="checkbox" id="am" class="ml-auto">
               </div>
-              <div class="flex items-center gap-1 hidden">
+              <div class="flex items-center gap-1">
                 <label for="av">Autodrive verses</label>
                 <input v-model="autodriveVerses" @change="setAutodriveVerses()" type="checkbox" id="av" class="ml-auto">
               </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, Ref, ref, watch } from 'vue'
+import { onMounted, Ref, ref, toRaw, watch } from 'vue'
 import ObsWebSocket from 'obs-websocket-js'
 import sHymn from '../services/HymnService'
 import { HymnHistory } from '../models/hymn'
@@ -15,6 +15,17 @@ const player: Ref<HTMLAudioElement | null> = ref(null)
 
 onMounted(() => {
   player.value!.addEventListener('ended', handleMusicEnd)
+  player.value!.ontimeupdate = () => {
+    if (store.autodriveVerses) {
+      const currentTime = player.value!.currentTime
+      const nextVerse = toRaw(
+        hymnData.value!.history.filter(v => v.timestamp < currentTime).reverse()[0]
+      )
+      if (nextVerse && nextVerse.position !== hymnIndex.value) {
+        hymnIndex.value = nextVerse.position
+      }
+    }
+  }
 })
 
 function connectObs() {

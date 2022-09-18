@@ -17,5 +17,5 @@ export const store = reactive({
 
 export const defaultValues = {
   obsWebsocketUrl: 'localhost:4444',
-  hymnalApiUrl: 'https://hymnal.up.railway.app'
+  hymnalApiUrl: 'https://sdah.my.to'
 }

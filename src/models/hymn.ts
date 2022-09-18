@@ -4,8 +4,9 @@ export interface HymnHistory {
 }
 
 export interface History {
-  position: number;
-  verse:    Verse;
+  position:  number;
+  timestamp: number;
+  verse:     Verse;
 }
 
 export interface Verse {
