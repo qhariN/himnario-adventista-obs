@@ -19,7 +19,7 @@ onMounted(() => {
     if (store.autodriveVerses) {
       const currentTime = player.value!.currentTime
       const nextVerse = toRaw(
-        hymnData.value!.history.filter(v => v.timestamp < currentTime).reverse()[0]
+        hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
       )
       if (nextVerse && nextVerse.position !== hymnIndex.value) {
         hymnIndex.value = nextVerse.position
