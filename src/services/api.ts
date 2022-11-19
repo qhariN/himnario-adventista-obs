@@ -1,6 +1,5 @@
 const Fetch = async (endpoint: string) => {
-  const response = await fetch(endpoint)
-  return await response.json()
+  return await fetch(endpoint)
 }
 
 export default Fetch

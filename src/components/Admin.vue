@@ -53,13 +53,15 @@ function disconnectObs() {
 }
 
 function searchHymn() {
-  if(hymnNumber.value) {
+  if (hymnNumber.value) {
     sHymn.byNumber(+hymnNumber.value).then(hymn => {
       hymnData.value = hymn
       hymnIndex.value = 0
       player.value!.load()
       if (store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
       if (store.autoplayMusic) player.value!.play()
+    }).catch(err => {
+      alert(err)
     })
   } else {
     alert('Please enter a hymn number')
