@@ -15,6 +15,9 @@ const obsWebsocketUrl: Ref<string> = ref(store.obsWebsocketUrl)
 const musicHostUrl: Ref<string> = ref(store.musicHostUrl)
 const hymnalApiUrl: Ref<string> = ref(store.hymnalApiUrl)
 
+function openModal() {
+  isOpen.value = true
+}
 function closeModal() {
   localStorage.setItem('onlyInstrumental', `${onlyInstrumental.value}`)
   localStorage.setItem('autoplayMusic', `${autoplayMusic.value}`)
@@ -27,9 +30,6 @@ function closeModal() {
   localStorage.setItem('musicHostUrl', musicHostUrl.value)
   localStorage.setItem('hymnalApiUrl', hymnalApiUrl.value)
   isOpen.value = false
-}
-function openModal() {
-  isOpen.value = true
 }
 
 function setOnlyInstrumental() {
@@ -65,8 +65,8 @@ function setHymnalApiUrl() {
 </script>
 
 <template>
-  <button @click="openModal" title="Configuration" type="button" class="btn w-7 h-7 ml-auto">
-    <img class="dark:invert" src="/svg/gear.svg" alt="search">
+  <button @click="openModal" title="Settings" type="button" class="btn w-7 h-7 ml-auto">
+    <img class="dark:invert" src="/svg/gear.svg" alt="gear">
   </button>
   <Dialog :open="isOpen" @close="closeModal" class="relative z-10">
     <div class="fixed inset-0 bg-black bg-opacity-50" />
@@ -147,10 +147,6 @@ function setHymnalApiUrl() {
 </template>
 
 <style scoped>
-.btn {
-  @apply border border-neutral-700 dark:bg-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-600 active:bg-gray-200 dark:active:bg-neutral-500 rounded px-2 py-1 disabled:opacity-50 disabled:pointer-events-none
-}
-
 .input__text {
   @apply text-sm border border-neutral-700 dark:text-black rounded px-2 py-1
 }

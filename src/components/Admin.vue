@@ -5,6 +5,7 @@ import sHymn from '../services/HymnService'
 import { HymnHistory } from '../models/hymn'
 import { defaultValues, store } from '../store'
 import Settings from './Settings.vue'
+import About from './About.vue'
 
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
@@ -15,16 +16,13 @@ const player: Ref<HTMLAudioElement | null> = ref(null)
 
 onMounted(() => {
   player.value!.addEventListener('ended', handleMusicEnd)
-  player.value!.ontimeupdate = () => {
-    if (store.autodriveVerses) {
-      const currentTime = player.value!.currentTime
-      const nextVerse = toRaw(
-        hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
-      )
-      if (nextVerse && nextVerse.position !== hymnIndex.value) {
-        hymnIndex.value = nextVerse.position
-      }
-    }
+  player.value!.ontimeupdate = handleMusicTimestamp
+})
+
+watch(hymnIndex, index => {
+  if (index > 0) {
+    showVerse(index - 1)
+    setCurrentScene(store.onSearchHymnScene)
   }
 })
 
@@ -58,7 +56,7 @@ function searchHymn() {
       hymnData.value = hymn
       hymnIndex.value = 0
       player.value!.load()
-      if (store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
+      if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
       if (store.autoplayMusic) player.value!.play()
     }).catch(err => {
       alert(err)
@@ -68,16 +66,21 @@ function searchHymn() {
   }
 }
 
-function handleMusicEnd() {
-  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
+function handleMusicTimestamp() {
+  if (connected.value && store.autodriveVerses) {
+    const currentTime = player.value!.currentTime
+    const nextVerse = toRaw(
+      hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
+    )
+    if (nextVerse && nextVerse.position !== hymnIndex.value) {
+      hymnIndex.value = nextVerse.position
+    }
+  }
 }
 
-watch(hymnIndex, index => {
-  if(index > 0) {
-    showVerse(index - 1)
-    setCurrentScene(store.onSearchHymnScene)
-  }
-})
+function handleMusicEnd() {
+  if (connected.value && store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
+}
 
 function goTitle() {
   hymnIndex.value = 0
@@ -129,7 +132,7 @@ function setSourceText(sourceName: string, text: string | undefined) {
   })
 }
 
-function FileUrl() {
+function fileUrl() {
   const hymnUrl = store.onlyInstrumental
     ? hymnData.value!.hymn.mp3UrlInstr
     : hymnData.value!.hymn.mp3Url
@@ -146,7 +149,10 @@ function FileUrl() {
         <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
         <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
       </button>
-      <Settings></Settings>
+      <div class="ml-auto space-x-2">
+        <Settings></Settings>
+        <About></About>
+      </div>
     </div>
     <div class="flex items-center gap-6">
       <form class="flex gap-2" onsubmit="return false">
@@ -171,15 +177,9 @@ function FileUrl() {
     <div class="space-y-2">
       <p>Playing: <span class="text-neutral-400">{{ hymnData?.hymn.title }}</span></p>
       <audio ref="player" controls>
-        <source :src="hymnData && FileUrl()" type="audio/mpeg">
+        <source :src="hymnData && fileUrl()" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
     </div>
   </main>
 </template>
-
-<style scoped>
-.btn {
-  @apply border border-neutral-700 dark:bg-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-600 active:bg-gray-200 dark:active:bg-neutral-500 rounded px-2 py-1 disabled:opacity-50 disabled:pointer-events-none
-}
-</style>
