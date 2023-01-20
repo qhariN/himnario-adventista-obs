@@ -147,10 +147,10 @@ function fileUrl() {
 </script>
 
 <template>
-  <main class="flex flex-col gap-2 px-3 py-2 dark:text-white text-xs">
+  <main class="flex flex-col gap-2 px-3 py-2 text-xs">
     <div class="flex items-center">
-      <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 hover:bg-neutral-700">
-        <div class="rounded-full w-2 h-2" :class="connected? 'bg-green-600' : 'bg-red-600'"></div>
+      <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 btn">
+        <div class="rounded-full w-2 h-2" :class="connected? 'bg-green' : 'bg-red'"></div>
         <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
         <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
       </button>
@@ -161,7 +161,7 @@ function fileUrl() {
     </div>
     <div class="flex items-center gap-6">
       <form class="flex gap-2" onsubmit="return false">
-        <input v-model="hymnNumber" type="number" min="1" max="613" class="text-sm w-16 border border-neutral-700 dark:text-black rounded px-2 py-1" name="number" id="number">
+        <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number">
         <button @click="searchHymn()" title="Search" type="submit" class="btn w-8 h-8">
           <img class="dark:invert" src="/svg/search.svg" alt="search">
         </button>
@@ -180,7 +180,7 @@ function fileUrl() {
       </div>
     </div>
     <div class="space-y-2">
-      <p>Playing: <span class="text-neutral-400">{{ hymnData?.hymn.title }}</span></p>
+      <p>Playing: <span class="text-muted">{{ hymnData?.hymn.title }}</span></p>
       <audio ref="player" controls>
         <source :src="hymnData && fileUrl()" type="audio/mpeg">
         Your browser does not support the audio element.

@@ -21,11 +21,11 @@ function openModal() {
     <div class="fixed inset-0 bg-black bg-opacity-50" />
     <div class="fixed inset-0 overflow-y-auto p-4">
       <div class="flex min-h-full items-center justify-center">
-        <DialogPanel class="w-full max-w-[240px] overflow-hidden rounded-lg bg-white dark:bg-zinc-800 p-4 align-middle">
-          <DialogTitle as="h2" class="font-bold text-center leading-none dark:text-white">
+        <DialogPanel class="w-full max-w-[240px] overflow-hidden rounded-lg bg-light-background dark:bg-dark-background p-4 align-middle">
+          <DialogTitle as="h2" class="font-bold text-center leading-none">
             Himnario Adventista Broadcast
           </DialogTitle>
-          <DialogDescription class="text-sm dark:text-white mt-3">
+          <DialogDescription class="text-sm mt-3">
             <div class="flex flex-col gap-1">
               <div>
                 <span class="font-bold">Version</span>
@@ -53,6 +53,6 @@ function openModal() {
 
 <style scoped>
 .link {
-  @apply text-blue-500 hover:underline;
+  @apply text-blue hover:underline;
 }
 </style>

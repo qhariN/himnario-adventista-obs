@@ -72,11 +72,11 @@ function setHymnalApiUrl() {
     <div class="fixed inset-0 bg-black bg-opacity-50" />
     <div class="fixed inset-0 overflow-y-auto p-4">
       <div class="flex min-h-full items-center justify-center">
-        <DialogPanel class="w-full max-w-[240px] overflow-hidden rounded-lg bg-white dark:bg-zinc-800 p-4 align-middle">
-          <DialogTitle as="h2" class="font-bold text-center leading-none dark:text-white">
+        <DialogPanel class="w-full max-w-[240px] overflow-hidden rounded-lg bg-light-background dark:bg-dark-background p-4 align-middle">
+          <DialogTitle as="h2" class="font-bold text-center leading-none">
             Settings
           </DialogTitle>
-          <DialogDescription class="text-sm dark:text-white my-3">
+          <DialogDescription class="text-sm my-3">
             <div class="mb-2">
               <h3 class="font-bold">On search:</h3>
               <div class="flex items-center gap-1">
@@ -136,7 +136,7 @@ function setHymnalApiUrl() {
             </div>
           </DialogDescription>
           <div class="mt-4 flex">
-            <button type="button" class="btn ml-auto dark:text-white" @click="closeModal">
+            <button type="button" class="btn ml-auto" @click="closeModal">
               Save and close
             </button>
           </div>
@@ -145,9 +145,3 @@ function setHymnalApiUrl() {
     </div>
   </Dialog>
 </template>
-
-<style scoped>
-.input__text {
-  @apply text-sm border border-neutral-700 dark:text-black rounded px-2 py-1
-}
-</style>

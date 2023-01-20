@@ -11,7 +11,15 @@ import Admin from './components/Admin.vue';
 @tailwind components;
 @tailwind utilities;
 
-.btn {
-  @apply border border-neutral-700 dark:bg-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-600 active:bg-gray-200 dark:active:bg-neutral-500 rounded px-2 py-1 disabled:opacity-50 disabled:pointer-events-none
+@layer components {
+  .btn {
+    @apply rounded px-2 py-1;
+    @apply bg-light-button-bg hover:bg-light-button-hover active:bg-light-button-active;
+    @apply dark:bg-dark-button-bg dark:hover:bg-dark-button-hover dark:active:bg-dark-button-active;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .input__text {
+    @apply text-sm dark:text-black rounded px-2 py-1 outline-none;
+  }
 }
 </style>
