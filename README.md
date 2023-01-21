@@ -1,16 +1,67 @@
-# Vue 3 + Typescript + Vite
+# Himnario Adventista Broadcast
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+![Preview](https://res.cloudinary.com/jhormanrus/image/upload/v1650001781/my-repositories/himnario-adventista/1.png)
 
-## Recommended IDE Setup
+## ¿Qué es?
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+Himnario Adventista Broadcast es una GUI web diseñada para ser usada con [OBS Studio](https://obsproject.com) o simplemente como un reproductor de himnos.
 
-## Type Support For `.vue` Imports in TS
+Esta GUI permite:
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+- Buscar himnos por número
+- Mostrar número, título, verso y letra del himno en pantalla
+- Reproducir la melodía del himno (instrumental o cantado)
+- Controlar la letra y la melodía del himno
+- Personalizar los estilos de la letra y el fondo
 
-1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+## Instalación
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+Para usarla con OBS Studio, es requerido tener instalado el plugin [obs-websocket](https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-using-websockets.466). La GUI usa el puerto 4444 por defecto de este plugin.
+
+La GUI se encuentra en la siguiente dirección: <https://himnario-adventista-broadcast.vercel.app>. Puedes usarla directamente en tu navegador web o agregarla como un **panel de navegador personalizado** en OBS Studio.
+
+## Configuración básica
+
+La GUI requiere que tengas obligatoriamente la siguiente escena y fuentes en OBS Studio:
+
+```text
+ESCENA
+└── Hymn
+    └── FUENTES
+        ├── hymn_number
+        ├── hymn_title
+        ├── verse_number
+        └── verse_content
+```
+
+Todas las fuentes requeridas deben ser de tipo **Texto (GDI+)** en Windows o **Texto (FreeType 2)** en Linux y macOS.
+
+La visibilidad de las fuentes son administradas por la GUI, pero la personalización de los estilos de las fuentes (fuente, tamaño, color, etc.) es responsabilidad del usuario.
+
+Si bien la GUI requiere que tengas la escena y fuentes mencionadas, puedes agregar libremente otras fuentes a la escena para personalizarla a tu gusto como por ejemplo: un fondo, un logo, etc.
+
+Finalmente, en la GUI debes conectarla con OBS Studio usando el botón **Connect**.
+
+## Configuración avanzada
+
+La GUI tiene una configuración avanzada que puedes acceder desde el botón tuerca en la parte superior derecha de la GUI. En la configuración avanzada puedes establecer:
+
+### Al buscar un himno
+- **Only instrumental**: Melodía solo instrumental (si no está marcado, se reproducirá la melodía cantada)
+- **Autoplay music**: Auto reproducir la melodía
+- **Autodrive verses**: Auto dirigir la letra del himno en pantalla
+- **Switch to hymn scene**: Cambiar a la escena del himno (ninguna por defecto)
+
+### Al terminar de reproducir un himno
+- **Switch to scene**: Cambiar a una escena específica (ninguna por defecto)
+
+### Red
+- **Custom OBS websocket**: Usar un servidor websocket de OBS Studio personalizado (por defecto usa localhost:4444)
+- **Custom music host**: Usar un servidor de melodías personalizado (por defecto usa el del [Himnario Adventista API](https://github.com/jhormanrus/himnario-adventista-api))
+- **Custom hymnal API**: Usar un servidor de la API de Himnario Adventista personalizado (por defecto usa el [Himnario Adventista API](https://sdah.my.to/hymn))
+
+La GUI está pensada para usarla online, pero gracias a la configuración avanzada puedes usarla sin conexión a internet levantando localmente el [Himnario Adventista API](https://github.com/jhormanrus/himnario-adventista-api) y configurando la GUI para usarlo.
+
+## Necesito ayuda
+
+Si tienes alguna duda o sugerencia, puedes abrir un [issue](https://github.com/jhormanrus/himnario-adventista-api/issues) o ponerte en contacto conmigo en mi [LinkedIn](https://www.linkedin.com/in/jhormanrus/).

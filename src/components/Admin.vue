@@ -31,7 +31,6 @@ function connectObs() {
     address: store.obsWebsocketUrl || defaultValues.obsWebsocketUrl
   }).then(() => {
     connected.value = true
-    alert('Connected to OBS')
     obs.send('GetSceneList').then(data => {
       const { scenes } = data
       store.sceneList = scenes
@@ -47,39 +46,38 @@ function connectObs() {
 function disconnectObs() {
   obs.disconnect()
   connected.value = false
-  alert('Disconnected from OBS')
 }
 
 function searchHymn() {
-  if (hymnNumber.value) {
-    sHymn.byNumber(+hymnNumber.value).then(hymn => {
-      hymnData.value = hymn
-      hymnIndex.value = 0
-      player.value!.load()
-      if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
-      if (store.autoplayMusic) player.value!.play()
-    }).catch(err => {
-      alert(err)
-    })
-  } else {
+  if (!hymnNumber.value) {
     alert('Please enter a hymn number')
+    return
   }
+  sHymn.byNumber(+hymnNumber.value).then(hymn => {
+    hymnData.value = hymn
+    hymnIndex.value = 0
+    player.value!.load()
+    if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
+    if (store.autoplayMusic) player.value!.play()
+  }).catch(err => {
+    alert(err)
+  })
 }
 
 function handleMusicTimestamp() {
-  if (connected.value && store.autodriveVerses) {
-    const currentTime = player.value!.currentTime
-    const nextVerse = toRaw(
-      hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
-    )
-    if (nextVerse && nextVerse.position !== hymnIndex.value) {
-      hymnIndex.value = nextVerse.position
-    }
+  if (!connected.value && !store.autodriveVerses) return
+  const currentTime = player.value!.currentTime
+  const nextVerse = toRaw(
+    hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
+  )
+  if (nextVerse && nextVerse.position !== hymnIndex.value) {
+    hymnIndex.value = nextVerse.position
   }
 }
 
 function handleMusicEnd() {
-  if (connected.value && store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
+  if (!connected.value) return
+  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
 }
 
 function goTitle() {
@@ -120,6 +118,8 @@ function setSceneItemRender(sourceName: string, render: boolean) {
     'scene-name': store.onSearchHymnScene,
     source: sourceName,
     render: render
+  }).catch(error => {
+    alert(`Failed to render scene item: ${error.error}`)
   })
 }
 
@@ -162,7 +162,7 @@ function fileUrl() {
         </button>
       </form>
       <div class="flex items-center gap-2">
-        <span>Letra:</span>
+        <span>Verse:</span>
         <button @click="goTitle()" title="Beginning" :disabled="!connected || !store.onSearchHymnScene || hymnIndex < 1" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/home.svg" alt="search">
         </button>
