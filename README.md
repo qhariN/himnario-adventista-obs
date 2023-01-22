@@ -21,15 +21,15 @@ Esta GUI permite:
 
 Para usarla con OBS Studio, es requerido tener instalado el plugin [obs-websocket](https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-using-websockets.466/history) versión 4. La GUI usa el puerto 4444 por defecto de este plugin.
 
-La GUI se encuentra en la siguiente dirección: <https://himnario-adventista-broadcast.vercel.app>. Puedes usarla directamente en tu navegador web o agregarla como un **panel de navegador personalizado** en OBS Studio.
+La GUI se encuentra en la siguiente dirección: <https://himnario-adventista-broadcast-old.vercel.app>. Puedes usarla directamente en tu navegador web o agregarla como un **panel de navegador personalizado** en OBS Studio.
 
 ## Configuración básica
 
-La GUI requiere que tengas obligatoriamente la siguiente escena y fuentes en OBS Studio:
+La GUI requiere que tengas y respetes obligatoriamente los nombres de las siguientes fuentes en una misma escena en OBS Studio:
 
 ```text
 ESCENA
-└── Hymn
+└── Himnario (nombre de ejemplo)
     └── FUENTES
         ├── hymn_number
         ├── hymn_title
