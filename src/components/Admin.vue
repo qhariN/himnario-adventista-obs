@@ -27,19 +27,23 @@ watch(hymnIndex, index => {
 })
 
 function connectObs() {
-  obs.connect({
-    address: store.obsWebsocketUrl || defaultValues.obsWebsocketUrl
-  }).then(() => {
+  const url = `ws://${store.obsWebsocketUrl || defaultValues.obsWebsocketUrl}`
+  obs.connect(url).then(() => {
     connected.value = true
-    obs.send('GetSceneList').then(data => {
+    obs.call('GetSceneList').then(data => {
       const { scenes } = data
       store.sceneList = scenes
     })
+    obs.call('GetSceneItemList', {
+      sceneName: store.onSearchHymnScene
+    }).then(data => {
+      const { sceneItems } = data
+      store.sourceList = sceneItems
+    }).catch(error => {
+      alert('Failed to get scene items')
+    })
   }).catch(error => {
     alert(`Connection failed: ${error.error}`)
-  })
-  obs.on('error', (err) => {
-    alert(`OBS error: ${err}`)
   })
 }
 
@@ -87,46 +91,47 @@ function goTitle() {
 }
 
 function showTitle() {
-  setSceneItemRender('hymn_number', true)
-  setSceneItemRender('hymn_title', true)
-  setSceneItemRender('verse_number', false)
-  setSceneItemRender('verse_content', false)
+  setSourceVisibility('hymn_number', true)
+  setSourceVisibility('hymn_title', true)
+  setSourceVisibility('verse_number', false)
+  setSourceVisibility('verse_content', false)
   setSourceText('hymn_number', hymnData.value?.hymn.number.toString())
   setSourceText('hymn_title', hymnData.value?.hymn.title)
 }
 
 function showVerse(index: number) {
-  setSceneItemRender('hymn_number', false)
-  setSceneItemRender('hymn_title', false)
-  setSceneItemRender('verse_number', true)
-  setSceneItemRender('verse_content', true)
+  setSourceVisibility('hymn_number', false)
+  setSourceVisibility('hymn_title', false)
+  setSourceVisibility('verse_number', true)
+  setSourceVisibility('verse_content', true)
   const verseNumber = hymnData.value?.history[index].verse.number
   setSourceText('verse_number', verseNumber === 0 ? 'Coro' : String(verseNumber))
   setSourceText('verse_content', hymnData.value?.history[index].verse.content)
 }
 
 function setCurrentScene(sceneName: string) {
-  obs.send('SetCurrentScene', {
-    "scene-name": sceneName
-  }).catch(error => {
-    alert(`Failed to set scene: ${error.error}`)
-  })
+  obs
+    .call('SetCurrentProgramScene', { sceneName })
+    .catch(error => {
+      alert(`Failed to set scene: ${error.error}`)
+    })
 }
 
-function setSceneItemRender(sourceName: string, render: boolean) {
-  obs.send('SetSceneItemRender', {
-    'scene-name': store.onSearchHymnScene,
-    source: sourceName,
-    render: render
-  }).catch(error => {
-    alert(`Failed to render scene item: ${error.error}`)
-  })
+function setSourceVisibility(sourceName: string, visible: boolean) {
+  obs
+    .call('SetSceneItemEnabled', {
+      sceneName: store.onSearchHymnScene,
+      sceneItemId: store.sourceList.find(s => s.sourceName === sourceName).sceneItemId,
+      sceneItemEnabled: visible
+    }).catch(error => {
+      alert(`Failed to render scene item: ${error.error}`)
+    })
 }
 
 function setSourceText(sourceName: string, text: string | undefined) {
-  obs.send('SetSourceSettings', {
-    sourceName: sourceName,
-    sourceSettings: {
+  obs.call('SetInputSettings', {
+    inputName: sourceName,
+    inputSettings: {
       text: text
     }
   })
