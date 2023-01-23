@@ -1,5 +1,8 @@
 # Himnario Adventista Broadcast
 
+![obs-websocket](https://img.shields.io/badge/obs--websocket-5.x-blue?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/jhormanrus/himnario-adventista-broadcast?style=for-the-badge)
+
 ![Preview](https://res.cloudinary.com/jhormanrus/image/upload/v1650001781/my-repositories/himnario-adventista/1.png)
 
 ## ¿Qué es?
@@ -16,7 +19,7 @@ Esta GUI permite:
 
 ## Instalación
 
-Para usarla con OBS Studio, es requerido tener instalado el plugin [obs-websocket](https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-using-websockets.466). La GUI usa el puerto 4444 por defecto de este plugin.
+Para usarla con OBS Studio, es requerido tener instalado el plugin [obs-websocket](https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-using-websockets.466) versión 5. La GUI usa el puerto 4455 por defecto de este plugin.
 
 La GUI se encuentra en la siguiente dirección: <https://himnario-adventista-broadcast.vercel.app>. Puedes usarla directamente en tu navegador web o agregarla como un **panel de navegador personalizado** en OBS Studio.
 
@@ -26,7 +29,7 @@ La GUI requiere que tengas obligatoriamente la siguiente escena y fuentes en OBS
 
 ```text
 ESCENA
-└── Hymn
+└── Himnario (nombre de ejemplo)
     └── FUENTES
         ├── hymn_number
         ├── hymn_title
