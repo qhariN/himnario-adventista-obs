@@ -3,7 +3,7 @@
 ![obs-websocket](https://img.shields.io/badge/obs--websocket-5.x-blue?style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/jhormanrus/himnario-adventista-broadcast?style=for-the-badge)
 
-![Preview](https://res.cloudinary.com/jhormanrus/image/upload/v1650001781/my-repositories/himnario-adventista/1.png)
+![Preview](https://res.cloudinary.com/jhormanrus/image/upload/v1675045208/my-repositories/himnario-adventista/2.png)
 
 ## ¿Qué es?
 
