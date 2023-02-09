@@ -69,7 +69,9 @@ function searchHymn() {
 }
 
 function handleMusicTimestamp() {
+  console.log(connected.value, store.autodriveVerses)
   if (!connected.value && !store.autodriveVerses) return
+  console.log(store.autodriveVerses)
   const currentTime = player.value!.currentTime
   const nextVerse = toRaw(
     hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
