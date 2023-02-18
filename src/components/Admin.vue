@@ -123,18 +123,23 @@ function setSourceVisibility(sourceName: string, visible: boolean) {
       sceneName: store.onSearchHymnScene,
       sceneItemId: store.sourceList.find(s => s.sourceName === sourceName).sceneItemId,
       sceneItemEnabled: visible
-    }).catch(error => {
+    })
+    .catch(error => {
       alert(`Failed to render scene item: ${error.error}`)
     })
 }
 
 function setSourceText(sourceName: string, text: string | undefined) {
-  obs.call('SetInputSettings', {
-    inputName: sourceName,
-    inputSettings: {
-      text: text
-    }
-  })
+  obs
+    .call('SetInputSettings', {
+      inputName: sourceName,
+      inputSettings: {
+        text: text
+      }
+    })
+    .catch(error => {
+      alert(`Failed to set text: ${error.error}`)
+    })
 }
 
 function fileUrl() {
@@ -168,19 +173,24 @@ function fileUrl() {
       </form>
       <div class="flex items-center gap-2">
         <span>Verse:</span>
-        <button @click="goTitle()" title="Beginning" :disabled="!connected || !store.onSearchHymnScene || hymnIndex < 1" type="button" class="btn w-7 h-7">
+        <button @click="goTitle()" title="Beginning" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/home.svg" alt="search">
         </button>
-        <button @click="hymnIndex--" title="Previous verse" :disabled="!connected || !store.onSearchHymnScene || hymnIndex < 2" type="button" class="btn w-7 h-7">
+        <button @click="hymnIndex--" title="Previous verse" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/previous.svg" alt="search">
         </button>
-        <button @click="hymnIndex++" title="Next verse" :disabled="!connected || !store.onSearchHymnScene || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
+        <button @click="hymnIndex++" title="Next verse" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/next.svg" alt="search">
         </button>
       </div>
     </div>
     <div class="space-y-2">
-      <p>Playing: <span class="text-muted">{{ hymnData?.hymn.title }}</span></p>
+      <div class="flex gap-3">
+        <p>
+          Playing: <span class="text-muted">{{ hymnData?.hymn.title }}</span>
+        </p>
+        <span v-if="store.autodriveVerses" class="ml-auto text-yellow">Autodrive is enabled</span>
+      </div>
       <audio ref="player" controls>
         <source :src="hymnData && fileUrl()" type="audio/mpeg">
         Your browser does not support the audio element.
