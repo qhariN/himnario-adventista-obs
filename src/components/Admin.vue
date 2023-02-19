@@ -30,18 +30,8 @@ function connectObs() {
   const url = `ws://${store.obsWebsocketUrl || defaultValues.obsWebsocketUrl}`
   obs.connect(url).then(() => {
     connected.value = true
-    obs.call('GetSceneList').then(data => {
-      const { scenes } = data
-      store.sceneList = scenes
-    })
-    obs.call('GetSceneItemList', {
-      sceneName: store.onSearchHymnScene
-    }).then(data => {
-      const { sceneItems } = data
-      store.sourceList = sceneItems
-    }).catch(error => {
-      alert('Failed to get scene items')
-    })
+    getScenes()
+    getSceneItems(store.onSearchHymnScene)
   }).catch(error => {
     alert(`Connection failed: ${error.error}`)
   })
@@ -50,6 +40,37 @@ function connectObs() {
 function disconnectObs() {
   obs.disconnect()
   connected.value = false
+}
+
+function getScenes() {
+  obs
+    .call('GetSceneList')
+    .then(({ scenes }) => {
+      store.sceneList = scenes
+    })
+}
+
+function getSceneItems(sceneName: string) {
+  obs
+    .call('GetSceneItemList', { sceneName })
+    .then(async ({ sceneItems }) => {
+      // Get group scene items
+      const groupSceneItems = [] as any[]
+      for (const item of sceneItems) {
+        if (!item.isGroup) continue
+        const { sceneItems } = await obs.call('GetGroupSceneItemList', {
+          sceneName: item.sourceName as string
+        })
+        sceneItems.map(i => i.groupName = item.sourceName)
+        groupSceneItems.push(...sceneItems)
+      }
+      sceneItems = sceneItems.filter(item => !item.isGroup)
+      sceneItems.push(...groupSceneItems)
+      // Set source list
+      store.sourceList = sceneItems
+    }).catch(error => {
+      alert('Failed to get scene items')
+    })
 }
 
 function searchHymn() {
@@ -118,10 +139,11 @@ function setCurrentScene(sceneName: string) {
 }
 
 function setSourceVisibility(sourceName: string, visible: boolean) {
+  const sceneItem = store.sourceList.find(s => s.sourceName === sourceName)
   obs
     .call('SetSceneItemEnabled', {
-      sceneName: store.onSearchHymnScene,
-      sceneItemId: store.sourceList.find(s => s.sourceName === sourceName).sceneItemId,
+      sceneName: sceneItem.groupName?? store.onSearchHymnScene,
+      sceneItemId: sceneItem.sceneItemId,
       sceneItemEnabled: visible
     })
     .catch(error => {

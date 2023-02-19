@@ -32,7 +32,7 @@ La GUI requiere que tengas obligatoriamente la siguiente escena y fuentes en OBS
 ```text
 ESCENA
 └── Himnario (nombre de ejemplo)
-    └── FUENTES
+    └── FUENTES (las fuentes se pueden agrupar)
         ├── hymn_number
         ├── hymn_title
         ├── verse_number
