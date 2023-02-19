@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue'
+import { store } from '../store'
 import packageJson from '../../package.json'
 
 const isOpen = ref(false)
+
+onMounted(() => {
+  if (store.isFirstTimeInVersion) {
+    store.isFirstTimeInVersion = false
+    localStorage.setItem('version', packageJson.version)
+    openModal()
+  }
+})
 
 function closeModal() {
   isOpen.value = false
@@ -30,6 +39,14 @@ function openModal() {
               <div>
                 <span class="font-bold">Version</span>
                 <p>{{ packageJson.version }}</p>
+              </div>
+              <div>
+                <span class="font-bold">Release notes</span>
+                <ul class="list-disc pl-6">
+                  <li>Se corrigió un error que hacía que la autoconducción de himnos siempre estuviera en funcionamiento</li>
+                  <li>Ahora se muestra un indicador cuando la autoconducción de himnos está activada</li>
+                  <li>Se añadió soporte para poder agrupar las fuentes especiales</li>
+                </ul>
               </div>
               <div>
                 <span class="font-bold">Creator</span>

@@ -1,8 +1,10 @@
 import { reactive } from 'vue'
+import packageJson from '../package.json'
 
 export const store = reactive({
   sceneList: [] as any[],
   sourceList: [] as any[],
+  isFirstTimeInVersion: localStorage.getItem('version') !== packageJson.version,
   onlyInstrumental: (localStorage.getItem('onlyInstrumental') === 'true') || false,
   autoplayMusic: (localStorage.getItem('autoplayMusic') === 'true') || false,
   autodriveVerses: (localStorage.getItem('autodriveVerses') === 'true') || false,
