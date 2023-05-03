@@ -33,7 +33,7 @@ function connectObs() {
     getScenes()
     getSceneItems(store.onSearchHymnScene)
   }).catch(error => {
-    alert(`Connection failed: ${error.error}`)
+    alert(`Conexión fallida: ${error.error}`)
   })
 }
 
@@ -69,13 +69,13 @@ function getSceneItems(sceneName: string) {
       // Set source list
       store.sourceList = sceneItems
     }).catch(error => {
-      alert('Failed to get scene items')
+      alert('Error al obtener la lista de escenas')
     })
 }
 
 function searchHymn() {
   if (!hymnNumber.value) {
-    alert('Please enter a hymn number')
+    alert('Ingrese un número de himno')
     return
   }
   sHymn.byNumber(+hymnNumber.value).then(hymn => {
@@ -134,7 +134,7 @@ function setCurrentScene(sceneName: string) {
   obs
     .call('SetCurrentProgramScene', { sceneName })
     .catch(error => {
-      alert(`Failed to set scene: ${error.error}`)
+      alert(`Error al cambiar de escena: ${error.error}`)
     })
 }
 
@@ -147,7 +147,7 @@ function setSourceVisibility(sourceName: string, visible: boolean) {
       sceneItemEnabled: visible
     })
     .catch(error => {
-      alert(`Failed to render scene item: ${error.error}`)
+      alert(`Error al cambiar la visibilidad de la fuente: ${error.error}`)
     })
 }
 
@@ -160,7 +160,7 @@ function setSourceText(sourceName: string, text: string | undefined) {
       }
     })
     .catch(error => {
-      alert(`Failed to set text: ${error.error}`)
+      alert(`Error al cambiar el texto de la fuente: ${error.error}`)
     })
 }
 
@@ -178,8 +178,8 @@ function fileUrl() {
     <div class="flex items-center">
       <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 btn">
         <div class="rounded-full w-2 h-2" :class="connected? 'bg-green' : 'bg-red'"></div>
-        <span class="group-hover:hidden">{{ connected? 'Connected' : 'Disconnected' }}</span>
-        <span class="hidden group-hover:block">{{ connected? 'Disconnect' : 'Connect' }}</span>
+        <span class="group-hover:hidden">{{ connected? 'Conectado' : 'Desconectado' }}</span>
+        <span class="hidden group-hover:block">{{ connected? 'Desconectar' : 'Conectar' }}</span>
       </button>
       <div class="ml-auto space-x-2">
         <Settings></Settings>
@@ -189,33 +189,33 @@ function fileUrl() {
     <div class="flex items-center gap-6">
       <form class="flex gap-2" onsubmit="return false">
         <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number">
-        <button @click="searchHymn()" title="Search" type="submit" class="btn w-8 h-8">
+        <button @click="searchHymn()" title="Buscar" type="submit" class="btn w-8 h-8">
           <img class="dark:invert" src="/svg/search.svg" alt="search">
         </button>
       </form>
       <div class="flex items-center gap-2">
-        <span>Verse:</span>
-        <button @click="goTitle()" title="Beginning" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-7 h-7">
-          <img class="dark:invert" src="/svg/home.svg" alt="search">
+        <span>Verso:</span>
+        <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-7 h-7">
+          <img class="dark:invert" src="/svg/home.svg" alt="home">
         </button>
-        <button @click="hymnIndex--" title="Previous verse" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-7 h-7">
-          <img class="dark:invert" src="/svg/previous.svg" alt="search">
+        <button @click="hymnIndex--" title="Verso anterior" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-7 h-7">
+          <img class="dark:invert" src="/svg/previous.svg" alt="left arrow">
         </button>
-        <button @click="hymnIndex++" title="Next verse" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
-          <img class="dark:invert" src="/svg/next.svg" alt="search">
+        <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
+          <img class="dark:invert" src="/svg/next.svg" alt="right arrow">
         </button>
       </div>
     </div>
     <div class="space-y-2">
       <div class="flex gap-3">
         <p>
-          Playing: <span class="text-muted">{{ hymnData?.hymn.title }}</span>
+          Reproduciendo: <span class="text-muted">{{ hymnData?.hymn.title }}</span>
         </p>
-        <span v-if="store.autodriveVerses" class="ml-auto text-yellow">Autodrive is enabled</span>
+        <span v-if="store.autodriveVerses" class="ml-auto text-yellow">Autoconducir está activado</span>
       </div>
       <audio ref="player" controls>
         <source :src="hymnData && fileUrl()" type="audio/mpeg">
-        Your browser does not support the audio element.
+        Tu navegador no soporta el elemento <code>audio</code>.
       </audio>
     </div>
   </main>

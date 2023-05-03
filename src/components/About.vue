@@ -23,7 +23,7 @@ function openModal() {
 </script>
 
 <template>
-  <button @click="openModal" title="About" type="button" class="btn w-7 h-7">
+  <button @click="openModal" title="Acerca de" type="button" class="btn w-7 h-7">
     <img class="dark:invert" src="/svg/about.svg" alt="letter i">
   </button>
   <Dialog :open="isOpen" @close="closeModal" class="relative z-10">
@@ -37,27 +37,25 @@ function openModal() {
           <DialogDescription class="text-sm mt-3">
             <div class="flex flex-col gap-1">
               <div>
-                <span class="font-bold">Version</span>
+                <span class="font-bold">Versión</span>
                 <p>{{ packageJson.version }}</p>
               </div>
               <div>
-                <span class="font-bold">Release notes</span>
+                <span class="font-bold">Notas de la versión</span>
                 <ul class="list-disc pl-6">
-                  <li>Se corrigió un error que hacía que la autoconducción de himnos siempre estuviera en funcionamiento</li>
-                  <li>Ahora se muestra un indicador cuando la autoconducción de himnos está activada</li>
-                  <li>Se añadió soporte para poder agrupar las fuentes especiales</li>
+                  <li>Ahora el idioma por defecto es el español</li>
                 </ul>
               </div>
               <div>
-                <span class="font-bold">Creator</span>
+                <span class="font-bold">Creador</span>
                 <p><a href="https://github.com/jhormanrus" target="_blank" rel="noopener noreferrer" class="link">Jhorman Rus</a></p>
               </div>
               <div>
-                <span class="font-bold">Github repository</span>
+                <span class="font-bold">Repositorio</span>
                 <p><a href="https://github.com/jhormanrus/himnario-adventista-broadcast" target="_blank" rel="noopener noreferrer" class="link">himnario-adventista-broadcast</a></p>
               </div>
               <div>
-                <span class="font-bold">License</span>
+                <span class="font-bold">Licencia</span>
                 <p>MIT License</p>
               </div>
             </div>
