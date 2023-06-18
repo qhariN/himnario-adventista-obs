@@ -6,6 +6,7 @@ import { HymnHistory } from '../models/hymn'
 import { defaultValues, store } from '../store'
 import Settings from './Settings.vue'
 import About from './About.vue'
+import AutodriveButton from './AutodriveButton.vue'
 
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
@@ -175,13 +176,14 @@ function fileUrl() {
 
 <template>
   <main class="flex flex-col gap-2 px-3 py-2 text-xs">
-    <div class="flex items-center">
-      <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 btn">
+    <div class="flex gap-2">
+      <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 h-7 btn">
         <div class="rounded-full w-2 h-2" :class="connected? 'bg-green' : 'bg-red'"></div>
         <span class="group-hover:hidden">{{ connected? 'Conectado' : 'Desconectado' }}</span>
         <span class="hidden group-hover:block">{{ connected? 'Desconectar' : 'Conectar' }}</span>
       </button>
-      <div class="ml-auto space-x-2">
+      <div class="ml-auto flex gap-2">
+        <AutodriveButton></AutodriveButton>
         <Settings></Settings>
         <About></About>
       </div>
@@ -207,12 +209,9 @@ function fileUrl() {
       </div>
     </div>
     <div class="space-y-2">
-      <div class="flex gap-3">
-        <p>
-          Reproduciendo: <span class="text-muted">{{ hymnData?.hymn.title }}</span>
-        </p>
-        <span v-if="store.autodriveVerses" class="ml-auto text-yellow">Autoconducir está activado</span>
-      </div>
+      <p>
+        Reproduciendo: <span class="text-muted">{{ hymnData?.hymn.title }}</span>
+      </p>
       <audio ref="player" controls>
         <source :src="hymnData && fileUrl()" type="audio/mpeg">
         Tu navegador no soporta el elemento <code>audio</code>.

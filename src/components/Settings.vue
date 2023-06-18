@@ -6,7 +6,6 @@ import { store, defaultValues } from '../store'
 const isOpen = ref(false)
 const onlyInstrumental: Ref<boolean> = ref(store.onlyInstrumental)
 const autoplayMusic: Ref<boolean> = ref(store.autoplayMusic)
-const autodriveVerses: Ref<boolean> = ref(store.autodriveVerses)
 const splitVerses: Ref<boolean> = ref(store.splitVerses)
 const onSearchSwitchToHymnScene: Ref<boolean> = ref(store.onSearchSwitchToHymnScene)
 const onSearchHymnScene: Ref<string> = ref(store.onSearchHymnScene)
@@ -21,7 +20,7 @@ function openModal() {
 function closeModal() {
   localStorage.setItem('onlyInstrumental', `${onlyInstrumental.value}`)
   localStorage.setItem('autoplayMusic', `${autoplayMusic.value}`)
-  localStorage.setItem('autodriveVerses', `${autodriveVerses.value}`)
+  localStorage.setItem('autodriveVerses', `${store.autodriveVerses}`)
   localStorage.setItem('splitVerses', `${splitVerses.value}`)
   localStorage.setItem('onSearchSwitchToHymnScene', `${onSearchSwitchToHymnScene.value}`)
   localStorage.setItem('onSearchHymnScene', `${onSearchHymnScene.value}`)
@@ -38,8 +37,9 @@ function setOnlyInstrumental() {
 function setAutoplayMusic() {
   store.autoplayMusic = autoplayMusic.value
 }
-function setAutodriveVerses() {
-  store.autodriveVerses = autodriveVerses.value
+function setAutodriveVerses(event: Event) {
+  const on = (event.target as HTMLInputElement).checked
+  store.autodriveVerses = on
 }
 function setSplitVerses() {
   store.splitVerses = splitVerses.value
@@ -89,7 +89,7 @@ function setHymnalApiUrl() {
               </div>
               <div class="flex items-center gap-1">
                 <label for="av">Autoconducir versos</label>
-                <input v-model="autodriveVerses" @change="setAutodriveVerses()" type="checkbox" id="av" class="ml-auto">
+                <input v-model="store.autodriveVerses" @change="setAutodriveVerses($event)" type="checkbox" id="av" class="ml-auto">
               </div>
               <div class="flex items-center gap-1 hidden">
                 <label for="sv">Split verses (for long verses)</label>
