@@ -112,6 +112,11 @@ function goTitle() {
   setCurrentScene(store.onSearchHymnScene)
 }
 
+function stopMusic() {
+  player.value!.pause()
+  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
+}
+
 function showTitle() {
   setSourceVisibility('hymn_number', true)
   setSourceVisibility('hymn_title', true)
@@ -177,10 +182,9 @@ function fileUrl() {
 <template>
   <main class="flex flex-col gap-2 px-3 py-2 text-xs">
     <div class="flex gap-2">
-      <button @click="connected? disconnectObs() : connectObs()" type="button" class="group flex items-center gap-3 px-2 py-1 rounded w-28 h-7 btn">
+      <button @click="connected? disconnectObs() : connectObs()" :title="connected? 'Desconectar' : 'Conectar'" type="button" class="flex items-center gap-3 px-2 py-1 rounded w-28 h-7 btn">
         <div class="rounded-full w-2 h-2" :class="connected? 'bg-green' : 'bg-red'"></div>
-        <span class="group-hover:hidden">{{ connected? 'Conectado' : 'Desconectado' }}</span>
-        <span class="hidden group-hover:block">{{ connected? 'Desconectar' : 'Conectar' }}</span>
+        {{ connected? 'Conectado' : 'Desconectado' }}
       </button>
       <div class="ml-auto flex gap-2">
         <AutodriveButton></AutodriveButton>
@@ -205,6 +209,9 @@ function fileUrl() {
         </button>
         <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
           <img class="dark:invert" src="/svg/next.svg" alt="right arrow">
+        </button>
+        <button @click="stopMusic()" title="Detener" :disabled="!connected" type="button" class="btn w-7 h-7">
+          <div class="rounded-full w-3 h-3 bg-black dark:invert"></div>
         </button>
       </div>
     </div>
