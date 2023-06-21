@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue'
 import { store } from '../store'
 
 function setAutodriveVerses(on: boolean) {
   store.autodriveVerses = on
+  localStorage.setItem('autodriveVerses', `${on}`)
 }
 </script>
 

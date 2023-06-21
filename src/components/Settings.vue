@@ -1,66 +1,26 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue'
 import { store, defaultValues } from '../store'
 
 const isOpen = ref(false)
-const onlyInstrumental: Ref<boolean> = ref(store.onlyInstrumental)
-const autoplayMusic: Ref<boolean> = ref(store.autoplayMusic)
-const splitVerses: Ref<boolean> = ref(store.splitVerses)
-const onSearchSwitchToHymnScene: Ref<boolean> = ref(store.onSearchSwitchToHymnScene)
-const onSearchHymnScene: Ref<string> = ref(store.onSearchHymnScene)
-const onMusicEndSwitchToScene: Ref<string> = ref(store.onMusicEndSwitchToScene)
-const obsWebsocketUrl: Ref<string> = ref(store.obsWebsocketUrl)
-const musicHostUrl: Ref<string> = ref(store.musicHostUrl)
-const hymnalApiUrl: Ref<string> = ref(store.hymnalApiUrl)
 
 function openModal() {
   isOpen.value = true
 }
-function closeModal() {
-  localStorage.setItem('onlyInstrumental', `${onlyInstrumental.value}`)
-  localStorage.setItem('autoplayMusic', `${autoplayMusic.value}`)
-  localStorage.setItem('autodriveVerses', `${store.autodriveVerses}`)
-  localStorage.setItem('splitVerses', `${splitVerses.value}`)
-  localStorage.setItem('onSearchSwitchToHymnScene', `${onSearchSwitchToHymnScene.value}`)
-  localStorage.setItem('onSearchHymnScene', `${onSearchHymnScene.value}`)
-  localStorage.setItem('onMusicEndSwitchToScene', onMusicEndSwitchToScene.value)
-  localStorage.setItem('obsWebsocketUrl', obsWebsocketUrl.value)
-  localStorage.setItem('musicHostUrl', musicHostUrl.value)
-  localStorage.setItem('hymnalApiUrl', hymnalApiUrl.value)
-  isOpen.value = false
-}
 
-function setOnlyInstrumental() {
-  store.onlyInstrumental = onlyInstrumental.value
-}
-function setAutoplayMusic() {
-  store.autoplayMusic = autoplayMusic.value
-}
-function setAutodriveVerses(event: Event) {
-  const on = (event.target as HTMLInputElement).checked
-  store.autodriveVerses = on
-}
-function setSplitVerses() {
-  store.splitVerses = splitVerses.value
-}
-function setOnSearchSwitchToHymnScene() {
-  store.onSearchSwitchToHymnScene = onSearchSwitchToHymnScene.value
-}
-function setOnSearchHymnScene() {
-  store.onSearchHymnScene = onSearchHymnScene.value
-}
-function setOnMusicEndSwitchToScene() {
-  store.onMusicEndSwitchToScene = onMusicEndSwitchToScene.value
-}
-function setObsWebsocketUrl() {
-  store.obsWebsocketUrl = obsWebsocketUrl.value
-}
-function setMusicHostUrl() {
-  store.musicHostUrl = musicHostUrl.value
-}
-function setHymnalApiUrl() {
-  store.hymnalApiUrl = hymnalApiUrl.value
+function closeModal() {
+  localStorage.setItem('onlyInstrumental', `${store.onlyInstrumental}`)
+  localStorage.setItem('autoplayMusic', `${store.autoplayMusic}`)
+  localStorage.setItem('autodriveVerses', `${store.autodriveVerses}`)
+  localStorage.setItem('splitVerses', `${store.splitVerses}`)
+  localStorage.setItem('onSearchSwitchToHymnScene', `${store.onSearchSwitchToHymnScene}`)
+  localStorage.setItem('onSearchHymnScene', `${store.onSearchHymnScene}`)
+  localStorage.setItem('onMusicEndSwitchToScene', store.onMusicEndSwitchToScene)
+  localStorage.setItem('obsWebsocketUrl', store.obsWebsocketUrl)
+  localStorage.setItem('musicHostUrl', store.musicHostUrl)
+  localStorage.setItem('hymnalApiUrl', store.hymnalApiUrl)
+  isOpen.value = false
 }
 </script>
 
@@ -81,29 +41,29 @@ function setHymnalApiUrl() {
               <h3 class="font-bold">Al buscar:</h3>
               <div class="flex items-center gap-1">
                 <label for="oi">Solo instrumental</label>
-                <input v-model="onlyInstrumental" @change="setOnlyInstrumental()" type="checkbox" id="oi" class="ml-auto">
+                <input v-model="store.onlyInstrumental" type="checkbox" id="oi" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
                 <label for="am">Autorreproducir música</label>
-                <input v-model="autoplayMusic" @change="setAutoplayMusic()" type="checkbox" id="am" class="ml-auto">
+                <input v-model="store.autoplayMusic" type="checkbox" id="am" class="ml-auto">
               </div>
               <div class="flex items-center gap-1">
                 <label for="av">Autoconducir versos</label>
-                <input v-model="store.autodriveVerses" @change="setAutodriveVerses($event)" type="checkbox" id="av" class="ml-auto">
+                <input v-model="store.autodriveVerses" type="checkbox" id="av" class="ml-auto">
               </div>
-              <div class="flex items-center gap-1 hidden">
+              <!-- <div class="flex items-center gap-1">
                 <label for="sv">Split verses (for long verses)</label>
-                <input v-model="splitVerses" @change="setSplitVerses()" type="checkbox" id="sv" class="ml-auto">
-              </div>
+                <input v-model="store.splitVerses" type="checkbox" id="sv" class="ml-auto">
+              </div> -->
               <div class="flex items-center gap-1">
                 <label for="sch">Cambiar a escena de himno</label>
-                <input v-model="onSearchSwitchToHymnScene" @change="setOnSearchSwitchToHymnScene()" type="checkbox" id="sch" class="ml-auto">
+                <input v-model="store.onSearchSwitchToHymnScene" type="checkbox" id="sch" class="ml-auto">
               </div>
               <div class="flex flex-col">
                 <label for="hs">Escena de himno</label>
-                <select v-model="onSearchHymnScene" @change="setOnSearchHymnScene()" class="input__text !px-1" id="hs">
+                <select v-model="store.onSearchHymnScene" class="input__text !px-1" id="hs">
                   <option value="">ninguno</option>
-                  <option class="hidden" :value="onSearchHymnScene">{{ onSearchHymnScene }}</option>
+                  <option class="hidden" :value="store.onSearchHymnScene">{{ store.onSearchHymnScene }}</option>
                   <option v-for="scene in store.sceneList" :value="scene.sceneName">{{ scene.sceneName }}</option>
                 </select>
               </div>
@@ -112,9 +72,9 @@ function setHymnalApiUrl() {
               <h3 class="font-bold">Al terminar la música:</h3>
               <div class="flex flex-col">
                 <label for="sc">Cambiar a escena</label>
-                <select v-model="onMusicEndSwitchToScene" @change="setOnMusicEndSwitchToScene()" class="input__text !px-1" id="sc">
+                <select v-model="store.onMusicEndSwitchToScene" class="input__text !px-1" id="sc">
                   <option value="">ninguno</option>
-                  <option class="hidden" :value="onMusicEndSwitchToScene">{{ onMusicEndSwitchToScene }}</option>
+                  <option class="hidden" :value="store.onMusicEndSwitchToScene">{{ store.onMusicEndSwitchToScene }}</option>
                   <option v-for="scene in store.sceneList" :value="scene.sceneName">{{ scene.sceneName }}</option>
                 </select>
               </div>  
@@ -123,15 +83,15 @@ function setHymnalApiUrl() {
               <h3 class="font-bold">Red:</h3>
               <div class="flex flex-col">
                 <label for="ow">Personalizar URL de OBS Websocket</label>
-                <input v-model="obsWebsocketUrl" @change="setObsWebsocketUrl()" type="text" class="input__text" id="ow" :placeholder="defaultValues.obsWebsocketUrl">
+                <input v-model="store.obsWebsocketUrl" type="text" class="input__text" id="ow" :placeholder="defaultValues.obsWebsocketUrl">
               </div>  
               <div class="flex flex-col">
                 <label for="mh">Personalizar URL de host de música</label>
-                <input v-model="musicHostUrl" @change="setMusicHostUrl()" type="text" class="input__text" id="mh" placeholder="default">
+                <input v-model="store.musicHostUrl" type="text" class="input__text" id="mh" placeholder="default">
               </div>  
               <div class="flex flex-col">
                 <label for="ha">Personalizar URL de API de himnario</label>
-                <input v-model="hymnalApiUrl" @change="setHymnalApiUrl()" type="text" class="input__text" id="ha" :placeholder="defaultValues.hymnalApiUrl">
+                <input v-model="store.hymnalApiUrl" type="text" class="input__text" id="ha" :placeholder="defaultValues.hymnalApiUrl">
               </div>  
             </div>
           </DialogDescription>
