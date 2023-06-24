@@ -43,7 +43,8 @@ function openModal() {
               <div>
                 <span class="font-bold">Notas de la versión</span>
                 <ul class="list-disc pl-6">
-                  <li>Ahora el idioma por defecto es el español</li>
+                  <li>Se añadió un acceso rápido para activar <b>Autoconducir</b> desde el panel principal</li>
+                  <li>Se añadió el botón <b>Detener</b> para detener la reproducción (y cambiar de escena)</li>
                 </ul>
               </div>
               <div>
