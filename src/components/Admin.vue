@@ -157,7 +157,7 @@ function setSourceVisibility(sourceName: string, visible: boolean) {
     })
 }
 
-function setSourceText(sourceName: string, text: string | undefined) {
+function setSourceText(sourceName: string, text: string = '') {
   obs
     .call('SetInputSettings', {
       inputName: sourceName,
