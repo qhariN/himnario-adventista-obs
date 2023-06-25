@@ -1,13 +1,10 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@headlessui/vue':
-    specifier: ^1.7.14
-    version: 1.7.14(vue@3.3.4)
   obs-websocket-js:
     specifier: ^5.0.3
     version: 5.0.3
@@ -277,15 +274,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /@headlessui/vue@1.7.14(vue@3.3.4):
-    resolution: {integrity: sha512-aL9U9Sa7wdOzlrfjx6EjMIYNRCma5mngWcWzQBcHFwznpRZ8g/QZ/AYFtRDrZZUw22Ttttja4D7ZRXFwhONewA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      vue: ^3.2.0
-    dependencies:
-      vue: 3.3.4
-    dev: false
 
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}

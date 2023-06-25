@@ -8,7 +8,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.14",
     "obs-websocket-js": "^5.0.3",
     "vue": "^3.3.4"
   },
