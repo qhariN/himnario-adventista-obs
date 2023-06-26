@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { store, defaultValues } from '../store'
+import BasicDialog from './BasicDialog.vue';
 
-const modal = ref<HTMLDialogElement | null>(null)
+const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
-function openModal() {
-  modal.value!.showModal()
-}
-
-function closeModal() {
+function closeDialog() {
   localStorage.setItem('onlyInstrumental', `${store.onlyInstrumental}`)
   localStorage.setItem('autoplayMusic', `${store.autoplayMusic}`)
   localStorage.setItem('autodriveVerses', `${store.autodriveVerses}`)
@@ -19,18 +16,15 @@ function closeModal() {
   localStorage.setItem('obsWebsocketUrl', store.obsWebsocketUrl)
   localStorage.setItem('musicHostUrl', store.musicHostUrl)
   localStorage.setItem('hymnalApiUrl', store.hymnalApiUrl)
-  modal.value!.close()
+  dialog.value!.close()
 }
 </script>
 
 <template>
-  <button @click="openModal" title="Configuración" type="button" class="btn w-7 h-7 ml-auto">
+  <button @click="dialog!.open" title="Configuración" type="button" class="btn w-7 h-7 ml-auto">
     <img class="dark:invert" src="/svg/gear.svg" alt="gear">
   </button>
-  <dialog ref="modal" class="backdrop:bg-black backdrop:bg-opacity-50 w-full max-w-[270px] rounded-lg bg-light-background dark:bg-dark-background text-black dark:text-white p-5 align-middle text-base">
-    <h1 class="font-bold text-center leading-none">
-      Configuración
-    </h1>
+  <BasicDialog ref="dialog" title="Configuración">
     <div class="text-sm my-4">
       <div class="mb-2">
         <h3 class="font-bold">Al buscar:</h3>
@@ -90,10 +84,10 @@ function closeModal() {
         </div>  
       </div>
     </div>
-    <div class="flex">
-      <button type="button" class="btn ml-auto" @click="closeModal">
+    <template v-slot:footer>
+      <button type="button" class="btn ml-auto" @click="closeDialog">
         Guardar y cerrar
       </button>
-    </div>
-  </dialog>
+    </template>
+  </BasicDialog>
 </template>

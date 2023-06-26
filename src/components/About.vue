@@ -2,34 +2,24 @@
 import { onMounted, ref } from 'vue'
 import { store } from '../store'
 import packageJson from '../../package.json'
+import BasicDialog from './BasicDialog.vue'
 
-const modal = ref<HTMLDialogElement | null>(null)
-
-function openModal() {
-  modal.value!.showModal()
-}
-
-function closeModal() {
-  modal.value!.close()
-}
+const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
 onMounted(() => {
   if (store.isFirstTimeInVersion) {
     store.isFirstTimeInVersion = false
     localStorage.setItem('version', packageJson.version)
-    openModal()
+    dialog.value!.open()
   }
 })
 </script>
 
 <template>
-  <button @click="openModal" title="Acerca de" type="button" class="btn w-7 h-7">
+  <button @click="dialog!.open" title="Acerca de" type="button" class="btn w-7 h-7">
     <img class="dark:invert" src="/svg/about.svg" alt="letter i">
   </button>
-  <dialog ref="modal" class="backdrop:bg-black backdrop:bg-opacity-50 w-full max-w-[270px] rounded-lg bg-light-background dark:bg-dark-background text-black dark:text-white p-5 align-middle text-base">
-    <h1 class="font-bold text-center leading-none">
-      Himnario Adventista Broadcast
-    </h1>
+  <BasicDialog ref="dialog" title="Himnario Adventista Broadcast">
     <div class="flex flex-col gap-1 text-sm my-4">
       <div>
         <span class="font-bold">Versión</span>
@@ -55,12 +45,12 @@ onMounted(() => {
         <p>MIT License</p>
       </div>
     </div>
-    <div class="flex">
-      <button type="button" class="btn ml-auto" @click="closeModal">
+    <template v-slot:footer>
+      <button type="button" class="btn ml-auto" @click="dialog!.close">
         Cerrar
       </button>
-    </div>
-  </dialog>
+    </template>
+  </BasicDialog>
 </template>
 
 <style scoped>
