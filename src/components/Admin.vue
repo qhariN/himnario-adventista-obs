@@ -20,10 +20,10 @@ onMounted(() => {
   player.value!.ontimeupdate = handleMusicTimestamp
 })
 
-watch(hymnIndex, index => {
+watch(hymnIndex, async index => {
   if (index > 0) {
-    showVerse(index - 1)
-    setCurrentScene(store.onSearchHymnScene)
+    await showVerse(index - 1)
+    await setCurrentScene(store.onSearchHymnScene)
   }
 })
 
@@ -43,51 +43,40 @@ function disconnectObs() {
   connected.value = false
 }
 
-function getScenes() {
-  obs
-    .call('GetSceneList')
-    .then(({ scenes }) => {
-      store.sceneList = scenes
-    })
+async function getScenes() {
+  const { scenes } = await obs.call('GetSceneList')
+  store.sceneList = scenes
 }
 
-function getSceneItems(sceneName: string) {
-  obs
-    .call('GetSceneItemList', { sceneName })
-    .then(async ({ sceneItems }) => {
-      // Get group scene items
-      const groupSceneItems = [] as any[]
-      for (const item of sceneItems) {
-        if (!item.isGroup) continue
-        const { sceneItems } = await obs.call('GetGroupSceneItemList', {
-          sceneName: item.sourceName as string
-        })
-        sceneItems.map(i => i.groupName = item.sourceName)
-        groupSceneItems.push(...sceneItems)
-      }
-      sceneItems = sceneItems.filter(item => !item.isGroup)
-      sceneItems.push(...groupSceneItems)
-      // Set source list
-      store.sourceList = sceneItems
-    }).catch(error => {
-      alert('Error al obtener la lista de escenas')
+async function getSceneItems(sceneName: string) {
+  let { sceneItems } = await obs.call('GetSceneItemList', { sceneName })
+  // Get group scene items
+  const groupSceneItems = [] as any[]
+  for (const item of sceneItems) {
+    if (!item.isGroup) continue
+    const { sceneItems } = await obs.call('GetGroupSceneItemList', {
+      sceneName: item.sourceName as string
     })
+    sceneItems.map(i => i.groupName = item.sourceName)
+    groupSceneItems.push(...sceneItems)
+  }
+  sceneItems = sceneItems.filter(item => !item.isGroup)
+  sceneItems.push(...groupSceneItems)
+  // Set source list
+  store.sourceList = sceneItems
 }
 
-function searchHymn() {
+async function searchHymn() {
   if (!hymnNumber.value) {
     alert('Ingrese un número de himno')
     return
   }
-  sHymn.byNumber(+hymnNumber.value).then(hymn => {
-    hymnData.value = hymn
-    hymnIndex.value = 0
-    player.value!.load()
-    if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
-    if (store.autoplayMusic) player.value!.play()
-  }).catch(err => {
-    alert(err)
-  })
+  const hymn = await sHymn.byNumber(+hymnNumber.value)
+  hymnData.value = hymn
+  hymnIndex.value = 0
+  player.value!.load()
+  if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
+  if (store.autoplayMusic) player.value!.play()
 }
 
 function handleMusicTimestamp() {
@@ -106,10 +95,10 @@ function handleMusicEnd() {
   if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
 }
 
-function goTitle() {
+async function goTitle() {
   hymnIndex.value = 0
-  showTitle()
-  setCurrentScene(store.onSearchHymnScene)
+  await showTitle()
+  await setCurrentScene(store.onSearchHymnScene)
 }
 
 function stopMusic() {
@@ -117,57 +106,45 @@ function stopMusic() {
   if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
 }
 
-function showTitle() {
-  setSourceVisibility('hymn_number', true)
-  setSourceVisibility('hymn_title', true)
-  setSourceVisibility('verse_number', false)
-  setSourceVisibility('verse_content', false)
-  setSourceText('hymn_number', hymnData.value?.hymn.number.toString())
-  setSourceText('hymn_title', hymnData.value?.hymn.title)
+async function showTitle() {
+  await setSourceVisibility('hymn_number', true)
+  await setSourceVisibility('hymn_title', true)
+  await setSourceVisibility('verse_number', false)
+  await setSourceVisibility('verse_content', false)
+  await setSourceText('hymn_number', hymnData.value?.hymn.number.toString())
+  await setSourceText('hymn_title', hymnData.value?.hymn.title)
 }
 
-function showVerse(index: number) {
-  setSourceVisibility('hymn_number', false)
-  setSourceVisibility('hymn_title', false)
-  setSourceVisibility('verse_number', true)
-  setSourceVisibility('verse_content', true)
+async function showVerse(index: number) {
+  await setSourceVisibility('hymn_number', false)
+  await setSourceVisibility('hymn_title', false)
+  await setSourceVisibility('verse_number', true)
+  await setSourceVisibility('verse_content', true)
   const verseNumber = hymnData.value?.history[index].verse.number
-  setSourceText('verse_number', verseNumber === 0 ? 'Coro' : String(verseNumber))
-  setSourceText('verse_content', hymnData.value?.history[index].verse.content)
+  await setSourceText('verse_number', verseNumber === 0 ? 'Coro' : String(verseNumber))
+  await setSourceText('verse_content', hymnData.value?.history[index].verse.content)
 }
 
-function setCurrentScene(sceneName: string) {
-  obs
-    .call('SetCurrentProgramScene', { sceneName })
-    .catch(error => {
-      alert(`Error al cambiar de escena: ${error.error}`)
-    })
+async function setCurrentScene(sceneName: string) {
+  await obs.call('SetCurrentProgramScene', { sceneName })
 }
 
-function setSourceVisibility(sourceName: string, visible: boolean) {
+async function setSourceVisibility(sourceName: string, visible: boolean) {
   const sceneItem = store.sourceList.find(s => s.sourceName === sourceName)
-  obs
-    .call('SetSceneItemEnabled', {
-      sceneName: sceneItem.groupName?? store.onSearchHymnScene,
-      sceneItemId: sceneItem.sceneItemId,
-      sceneItemEnabled: visible
-    })
-    .catch(error => {
-      alert(`Error al cambiar la visibilidad de la fuente: ${error.error}`)
-    })
+  await obs.call('SetSceneItemEnabled', {
+    sceneName: sceneItem.groupName?? store.onSearchHymnScene,
+    sceneItemId: sceneItem.sceneItemId,
+    sceneItemEnabled: visible
+  })
 }
 
-function setSourceText(sourceName: string, text: string = '') {
-  obs
-    .call('SetInputSettings', {
-      inputName: sourceName,
-      inputSettings: {
-        text: text
-      }
-    })
-    .catch(error => {
-      alert(`Error al cambiar el texto de la fuente: ${error.error}`)
-    })
+async function setSourceText(sourceName: string, text: string = '') {
+  await obs.call('SetInputSettings', {
+    inputName: sourceName,
+    inputSettings: {
+      text: text
+    }
+  })
 }
 
 function fileUrl() {
