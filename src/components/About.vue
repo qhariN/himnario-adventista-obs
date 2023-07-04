@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { store } from '../store'
 import packageJson from '../../package.json'
 import BasicDialog from './BasicDialog.vue'
+import AboutIcon from './icons/AboutIcon.vue'
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
@@ -17,7 +18,7 @@ onMounted(() => {
 
 <template>
   <button @click="dialog!.open" title="Acerca de" type="button" class="btn w-7 h-7">
-    <img class="dark:invert" src="/svg/about.svg" alt="letter i">
+    <AboutIcon />
   </button>
   <BasicDialog ref="dialog" title="Himnario Adventista Broadcast">
     <div class="flex flex-col gap-1 text-sm my-4">

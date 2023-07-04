@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { store, defaultValues } from '../store'
-import BasicDialog from './BasicDialog.vue';
+import BasicDialog from './BasicDialog.vue'
+import GearIcon from './icons/GearIcon.vue'
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
@@ -22,7 +23,7 @@ function closeDialog() {
 
 <template>
   <button @click="dialog!.open" title="Configuración" type="button" class="btn w-7 h-7 ml-auto">
-    <img class="dark:invert" src="/svg/gear.svg" alt="gear">
+    <GearIcon />
   </button>
   <BasicDialog ref="dialog" title="Configuración">
     <div class="text-sm my-4">

@@ -7,6 +7,10 @@ import { defaultValues, store } from '../store'
 import Settings from './Settings.vue'
 import About from './About.vue'
 import AutodriveButton from './AutodriveButton.vue'
+import HomeIcon from './icons/HomeIcon.vue'
+import NextIcon from './icons/NextIcon.vue'
+import PreviousIcon from './icons/PreviousIcon.vue'
+import SearchIcon from './icons/SearchIcon.vue'
 
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
@@ -169,26 +173,26 @@ function fileUrl() {
         <About></About>
       </div>
     </div>
-    <div class="flex items-center gap-6">
-      <form class="flex gap-2" onsubmit="return false">
-        <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number">
-        <button @click="searchHymn()" title="Buscar" type="submit" class="btn w-8 h-8">
-          <img class="dark:invert" src="/svg/search.svg" alt="search">
-        </button>
-      </form>
+    <form class="flex gap-2" onsubmit="return false">
+      <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number">
+      <button @click="searchHymn()" title="Buscar" type="submit" class="btn w-8 h-8">
+        <SearchIcon />
+      </button>
+    </form>
+    <div class="space-y-2">
+      <p>Controles</p>
       <div class="flex items-center gap-2">
-        <span>Verso:</span>
         <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-7 h-7">
-          <img class="dark:invert" src="/svg/home.svg" alt="home">
+          <HomeIcon />
         </button>
         <button @click="hymnIndex--" title="Verso anterior" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-7 h-7">
-          <img class="dark:invert" src="/svg/previous.svg" alt="left arrow">
+          <PreviousIcon />
         </button>
         <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
-          <img class="dark:invert" src="/svg/next.svg" alt="right arrow">
+          <NextIcon />
         </button>
         <button @click="stopMusic()" title="Detener" :disabled="!connected" type="button" class="btn w-7 h-7">
-          <div class="rounded-full w-3 h-3 bg-black dark:invert"></div>
+          <div class="rounded-full w-3 h-3 bg-[currentcolor]"></div>
         </button>
       </div>
     </div>
