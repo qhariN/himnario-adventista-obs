@@ -11,6 +11,7 @@ import HomeIcon from './icons/HomeIcon.vue'
 import NextIcon from './icons/NextIcon.vue'
 import PreviousIcon from './icons/PreviousIcon.vue'
 import SearchIcon from './icons/SearchIcon.vue'
+import ListHymns from './ListHymns.vue'
 
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
@@ -70,12 +71,12 @@ async function getSceneItems(sceneName: string) {
   store.sourceList = sceneItems
 }
 
-async function searchHymn() {
-  if (!hymnNumber.value) {
+async function searchHymn(hymnNumber: number | string) {
+  if (!hymnNumber) {
     alert('Ingrese un número de himno')
     return
   }
-  const hymn = await sHymn.byNumber(+hymnNumber.value)
+  const hymn = await sHymn.byNumber(+hymnNumber)
   hymnData.value = hymn
   hymnIndex.value = 0
   player.value!.load()
@@ -175,9 +176,10 @@ function fileUrl() {
     </div>
     <form class="flex gap-2" onsubmit="return false">
       <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number">
-      <button @click="searchHymn()" title="Buscar" type="submit" class="btn w-8 h-8">
+      <button @click="searchHymn(hymnNumber)" title="Buscar" type="submit" class="btn w-8 h-8">
         <SearchIcon />
       </button>
+      <ListHymns @on-play-hymn="searchHymn($event)" />
     </form>
     <div class="space-y-2">
       <p>Controles</p>

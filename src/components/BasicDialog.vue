@@ -25,7 +25,7 @@ function close() {
 </script>
 
 <template>
-  <dialog ref="dialog" class="backdrop:bg-black backdrop:bg-opacity-50 w-full max-w-[270px] rounded-lg bg-light-background dark:bg-dark-background text-black dark:text-white p-5 align-middle text-base">
+  <dialog ref="dialog" class="backdrop:bg-black backdrop:bg-opacity-50 w-full max-w-[280px] rounded-lg bg-light-background dark:bg-dark-background text-black dark:text-white px-4 py-5 align-middle text-base">
     <h1 class="font-bold text-center leading-none">
       {{ title }}
     </h1>
