@@ -27,6 +27,9 @@ module.exports = {
           bg: "#3C404B",
           hover: "#4F535E",
           active: "#191B26",
+        },
+        input: {
+          bg: "#454A56",
         }
       }
     }

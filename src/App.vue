@@ -11,6 +11,18 @@ import Admin from './components/Admin.vue'
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  select {
+    @apply border-white dark:border-dark-input-bg border-r-8;
+  }
+  input[type="checkbox"] {
+    @apply dark:accent-dark-input-bg;
+  }
+  audio::-webkit-media-controls-panel {
+    @apply dark:bg-dark-button-bg;
+  }
+}
+
 @layer components {
   .btn {
     @apply rounded px-2 py-1;
@@ -19,7 +31,11 @@ import Admin from './components/Admin.vue'
     @apply disabled:opacity-50 disabled:pointer-events-none;
   }
   .input__text {
-    @apply text-sm dark:text-black rounded px-2 py-1 outline-none;
+    @apply text-sm rounded px-2 py-1 outline-none dark:bg-dark-input-bg;
   }
+}
+
+:root {
+  color-scheme: light dark;
 }
 </style>
