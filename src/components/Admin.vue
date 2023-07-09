@@ -180,7 +180,7 @@ function fadeOutVolume(delay: number) {
 </script>
 
 <template>
-  <main class="flex flex-col gap-2 px-3 py-2 text-xs">
+  <main class="flex flex-col gap-4 px-3 py-2 text-xs">
     <div class="flex gap-2">
       <button @click="connected? disconnectObs() : connectObs()" :title="connected? 'Desconectar' : 'Conectar'" type="button" class="flex items-center gap-3 px-2 py-1 rounded w-28 h-7 btn">
         <div class="rounded-full w-2 h-2" :class="connected? 'bg-green' : 'bg-red'"></div>
@@ -198,24 +198,19 @@ function fadeOutVolume(delay: number) {
         <SearchIcon />
       </button>
       <ListHymns @on-play-hymn="searchHymn($event)" />
+      <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-8 h-8 ms-auto">
+        <HomeIcon />
+      </button>
+      <button @click="hymnIndex--" title="Verso anterior" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-8 h-8">
+        <PreviousIcon />
+      </button>
+      <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-8 h-8">
+        <NextIcon />
+      </button>
+      <button @click="stopMusic()" title="Detener" :disabled="!connected" type="button" class="btn w-8 h-8">
+        <div class="rounded-full w-4 h-4 bg-[currentcolor]"></div>
+      </button>
     </form>
-    <div class="space-y-2">
-      <p>Controles</p>
-      <div class="flex items-center gap-2">
-        <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-7 h-7">
-          <HomeIcon />
-        </button>
-        <button @click="hymnIndex--" title="Verso anterior" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-7 h-7">
-          <PreviousIcon />
-        </button>
-        <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
-          <NextIcon />
-        </button>
-        <button @click="stopMusic()" title="Detener" type="button" class="btn w-7 h-7">
-          <div class="rounded-full w-3 h-3 bg-[currentcolor]"></div>
-        </button>
-      </div>
-    </div>
     <div class="space-y-2">
       <p>
         Reproduciendo: <span class="text-muted">{{ hymnData?.hymn.title }}</span>

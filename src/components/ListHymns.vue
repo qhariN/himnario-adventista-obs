@@ -10,18 +10,32 @@ const emit = defineEmits(['onPlayHymn'])
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 const hymns = ref<HymnList[]>([])
+const filteredHymns = ref<HymnList[]>([])
+const search = ref('')
 
 onMounted(() => {
   list()
 })
 
 async function list() {
-  hymns.value = await sHymn.all()
+  const data = await sHymn.all()
+  hymns.value = filteredHymns.value = data
 }
 
 function searchHymn(hymnNumber: number) {
   emit('onPlayHymn', hymnNumber)
   dialog.value!.close()
+}
+
+function filterHymns() {
+  if (search.value.length > 0) {
+    filteredHymns.value = hymns.value.filter(hymn => (
+      hymn.number.toString().includes(search.value) ||
+      hymn.title.toLowerCase().includes(search.value.toLowerCase())
+    ))
+  } else {
+    filteredHymns.value = hymns.value
+  }
 }
 </script>
 
@@ -29,9 +43,13 @@ function searchHymn(hymnNumber: number) {
   <button @click="dialog!.open" title="Lista de himnos" type="button" class="btn w-8 h-8">
     <ListIcon />
   </button>
-  <BasicDialog ref="dialog" title="Himnario">
+  <BasicDialog ref="dialog" title="Himnario" class="h-full">
     <div class="text-sm my-4 space-y-1">
-      <button @click="searchHymn(hymn.number)" v-for="hymn in hymns" :key="hymn.id" type="button" class="bg-light-button-bg dark:bg-dark-button-bg hover:bg-light-button-hover dark:hover:bg-dark-button-hover w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background">
+      <div class="flex flex-col mb-3">
+        <label for="search">Buscar himno</label>
+        <input v-model="search" @input="filterHymns" type="search" class="input__text" id="search">
+      </div>
+      <button @click="searchHymn(hymn.number)" v-for="hymn in filteredHymns" :key="hymn.id" type="button" class="bg-light-button-bg dark:bg-dark-button-bg hover:bg-light-button-hover dark:hover:bg-dark-button-hover w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background">
         <div class="px-2 py-1">
           {{ String(hymn.number).padStart(3, '0') }}
         </div>
