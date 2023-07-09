@@ -106,9 +106,12 @@ async function goTitle() {
   await setCurrentScene(store.onSearchHymnScene)
 }
 
-function stopMusic() {
-  player.value!.pause()
+async function stopMusic() {
+  const delay = 2000
   if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
+  await fadeOutVolume(delay)
+  player.value!.pause()
+  player.value!.volume = 1
 }
 
 async function showTitle() {
@@ -159,6 +162,21 @@ function fileUrl() {
   const hostUrl = `${store.musicHostUrl}/${store.onlyInstrumental? 'instrumental' : 'cantado'}/${encodeURIComponent(hymnData.value!.hymn.mp3Filename)}`
   return store.musicHostUrl? hostUrl : hymnUrl
 }
+
+function fadeOutVolume(delay: number) {
+  const originalVolume = player.value!.volume
+  return new Promise<void>(resolve => {
+    const interval = setInterval(() => {
+      if (player.value!.volume <= 0.01) {
+        player.value!.volume = 0
+        clearInterval(interval)
+        resolve()
+      } else {
+        player.value!.volume -= 0.01
+      }
+    }, delay / (originalVolume / 0.01))
+  })
+}
 </script>
 
 <template>
@@ -193,7 +211,7 @@ function fileUrl() {
         <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-7 h-7">
           <NextIcon />
         </button>
-        <button @click="stopMusic()" title="Detener" :disabled="!connected" type="button" class="btn w-7 h-7">
+        <button @click="stopMusic()" title="Detener" type="button" class="btn w-7 h-7">
           <div class="rounded-full w-3 h-3 bg-[currentcolor]"></div>
         </button>
       </div>

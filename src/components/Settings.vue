@@ -74,15 +74,15 @@ function closeDialog() {
         <div class="flex flex-col">
           <label for="ow">URL de OBS Websocket</label>
           <input v-model="store.obsWebsocketUrl" type="text" class="input__text" id="ow" :placeholder="defaultValues.obsWebsocketUrl">
-        </div>  
+        </div>
         <div class="flex flex-col">
           <label for="mh">URL de host de música</label>
           <input v-model="store.musicHostUrl" type="text" class="input__text" id="mh" placeholder="default">
-        </div>  
+        </div>
         <div class="flex flex-col">
           <label for="ha">URL de API de himnario</label>
           <input v-model="store.hymnalApiUrl" type="text" class="input__text" id="ha" :placeholder="defaultValues.hymnalApiUrl">
-        </div>  
+        </div>
       </div>
     </div>
     <template v-slot:footer>
