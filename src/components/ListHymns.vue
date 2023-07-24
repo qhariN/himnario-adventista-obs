@@ -44,7 +44,7 @@ function filterHymns() {
     <ListIcon />
   </button>
   <BasicDialog ref="dialog" title="Himnario" class="h-full">
-    <div class="text-sm my-4 space-y-1">
+    <div class="space-y-1">
       <div class="flex flex-col mb-3">
         <label for="search">Buscar himno</label>
         <input v-model="search" @input="filterHymns" type="search" class="input__text" id="search">
@@ -61,10 +61,5 @@ function filterHymns() {
         </div>
       </button>
     </div>
-    <template v-slot:footer>
-      <button type="button" class="btn ml-auto" @click="dialog!.close">
-        Cerrar
-      </button>
-    </template>
   </BasicDialog>
 </template>

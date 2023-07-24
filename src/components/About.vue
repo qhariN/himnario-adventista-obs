@@ -21,7 +21,7 @@ onMounted(() => {
     <AboutIcon />
   </button>
   <BasicDialog ref="dialog" title="Himnario Adventista Broadcast">
-    <div class="flex flex-col gap-1 text-sm my-4">
+    <div class="flex flex-col gap-1">
       <div>
         <span class="font-bold">Versión</span>
         <p>{{ packageJson.version }}</p>
@@ -46,11 +46,6 @@ onMounted(() => {
         <p>MIT License</p>
       </div>
     </div>
-    <template v-slot:footer>
-      <button type="button" class="btn ml-auto" @click="dialog!.close">
-        Cerrar
-      </button>
-    </template>
   </BasicDialog>
 </template>
 

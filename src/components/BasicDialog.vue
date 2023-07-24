@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import CloseIcon from './icons/CloseIcon.vue'
 
 defineProps({
   title: {
@@ -25,13 +26,20 @@ function close() {
 </script>
 
 <template>
-  <dialog ref="dialog" class="backdrop:bg-black backdrop:bg-opacity-50 w-full max-w-[280px] rounded-lg bg-light-background dark:bg-dark-background text-black dark:text-white px-4 py-5 align-middle text-base">
-    <h1 class="font-bold text-center leading-none">
-      {{ title }}
-    </h1>
-    <slot></slot>
-    <div class="flex">
-      <slot name="footer"></slot>
+  <dialog ref="dialog" class="backdrop:bg-black backdrop:bg-opacity-50 w-full max-w-[280px] rounded-lg bg-light-background dark:bg-dark-background text-black dark:text-white p-0">
+    <div class="sticky top-0 inline-flex items-center bg-dark-background border-b border-dark-button-hover p-4 py-3 w-full text-base">
+      <h1 class="font-bold leading-none">
+        {{ title }}
+      </h1>
+      <button @click="close" title="Cerrar" type="button" class="btn w-7 h-7 flex-shrink-0 ms-auto">
+        <CloseIcon />
+      </button>
+    </div>
+    <div class="p-4 py-3 text-sm">
+      <slot></slot>
+      <div class="flex text-base">
+        <slot name="footer"></slot>
+      </div>
     </div>
   </dialog>
 </template>

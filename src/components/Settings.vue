@@ -26,7 +26,7 @@ function closeDialog() {
     <GearIcon />
   </button>
   <BasicDialog ref="dialog" title="Configuración">
-    <div class="text-sm my-4">
+    <div class="text-sm">
       <div class="mb-2">
         <h3 class="font-bold">Al buscar:</h3>
         <div class="flex items-center gap-1">
@@ -69,7 +69,7 @@ function closeDialog() {
           </select>
         </div>  
       </div>
-      <div class="mb-2">
+      <div class="mb-3">
         <h3 class="font-bold">Red:</h3>
         <div class="flex flex-col">
           <label for="ow">URL de OBS Websocket</label>
