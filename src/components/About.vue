@@ -29,8 +29,12 @@ onMounted(() => {
       <div>
         <span class="font-bold">Notas de la versión</span>
         <ul class="list-disc pl-6">
-          <li>Se añadió un acceso rápido para activar <b>Autoconducir</b> desde el panel principal</li>
-          <li>Se añadió el botón <b>Detener</b> para detener la reproducción (y cambiar de escena)</li>
+          <li>Ahora puedes buscar himnos por número o nombre en la <b>Lista de himnos</b></li>
+          <li>El botón <b>Detener</b> ahora reduce el volumen lentamente antes de detener la reproducción</li>
+          <li>Se mejoró el uso del plugin <b>obs-websocket</b> para que todas las transiciones se completen correctamente</li>
+          <li>Se optimizaron todos los iconos</li>
+          <li>Se mejoró el tema claro/oscuro</li>
+          <li>Se mejoraron las ventanas</li>
         </ul>
       </div>
       <div>
