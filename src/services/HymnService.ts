@@ -1,4 +1,4 @@
-import { HymnHistory, HymnList } from '../models/hymn'
+import type { HymnHistory, HymnList } from '../models/hymn'
 import { defaultValues, store } from '../store'
 import Fetch from './api'
 

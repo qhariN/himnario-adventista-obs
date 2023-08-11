@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, Ref, ref, toRaw, watch } from 'vue'
+import { onMounted, type Ref, ref, toRaw, watch } from 'vue'
 import ObsWebSocket from 'obs-websocket-js'
 import sHymn from '../services/HymnService'
-import { HymnHistory } from '../models/hymn'
+import type { HymnHistory } from '../models/hymn'
 import { defaultValues, store } from '../store'
-import Settings from './Settings.vue'
-import About from './About.vue'
+import SettingsPanel from './SettingsPanel.vue'
+import AboutApp from './AboutApp.vue'
 import AutodriveButton from './AutodriveButton.vue'
 import HomeIcon from './icons/HomeIcon.vue'
 import NextIcon from './icons/NextIcon.vue'
@@ -187,9 +187,9 @@ function fadeOutVolume(delay: number) {
         {{ connected? 'Conectado' : 'Desconectado' }}
       </button>
       <div class="ml-auto flex gap-2">
-        <AutodriveButton></AutodriveButton>
-        <Settings></Settings>
-        <About></About>
+        <AutodriveButton />
+        <SettingsPanel />
+        <AboutApp />
       </div>
     </div>
     <form class="flex gap-2" onsubmit="return false">

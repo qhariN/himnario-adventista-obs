@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Admin from './components/Admin.vue'
+import AdminPanel from './components/AdminPanel.vue'
 </script>
 
 <template>
-  <Admin />
+  <AdminPanel />
 </template>
 
 <style>

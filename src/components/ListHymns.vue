@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import BasicDialog from './BasicDialog.vue'
 import sHymn from '../services/HymnService'
 import ListIcon from './icons/ListIcon.vue'
-import { HymnList } from '../models/hymn'
+import type { HymnList } from '../models/hymn'
 import PlayIcon from './icons/PlayIcon.vue'
 
 const emit = defineEmits(['onPlayHymn'])

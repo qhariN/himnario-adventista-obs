@@ -54,7 +54,7 @@ function closeDialog() {
           <select v-model="store.onSearchHymnScene" class="input__text" id="hs">
             <option value="">ninguno</option>
             <option class="hidden" :value="store.onSearchHymnScene">{{ store.onSearchHymnScene }}</option>
-            <option v-for="scene in store.sceneList" :value="scene.sceneName">{{ scene.sceneName }}</option>
+            <option v-for="(scene, index) in store.sceneList" :key="index" :value="scene.sceneName">{{ scene.sceneName }}</option>
           </select>
         </div>
       </div>
@@ -65,7 +65,7 @@ function closeDialog() {
           <select v-model="store.onMusicEndSwitchToScene" class="input__text" id="sc">
             <option value="">ninguno</option>
             <option class="hidden" :value="store.onMusicEndSwitchToScene">{{ store.onMusicEndSwitchToScene }}</option>
-            <option v-for="scene in store.sceneList" :value="scene.sceneName">{{ scene.sceneName }}</option>
+            <option v-for="(scene, index) in store.sceneList" :key="index" :value="scene.sceneName">{{ scene.sceneName }}</option>
           </select>
         </div>  
       </div>
