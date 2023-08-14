@@ -11,7 +11,7 @@ import HomeIcon from './icons/HomeIcon.vue'
 import NextIcon from './icons/NextIcon.vue'
 import PreviousIcon from './icons/PreviousIcon.vue'
 import SearchIcon from './icons/SearchIcon.vue'
-import ListHymns from './ListHymns.vue'
+import HymnSearcher from './HymnSearcher.vue'
 
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
@@ -197,7 +197,7 @@ function fadeOutVolume(delay: number) {
       <button @click="searchHymn(hymnNumber)" title="Buscar" type="submit" class="btn w-8 h-8">
         <SearchIcon />
       </button>
-      <ListHymns @on-play-hymn="searchHymn($event)" />
+      <HymnSearcher @on-play-hymn="searchHymn($event)" />
       <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-8 h-8 ms-auto">
         <HomeIcon />
       </button>

@@ -29,13 +29,22 @@ function searchHymn(hymnNumber: number) {
 
 function filterHymns() {
   if (search.value.length > 0) {
-    filteredHymns.value = hymns.value.filter(hymn => (
-      hymn.number.toString().includes(search.value) ||
-      hymn.title.toLowerCase().includes(search.value.toLowerCase())
-    ))
+    filteredHymns.value = hymns.value.filter(hymn => {
+      const parsedNumber = String(hymn.number)
+      const parsedTitle = normalizeWord(hymn.title.toLowerCase())
+      const parsedSearch = normalizeWord(search.value.toLowerCase())
+      return parsedNumber.includes(parsedSearch) || parsedTitle.includes(parsedSearch)
+    })
   } else {
     filteredHymns.value = hymns.value
   }
+}
+
+function normalizeWord(word: string) {
+  return word
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .normalize('NFC')
 }
 </script>
 
@@ -47,9 +56,9 @@ function filterHymns() {
     <div class="space-y-1">
       <div class="flex flex-col mb-3">
         <label for="search">Buscar himno</label>
-        <input v-model="search" @input="filterHymns" type="search" class="input__text" id="search">
+        <input v-model="search" @input="filterHymns" type="search" class="input__text" id="search" data-test="search-hymn" />
       </div>
-      <button @click="searchHymn(hymn.number)" v-for="hymn in filteredHymns" :key="hymn.id" type="button" class="bg-light-button-bg dark:bg-dark-button-bg hover:bg-light-button-hover dark:hover:bg-dark-button-hover w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background">
+      <button @click="searchHymn(hymn.number)" v-for="hymn in filteredHymns" :key="hymn.id" type="button" class="bg-light-button-bg dark:bg-dark-button-bg hover:bg-light-button-hover dark:hover:bg-dark-button-hover w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background" data-test="hymn-item">
         <div class="px-2 py-1">
           {{ String(hymn.number).padStart(3, '0') }}
         </div>
