@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, type Ref, ref, toRaw, watch } from 'vue'
-import ObsWebSocket from 'obs-websocket-js'
-import sHymn from '../services/HymnService'
-import type { HymnSequence } from '../models/hymn'
-import { defaultValues, store } from '../store'
+import { store } from '@/store'
+import { useObs } from '@/composables/obs'
+import type { HymnSequence } from '@/models/hymn'
+import sHymn from '@/services/HymnService'
 import SettingsPanel from './SettingsPanel.vue'
 import AboutApp from './AboutApp.vue'
 import AutodriveButton from './AutodriveButton.vue'
@@ -13,8 +13,15 @@ import PreviousIcon from './icons/PreviousIcon.vue'
 import SearchIcon from './icons/SearchIcon.vue'
 import HymnSearcher from './HymnSearcher.vue'
 
-const obs = new ObsWebSocket()
-const connected: Ref<boolean> = ref(false)
+const {
+  connected,
+  connect,
+  disconnect,
+  setCurrentScene,
+  setSourceVisibility,
+  setSourceText
+} = useObs()
+
 const hymnNumber: Ref<number | string> = ref('')
 const hymnData: Ref<HymnSequence | undefined> = ref(void(0))
 const hymnIndex: Ref<number> = ref(0)
@@ -31,45 +38,6 @@ watch(hymnIndex, async index => {
     await setCurrentScene(store.onSearchHymnScene)
   }
 })
-
-function connectObs() {
-  const url = `ws://${store.obsWebsocketUrl || defaultValues.obsWebsocketUrl}`
-  obs.connect(url).then(() => {
-    connected.value = true
-    getScenes()
-    getSceneItems(store.onSearchHymnScene)
-  }).catch(error => {
-    alert(`Conexión fallida: ${error.error}`)
-  })
-}
-
-function disconnectObs() {
-  obs.disconnect()
-  connected.value = false
-}
-
-async function getScenes() {
-  const { scenes } = await obs.call('GetSceneList')
-  store.sceneList = scenes
-}
-
-async function getSceneItems(sceneName: string) {
-  let { sceneItems } = await obs.call('GetSceneItemList', { sceneName })
-  // Get group scene items
-  const groupSceneItems = [] as any[]
-  for (const item of sceneItems) {
-    if (!item.isGroup) continue
-    const { sceneItems } = await obs.call('GetGroupSceneItemList', {
-      sceneName: item.sourceName as string
-    })
-    sceneItems.map(i => i.groupName = item.sourceName)
-    groupSceneItems.push(...sceneItems)
-  }
-  sceneItems = sceneItems.filter(item => !item.isGroup)
-  sceneItems.push(...groupSceneItems)
-  // Set source list
-  store.sourceList = sceneItems
-}
 
 async function searchHymn(hymnNumber: number | string) {
   if (!hymnNumber) {
@@ -136,28 +104,6 @@ async function showVerse(index: number) {
   await setSourceText('verse_content', content?.content)
 }
 
-async function setCurrentScene(sceneName: string) {
-  await obs.call('SetCurrentProgramScene', { sceneName })
-}
-
-async function setSourceVisibility(sourceName: string, visible: boolean) {
-  const sceneItem = store.sourceList.find(s => s.sourceName === sourceName)
-  await obs.call('SetSceneItemEnabled', {
-    sceneName: sceneItem.groupName?? store.onSearchHymnScene,
-    sceneItemId: sceneItem.sceneItemId,
-    sceneItemEnabled: visible
-  })
-}
-
-async function setSourceText(sourceName: string, text: string = '') {
-  await obs.call('SetInputSettings', {
-    inputName: sourceName,
-    inputSettings: {
-      text: text
-    }
-  })
-}
-
 function fileUrl() {
   const hymnUrl = store.onlyInstrumental
     ? hymnData.value!.mp3UrlInstr
@@ -185,7 +131,7 @@ function fadeOutVolume(delay: number) {
 <template>
   <main class="flex flex-col gap-4 px-3 py-2 text-xs">
     <div class="flex gap-2">
-      <button @click="connected? disconnectObs() : connectObs()" :title="connected? 'Desconectar' : 'Conectar'" type="button" class="flex items-center gap-3 px-2 py-1 rounded w-28 h-7 btn">
+      <button @click="connected? disconnect() : connect()" :title="connected? 'Desconectar' : 'Conectar'" type="button" class="flex items-center gap-3 px-2 py-1 rounded w-28 h-7 btn">
         <div class="rounded-full w-2 h-2" :class="connected? 'bg-green' : 'bg-red'"></div>
         {{ connected? 'Conectado' : 'Desconectado' }}
       </button>
