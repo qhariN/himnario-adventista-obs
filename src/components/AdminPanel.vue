@@ -2,6 +2,7 @@
 import { onMounted, type Ref, ref, toRaw, watch } from 'vue'
 import { store } from '@/store'
 import { useObs } from '@/composables/obs'
+import { usePlayer } from '@/composables/player'
 import type { HymnSequence } from '@/models/hymn'
 import sHymn from '@/services/HymnService'
 import SettingsPanel from './SettingsPanel.vue'
@@ -21,11 +22,11 @@ const {
   setSourceVisibility,
   setSourceText
 } = useObs()
+const { player, stop } = usePlayer()
 
 const hymnNumber: Ref<number | string> = ref('')
 const hymnData: Ref<HymnSequence | undefined> = ref(void(0))
 const hymnIndex: Ref<number> = ref(0)
-const player: Ref<HTMLAudioElement | null> = ref(null)
 
 onMounted(() => {
   player.value!.addEventListener('ended', handleMusicEnd)
@@ -74,14 +75,6 @@ async function goTitle() {
   await setCurrentScene(store.onSearchHymnScene)
 }
 
-async function stopMusic() {
-  const delay = 2000
-  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
-  await fadeOutVolume(delay)
-  player.value!.pause()
-  player.value!.volume = 1
-}
-
 async function showTitle() {
   await setSourceVisibility('hymn_number', true)
   await setSourceVisibility('hymn_title', true)
@@ -112,19 +105,9 @@ function fileUrl() {
   return store.musicHostUrl? hostUrl : hymnUrl
 }
 
-function fadeOutVolume(delay: number) {
-  const originalVolume = player.value!.volume
-  return new Promise<void>(resolve => {
-    const interval = setInterval(() => {
-      if (player.value!.volume <= 0.01) {
-        player.value!.volume = 0
-        clearInterval(interval)
-        resolve()
-      } else {
-        player.value!.volume -= 0.01
-      }
-    }, delay / (originalVolume / 0.01))
-  })
+async function stopMusic() {
+  await stop()
+  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
 }
 </script>
 <!-- TODO: cuando cambio de verso usando las flechas, se setea el verso en pantalla siempre -->
