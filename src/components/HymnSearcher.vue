@@ -3,14 +3,14 @@ import { onMounted, ref } from 'vue'
 import BasicDialog from './BasicDialog.vue'
 import sHymn from '../services/HymnService'
 import ListIcon from './icons/ListIcon.vue'
-import type { HymnList } from '../models/hymn'
+import type { Hymn } from '../models/hymn'
 import PlayIcon from './icons/PlayIcon.vue'
 
 const emit = defineEmits(['onPlayHymn'])
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
-const hymns = ref<HymnList[]>([])
-const filteredHymns = ref<HymnList[]>([])
+const hymns = ref<Hymn[]>([])
+const filteredHymns = ref<Hymn[]>([])
 const search = ref('')
 
 onMounted(() => {

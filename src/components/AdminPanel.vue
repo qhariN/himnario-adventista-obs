@@ -2,7 +2,7 @@
 import { onMounted, type Ref, ref, toRaw, watch } from 'vue'
 import ObsWebSocket from 'obs-websocket-js'
 import sHymn from '../services/HymnService'
-import type { HymnHistory } from '../models/hymn'
+import type { HymnSequence } from '../models/hymn'
 import { defaultValues, store } from '../store'
 import SettingsPanel from './SettingsPanel.vue'
 import AboutApp from './AboutApp.vue'
@@ -16,7 +16,7 @@ import HymnSearcher from './HymnSearcher.vue'
 const obs = new ObsWebSocket()
 const connected: Ref<boolean> = ref(false)
 const hymnNumber: Ref<number | string> = ref('')
-const hymnData: Ref<HymnHistory | undefined> = ref(void(0))
+const hymnData: Ref<HymnSequence | undefined> = ref(void(0))
 const hymnIndex: Ref<number> = ref(0)
 const player: Ref<HTMLAudioElement | null> = ref(null)
 
@@ -86,13 +86,13 @@ async function searchHymn(hymnNumber: number | string) {
 
 function handleMusicTimestamp() {
   if (!connected.value || !store.autodriveVerses) return
-  const currentTime = player.value!.currentTime
-  const nextVerse = toRaw(
-    hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
-  )
-  if (nextVerse && nextVerse.position !== hymnIndex.value) {
-    hymnIndex.value = nextVerse.position
-  }
+  // const currentTime = player.value!.currentTime
+  // const nextVerse = toRaw(
+  //   hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
+  // )
+  // if (nextVerse && nextVerse.position !== hymnIndex.value) {
+  //   hymnIndex.value = nextVerse.position
+  // }
 }
 
 function handleMusicEnd() {
@@ -119,8 +119,8 @@ async function showTitle() {
   await setSourceVisibility('hymn_title', true)
   await setSourceVisibility('verse_number', false)
   await setSourceVisibility('verse_content', false)
-  await setSourceText('hymn_number', hymnData.value?.hymn.number.toString())
-  await setSourceText('hymn_title', hymnData.value?.hymn.title)
+  await setSourceText('hymn_number', hymnData.value?.number.toString())
+  await setSourceText('hymn_title', hymnData.value?.title)
 }
 
 async function showVerse(index: number) {
@@ -128,9 +128,12 @@ async function showVerse(index: number) {
   await setSourceVisibility('hymn_title', false)
   await setSourceVisibility('verse_number', true)
   await setSourceVisibility('verse_content', true)
-  const verseNumber = hymnData.value?.history[index].verse.number
-  await setSourceText('verse_number', verseNumber === 0 ? 'Coro' : String(verseNumber))
-  await setSourceText('verse_content', hymnData.value?.history[index].verse.content)
+  const sequence = hymnData.value!.sequence[index]
+  const verse = hymnData.value?.verses.find(v => v.id === sequence.verseId)
+  const content = verse?.contents.find(c => c.id === sequence.verseContentId)
+  const verseNumber = verse?.number === 0 ? 'Coro' : String(verse?.number)
+  await setSourceText('verse_number', verseNumber)
+  await setSourceText('verse_content', content?.content)
 }
 
 async function setCurrentScene(sceneName: string) {
@@ -157,9 +160,9 @@ async function setSourceText(sourceName: string, text: string = '') {
 
 function fileUrl() {
   const hymnUrl = store.onlyInstrumental
-    ? hymnData.value!.hymn.mp3UrlInstr
-    : hymnData.value!.hymn.mp3Url
-  const hostUrl = `${store.musicHostUrl}/${store.onlyInstrumental? 'instrumental' : 'cantado'}/${encodeURIComponent(hymnData.value!.hymn.mp3Filename)}`
+    ? hymnData.value!.mp3UrlInstr
+    : hymnData.value!.mp3Url
+  const hostUrl = `${store.musicHostUrl}/${store.onlyInstrumental? 'instrumental' : 'cantado'}/${encodeURIComponent(hymnData.value!.mp3Filename)}`
   return store.musicHostUrl? hostUrl : hymnUrl
 }
 
@@ -178,7 +181,7 @@ function fadeOutVolume(delay: number) {
   })
 }
 </script>
-
+<!-- TODO: cuando cambio de verso usando las flechas, se setea el verso en pantalla siempre -->
 <template>
   <main class="flex flex-col gap-4 px-3 py-2 text-xs">
     <div class="flex gap-2">
@@ -204,7 +207,7 @@ function fadeOutVolume(delay: number) {
       <button @click="hymnIndex--" title="Verso anterior" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-8 h-8">
         <PreviousIcon />
       </button>
-      <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.history.length : true)" type="button" class="btn w-8 h-8">
+      <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.sequence.length : true)" type="button" class="btn w-8 h-8">
         <NextIcon />
       </button>
       <button @click="stopMusic()" title="Detener" :disabled="!connected" type="button" class="btn w-8 h-8">
@@ -213,7 +216,7 @@ function fadeOutVolume(delay: number) {
     </form>
     <div class="space-y-2">
       <p>
-        Reproduciendo: <span class="text-muted">{{ hymnData?.hymn.title }}</span>
+        Reproduciendo: <span class="text-muted">{{ hymnData?.title }}</span>
       </p>
       <audio ref="player" controls>
         <source :src="hymnData && fileUrl()" type="audio/mpeg">
