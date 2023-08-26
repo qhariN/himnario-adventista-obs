@@ -7,12 +7,18 @@ vi.spyOn(sHymn, 'all').mockResolvedValue([
   {
     id: 1,
     number: 1,
-    title: "Cantad Alegres"
+    title: 'Cantad Alegres',
+    mp3Url: '',
+    mp3UrlInstr: '',
+    mp3Filename: ''
   },
   {
     id: 2,
     number: 2,
-    title: "Dá gloria al Señor"
+    title: 'Dá gloria al Señor',
+    mp3Url: '',
+    mp3UrlInstr: '',
+    mp3Filename: ''
   }
 ])
 
