@@ -1,14 +1,14 @@
-import type { HymnHistory, HymnList } from '../models/hymn'
+import type { Hymn, HymnSequence } from '../models/hymn'
 import { defaultValues, store } from '../store'
 import Fetch from './api'
 
 const sHymn = {
-  async all(): Promise<HymnList[]> {
+  async all(): Promise<Hymn[]> {
     const url = `${store.hymnalApiUrl || defaultValues.hymnalApiUrl}/hymn`
     const response = await Fetch(url)
     return response.json()
   },
-  async byNumber(_number: number): Promise<HymnHistory> {
+  async byNumber(_number: number): Promise<HymnSequence> {
     const url = `${store.hymnalApiUrl || defaultValues.hymnalApiUrl}/hymn/${_number}`
     const response = await Fetch(url)
     if (response.status === 404) {
