@@ -58,9 +58,8 @@ async function search(number: number | string) {
 function handleMusicTimestamp() {
   if (!connected.value || !store.autodriveVerses) return
   const nextSequence = hymnData.value!.sequence.filter(v => v.timestamp && (v.timestamp - 0.5) < player.currentTime.value).reverse()[0]
-  const verse = hymnData.value!.verses.find(v => v.id === nextSequence.verseId)
   const position = hymnData.value!.sequence.indexOf(nextSequence) + 1
-  if (verse && position !== hymnIndex.value) {
+  if (nextSequence && position !== hymnIndex.value) {
     hymnIndex.value = position
   }
 }
