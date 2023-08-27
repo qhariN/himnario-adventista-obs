@@ -43,21 +43,15 @@ onMounted(() => {
 })
 
 watch(hymnIndex, async index => {
-  if (index === 0) { // title
-    await showTitle()
-    await setCurrentScene(store.onSearchHymnScene)
-  } else { // verse
-    await showVerse(index - 1)
-    await setCurrentScene(store.onSearchHymnScene)
-  }
+  if (index === 0) return
+  await showVerse(index - 1)
+  await setCurrentScene(store.onSearchHymnScene)
 })
 
 async function search(number: number | string) {
   await searchHymn(number)
   player.load()
-  if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) {
-    hymnIndex.value = 0
-  }
+  if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
   if (store.autoplayMusic) player.play()
 }
 
@@ -69,6 +63,12 @@ function handleMusicTimestamp() {
   // if (nextVerse && nextVerse.position !== hymnIndex.value) {
   //   hymnIndex.value = nextVerse.position
   // }
+}
+
+async function goTitle() {
+  hymnIndex.value = 0
+  await showTitle()
+  await setCurrentScene(store.onSearchHymnScene)
 }
 
 async function toHomeScene(fadeoutMusic = false) {
@@ -119,7 +119,7 @@ async function showVerse(index: number) {
         <SearchIcon />
       </button>
       <HymnSearcher @on-play-hymn="searchHymn($event)" />
-      <button @click="hymnIndex = 0" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-8 h-8 ms-auto">
+      <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-8 h-8 ms-auto">
         <HomeIcon />
       </button>
       <button @click="hymnIndex--" title="Verso anterior" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-8 h-8">
