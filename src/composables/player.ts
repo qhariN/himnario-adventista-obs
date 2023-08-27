@@ -2,6 +2,15 @@ import { ref, type Ref } from 'vue'
 
 export function usePlayer() {
   const player: Ref<HTMLAudioElement | null> = ref(null)
+  const currentTime = ref(0)
+
+  function load() {
+    player.value!.load()
+  }
+
+  function play() {
+    player.value!.play()
+  }
 
   async function stop() {
     const delay = 2000
@@ -25,5 +34,24 @@ export function usePlayer() {
     })
   }
 
-  return { player, stop }
+  function onTimeUpdate(callback: () => void) {
+    player.value!.addEventListener('timeupdate', () => {
+      currentTime.value = player.value!.currentTime
+      callback()
+    })
+  }
+
+  function onEnded(callback: () => void) {
+    player.value!.addEventListener('ended', callback)
+  }
+
+  return {
+    player,
+    currentTime,
+    load,
+    play,
+    stop,
+    onTimeUpdate,
+    onEnded
+  }
 }

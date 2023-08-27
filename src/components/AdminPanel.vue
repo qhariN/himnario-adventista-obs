@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { onMounted, type Ref, ref, toRaw, watch } from 'vue'
+import { onMounted, toRaw, watch } from 'vue'
 import { store } from '@/store'
 import { useObs } from '@/composables/obs'
+import { useHymn } from '@/composables/hymn'
 import { usePlayer } from '@/composables/player'
-import type { HymnSequence } from '@/models/hymn'
-import sHymn from '@/services/HymnService'
 import SettingsPanel from './SettingsPanel.vue'
 import AboutApp from './AboutApp.vue'
 import AutodriveButton from './AutodriveButton.vue'
@@ -22,57 +21,59 @@ const {
   setSourceVisibility,
   setSourceText
 } = useObs()
-const { player, stop } = usePlayer()
 
-const hymnNumber: Ref<number | string> = ref('')
-const hymnData: Ref<HymnSequence | undefined> = ref(void(0))
-const hymnIndex: Ref<number> = ref(0)
+const {
+  hymnIndex,
+  hymnNumber,
+  hymnData,
+  searchHymn,
+  fileUrl
+} = useHymn()
+
+const {
+  onTimeUpdate,
+  onEnded,
+  ...player
+} = usePlayer()
 
 onMounted(() => {
-  player.value!.addEventListener('ended', handleMusicEnd)
-  player.value!.ontimeupdate = handleMusicTimestamp
+  onTimeUpdate(() => handleMusicTimestamp())
+  onEnded(() => toHomeScene())
 })
 
 watch(hymnIndex, async index => {
-  if (index > 0) {
+  if (index === 0) { // title
+    await showTitle()
+    await setCurrentScene(store.onSearchHymnScene)
+  } else { // verse
     await showVerse(index - 1)
     await setCurrentScene(store.onSearchHymnScene)
   }
 })
 
-async function searchHymn(hymnNumber: number | string) {
-  if (!hymnNumber) {
-    alert('Ingrese un número de himno')
-    return
+async function search(number: number | string) {
+  await searchHymn(number)
+  player.load()
+  if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) {
+    hymnIndex.value = 0
   }
-  const hymn = await sHymn.byNumber(+hymnNumber)
-  hymnData.value = hymn
-  hymnIndex.value = 0
-  player.value!.load()
-  if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
-  if (store.autoplayMusic) player.value!.play()
+  if (store.autoplayMusic) player.play()
 }
 
 function handleMusicTimestamp() {
   if (!connected.value || !store.autodriveVerses) return
-  // const currentTime = player.value!.currentTime
   // const nextVerse = toRaw(
-  //   hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < currentTime).reverse()[0]
+  //   hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < player.currentTime).reverse()[0]
   // )
   // if (nextVerse && nextVerse.position !== hymnIndex.value) {
   //   hymnIndex.value = nextVerse.position
   // }
 }
 
-function handleMusicEnd() {
+async function toHomeScene(fadeoutMusic = false) {
+  if (fadeoutMusic) await player.stop()
   if (!connected.value) return
-  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
-}
-
-async function goTitle() {
-  hymnIndex.value = 0
-  await showTitle()
-  await setCurrentScene(store.onSearchHymnScene)
+  if (store.onMusicEndSwitchToScene) await setCurrentScene(store.onMusicEndSwitchToScene)
 }
 
 async function showTitle() {
@@ -85,29 +86,16 @@ async function showTitle() {
 }
 
 async function showVerse(index: number) {
-  await setSourceVisibility('hymn_number', false)
-  await setSourceVisibility('hymn_title', false)
-  await setSourceVisibility('verse_number', true)
-  await setSourceVisibility('verse_content', true)
   const sequence = hymnData.value!.sequence[index]
   const verse = hymnData.value?.verses.find(v => v.id === sequence.verseId)
   const content = verse?.contents.find(c => c.id === sequence.verseContentId)
   const verseNumber = verse?.number === 0 ? 'Coro' : String(verse?.number)
+  await setSourceVisibility('hymn_number', false)
+  await setSourceVisibility('hymn_title', false)
+  await setSourceVisibility('verse_number', true)
+  await setSourceVisibility('verse_content', true)
   await setSourceText('verse_number', verseNumber)
   await setSourceText('verse_content', content?.content)
-}
-
-function fileUrl() {
-  const hymnUrl = store.onlyInstrumental
-    ? hymnData.value!.mp3UrlInstr
-    : hymnData.value!.mp3Url
-  const hostUrl = `${store.musicHostUrl}/${store.onlyInstrumental? 'instrumental' : 'cantado'}/${encodeURIComponent(hymnData.value!.mp3Filename)}`
-  return store.musicHostUrl? hostUrl : hymnUrl
-}
-
-async function stopMusic() {
-  await stop()
-  if (store.onMusicEndSwitchToScene) setCurrentScene(store.onMusicEndSwitchToScene)
 }
 </script>
 <!-- TODO: cuando cambio de verso usando las flechas, se setea el verso en pantalla siempre -->
@@ -126,11 +114,11 @@ async function stopMusic() {
     </div>
     <form class="flex gap-2" onsubmit="return false">
       <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number">
-      <button @click="searchHymn(hymnNumber)" title="Buscar" type="submit" class="btn w-8 h-8">
+      <button @click="search(hymnNumber)" title="Buscar" type="submit" class="btn w-8 h-8">
         <SearchIcon />
       </button>
       <HymnSearcher @on-play-hymn="searchHymn($event)" />
-      <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-8 h-8 ms-auto">
+      <button @click="hymnIndex = 0" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-8 h-8 ms-auto">
         <HomeIcon />
       </button>
       <button @click="hymnIndex--" title="Verso anterior" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 2" type="button" class="btn w-8 h-8">
@@ -139,7 +127,7 @@ async function stopMusic() {
       <button @click="hymnIndex++" title="Verso siguiente" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || (hymnData? hymnIndex >= hymnData.sequence.length : true)" type="button" class="btn w-8 h-8">
         <NextIcon />
       </button>
-      <button @click="stopMusic()" title="Detener" :disabled="!connected" type="button" class="btn w-8 h-8">
+      <button @click="toHomeScene(true)" title="Detener" :disabled="!connected" type="button" class="btn w-8 h-8">
         <div class="rounded-full w-4 h-4 bg-[currentcolor]"></div>
       </button>
     </form>
