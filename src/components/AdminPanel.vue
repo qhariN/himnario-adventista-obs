@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, toRaw, watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { store } from '@/store'
 import { useObs } from '@/composables/obs'
 import { useHymn } from '@/composables/hymn'
@@ -57,12 +57,12 @@ async function search(number: number | string) {
 
 function handleMusicTimestamp() {
   if (!connected.value || !store.autodriveVerses) return
-  // const nextVerse = toRaw(
-  //   hymnData.value!.history.filter(v => v.timestamp && (v.timestamp - 0.5) < player.currentTime).reverse()[0]
-  // )
-  // if (nextVerse && nextVerse.position !== hymnIndex.value) {
-  //   hymnIndex.value = nextVerse.position
-  // }
+  const nextSequence = hymnData.value!.sequence.filter(v => v.timestamp && (v.timestamp - 0.5) < player.currentTime.value).reverse()[0]
+  const verse = hymnData.value!.verses.find(v => v.id === nextSequence.verseId)
+  const position = hymnData.value!.sequence.indexOf(nextSequence) + 1
+  if (verse && position !== hymnIndex.value) {
+    hymnIndex.value = position
+  }
 }
 
 async function goTitle() {
