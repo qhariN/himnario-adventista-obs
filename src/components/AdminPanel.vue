@@ -33,6 +33,7 @@ const {
 const {
   onTimeUpdate,
   onEnded,
+  player: playerElement,
   ...player
 } = usePlayer()
 
@@ -135,7 +136,7 @@ async function showVerse(index: number) {
       <p>
         Reproduciendo: <span class="text-muted">{{ hymnData?.title }}</span>
       </p>
-      <audio ref="player" controls>
+      <audio ref="playerElement" controls>
         <source :src="hymnData && fileUrl()" type="audio/mpeg">
         Tu navegador no soporta el elemento <code>audio</code>.
       </audio>
