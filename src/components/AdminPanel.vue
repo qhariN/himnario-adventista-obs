@@ -68,6 +68,7 @@ function handleMusicTimestamp() {
 async function goTitle() {
   hymnIndex.value = 0
   await showTitle()
+  if (!store.onSearchSwitchToHymnScene || !store.onSearchHymnScene) return
   await setCurrentScene(store.onSearchHymnScene)
 }
 
