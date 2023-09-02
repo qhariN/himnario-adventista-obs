@@ -45,6 +45,7 @@ onMounted(() => {
 watch(hymnIndex, async index => {
   if (index === 0) return
   await showVerse(index - 1)
+  if (!store.onSearchSwitchToHymnScene || !store.onSearchHymnScene) return
   await setCurrentScene(store.onSearchHymnScene)
 })
 
@@ -98,7 +99,7 @@ async function showVerse(index: number) {
   await setSourceText('verse_content', content?.content)
 }
 </script>
-<!-- TODO: cuando cambio de verso usando las flechas, se setea el verso en pantalla siempre -->
+
 <template>
   <main class="flex flex-col gap-4 px-3 py-2 text-xs">
     <div class="flex gap-2">
