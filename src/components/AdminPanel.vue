@@ -119,7 +119,7 @@ async function showVerse(index: number) {
       <button @click="search(hymnNumber)" title="Buscar" type="submit" class="btn w-8 h-8">
         <SearchIcon />
       </button>
-      <HymnSearcher @on-play-hymn="searchHymn($event)" />
+      <HymnSearcher @on-play-hymn="search($event)" />
       <button @click="goTitle()" title="Principio" :disabled="!connected || !store.onSearchHymnScene || store.autodriveVerses || hymnIndex < 1" type="button" class="btn w-8 h-8 ms-auto">
         <HomeIcon />
       </button>
