@@ -52,7 +52,7 @@ watch(hymnIndex, async index => {
 async function search(number: number | string) {
   await searchHymn(number)
   player.load()
-  if (connected.value && store.onSearchSwitchToHymnScene && store.onSearchHymnScene) goTitle()
+  if (connected.value) goTitle()
   if (store.autoplayMusic) player.play()
 }
 
