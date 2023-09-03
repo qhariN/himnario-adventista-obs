@@ -34,7 +34,7 @@ function closeDialog() {
           <input v-model="store.onlyInstrumental" type="checkbox" id="oi" class="ml-auto">
         </div>
         <div class="flex items-center gap-1">
-          <label for="am">Autorreproducir música</label>
+          <label for="am">Autoreproducir música</label>
           <input v-model="store.autoplayMusic" type="checkbox" id="am" class="ml-auto">
         </div>
         <div class="flex items-center gap-1">
