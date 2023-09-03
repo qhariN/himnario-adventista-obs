@@ -31,7 +31,7 @@ onMounted(() => {
         <ul class="list-disc pl-6">
           <li>El <b>buscador de himnos</b> ahora es agnóstico a diacríticos, esto mejora la búsqueda de himnos</li>
           <li>Ahora el contenido de los versos es más corto, con el fin de soportar pantallas de resolución baja</li>
-          <li>Ahora solo se hacen transiciones a la escena del himno cuando la configuración <b>Cambiar a escena de himno</b></li>
+          <li>Ahora solo se hacen transiciones a la escena del himno cuando la configuración <b>Cambiar a escena de himno</b> está activada</li>
         </ul>
       </div>
       <div>
