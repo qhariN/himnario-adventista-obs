@@ -11,7 +11,7 @@ Himnario Adventista Broadcast es una GUI web diseñada para ser usada con [OBS S
 
 Esta GUI permite:
 
-- Buscar himnos por número
+- Buscar himnos por número o nombre
 - Mostrar número, título, verso y letra del himno en pantalla
 - Reproducir la melodía del himno (instrumental o cantado)
 - Controlar la letra y la melodía del himno
@@ -45,25 +45,26 @@ La visibilidad de las fuentes son administradas por la GUI, pero la personalizac
 
 Si bien la GUI requiere que tengas la escena y fuentes mencionadas, puedes agregar libremente otras fuentes a la escena para personalizarla a tu gusto como por ejemplo: un fondo, un logo, etc.
 
-Finalmente, en la GUI debes conectarla con OBS Studio usando el botón **Connect**.
+Finalmente, en la GUI debes conectarla con OBS Studio usando el botón **Conectar**.
 
 ## Configuración avanzada
 
 La GUI tiene una configuración avanzada que puedes acceder desde el botón tuerca en la parte superior derecha de la GUI. En la configuración avanzada puedes establecer:
 
 ### Al buscar un himno
-- **Only instrumental**: Melodía solo instrumental (si no está marcado, se reproducirá la melodía cantada)
-- **Autoplay music**: Auto reproducir la melodía
-- **Autodrive verses**: Auto dirigir la letra del himno en pantalla
-- **Switch to hymn scene**: Cambiar a la escena del himno (ninguna por defecto)
+- **Solo instrumental**: Melodía solo instrumental (si no está marcado, se reproducirá la melodía cantada)
+- **Autoreproducir música**: Auto reproduce la melodía
+- **Autoconducir versos**: Auto dirigir la letra del himno en pantalla
+- **Cambiar a escena de himno**: Cambiar a la escena del himno (ninguna por defecto)
+- **Escena de himno**: Escena donde se encuentran las fuentes que usará la GUI (puedes seleccionar la escena una vez que conectaste la GUI al OBS)
 
 ### Al terminar de reproducir un himno
-- **Switch to scene**: Cambiar a una escena específica (ninguna por defecto)
+- **Cambiar a escena**: Cambiar a una escena específica (ninguna por defecto)
 
 ### Red
-- **Custom OBS websocket**: Usar un servidor websocket de OBS Studio personalizado (por defecto usa localhost:4444)
-- **Custom music host**: Usar un servidor de melodías personalizado (por defecto usa el del [Himnario Adventista API](https://github.com/jhormanrus/himnario-adventista-api))
-- **Custom hymnal API**: Usar un servidor de la API de Himnario Adventista personalizado (por defecto usa el [Himnario Adventista API](https://sdah.my.to/hymn))
+- **URL de OBS Websocket**: Usar un servidor websocket de OBS Studio personalizado (por defecto usa localhost:4444)
+- **URL de host de música**: Usar un servidor de melodías personalizado (por defecto usa el del [Himnario Adventista API](https://github.com/jhormanrus/himnario-adventista-api))
+- **URL de API de himnario**: Usar un servidor de la API de Himnario Adventista personalizado (por defecto usa el [Himnario Adventista API](https://sdah.my.to/hymn))
 
 La GUI está pensada para usarla online, pero gracias a la configuración avanzada puedes usarla sin conexión a internet levantando localmente el [Himnario Adventista API](https://github.com/jhormanrus/himnario-adventista-api) y configurando la GUI para usarlo.
 
