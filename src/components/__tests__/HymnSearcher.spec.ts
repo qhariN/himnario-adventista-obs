@@ -22,7 +22,18 @@ vi.spyOn(sHymn, 'all').mockResolvedValue([
   }
 ])
 
-describe("HymnSearcher", () => {
+// describe('HelloWorld', () => {
+//   it('playground', () => {
+//     cy.mount(HelloWorld, { props: { msg: 'Hello Cypress' } })
+//   })
+
+//   it('renders properly', () => {
+//     cy.mount(HelloWorld, { props: { msg: 'Hello Cypress' } })
+//     cy.get('h1').should('contain', 'Hello Cypress')
+//   })
+// })
+
+describe('HymnSearcher', () => {
   let wrapper: VueWrapper
 
   beforeEach(async () => {
@@ -32,33 +43,33 @@ describe("HymnSearcher", () => {
     await flushPromises()
   })
 
-  it("has a list of hymns", async () => {
+  it('has a list of hymns', async () => {
     const hymns = wrapper.findAll('[data-test="hymn-item"]')
 
     expect(hymns).toHaveLength(2)
-    expect(hymns[0].text()).toContain("Cantad Alegres")
-    expect(hymns[1].text()).toContain("Dá gloria al Señor")
+    expect(hymns[0].text()).toContain('Cantad Alegres')
+    expect(hymns[1].text()).toContain('Dá gloria al Señor')
   })
 
-  describe("when searching", () => {
-    it("shows only the hymns that match the search", async () => {
+  describe('when searching', () => {
+    it('shows only the hymns that match the search', async () => {
       const search = wrapper.get('[data-test="search-hymn"]')
-      await search.setValue("Cantad Alegres")
+      await search.setValue('Cantad Alegres')
 
       const hymns = wrapper.findAll('[data-test="hymn-item"]')
 
       expect(hymns).toHaveLength(1)
-      expect(hymns[0].text()).toContain("Cantad Alegres")
+      expect(hymns[0].text()).toContain('Cantad Alegres')
     })
 
-    it("is diacritics insensitive", async () => {
+    it('is diacritics insensitive', async () => {
       const search = wrapper.get('[data-test="search-hymn"]')
-      await search.setValue("da gloria al senor")
+      await search.setValue('da gloria al senor')
 
       const hymns = wrapper.findAll('[data-test="hymn-item"]')
 
       expect(hymns).toHaveLength(1)
-      expect(hymns[0].text()).toContain("Dá gloria al Señor")
+      expect(hymns[0].text()).toContain('Dá gloria al Señor')
     })
   })
 })

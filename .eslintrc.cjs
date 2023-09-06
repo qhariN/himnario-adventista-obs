@@ -8,6 +8,17 @@ module.exports = {
     'eslint:recommended',
     '@vue/eslint-config-typescript'
   ],
+  overrides: [
+    {
+      files: [
+        '**/__tests__/*.spec.ts',
+        'cypress/e2e/**/*.spec.ts'
+      ],
+      'extends': [
+        'plugin:cypress/recommended'
+      ]
+    }
+  ],
   parserOptions: {
     ecmaVersion: 'latest'
   }
