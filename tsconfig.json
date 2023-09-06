@@ -8,9 +8,6 @@
       "path": "./tsconfig.app.json"
     },
     {
-      "path": "./tsconfig.vitest.json"
-    },
-    {
       "path": "./tsconfig.cypress-ct.json"
     }
   ]
