@@ -70,4 +70,6 @@ La GUI está pensada para usarla online, pero gracias a la configuración avanza
 
 ## Necesito ayuda
 
+- [Cómo configurar el servidor WebSocket en OBS Studio](https://github.com/jhormanrus/himnario-adventista-broadcast/wiki/C%C3%B3mo-configurar-el-servidor-WebSocket-en-OBS-Studio)
+
 Si tienes alguna duda o sugerencia, puedes abrir un [issue](https://github.com/jhormanrus/himnario-adventista-api/issues) o ponerte en contacto conmigo en mi [LinkedIn](https://www.linkedin.com/in/jhormanrus/).
