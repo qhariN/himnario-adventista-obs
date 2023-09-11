@@ -20,7 +20,7 @@ onMounted(() => {
   <button @click="dialog!.open" title="Acerca de" type="button" class="btn w-7 h-7">
     <AboutIcon />
   </button>
-  <BasicDialog ref="dialog" title="Himnario Adventista Broadcast">
+  <BasicDialog ref="dialog" title="Himnario Adventista Broadcast" data-test="release-notes">
     <div class="flex flex-col gap-1">
       <div>
         <span class="font-bold">Versión</span>
