@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
-    "test:e2e": "start-server-and-test preview http://localhost:5173 'cypress run --e2e'",
+    "test:e2e": "start-server-and-test 'vite dev' http://localhost:5173 'cypress run --e2e'",
     "test:e2e:dev": "start-server-and-test 'vite dev' http://localhost:5173 'cypress open --e2e'",
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
