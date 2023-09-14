@@ -12,6 +12,7 @@ describe('Release Notes', () => {
         cy.wrap($el)
           .find('h1')
           .should('contain', 'Himnario Adventista Broadcast')
+
         cy.wrap($el)
           .find('span')
           .contains('Versión')

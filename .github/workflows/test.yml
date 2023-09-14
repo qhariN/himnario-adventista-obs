@@ -24,5 +24,5 @@ jobs:
       - name: 📥 Install dependencies
         run: pnpm install
 
-      - name: 🧑‍🔬 Unit Tests
+      - name: 🧑‍🔬 E2E tests
         run: pnpm test:e2e
