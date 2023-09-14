@@ -23,7 +23,7 @@
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^20.6.0",
     "@vitejs/plugin-vue": "^4.3.4",
-    "@vue/eslint-config-typescript": "^11.0.3",
+    "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/tsconfig": "^0.4.0",
     "autoprefixer": "^10.4.15",
     "cypress": "^13.2.0",
