@@ -134,7 +134,7 @@ async function showVerse(index: number) {
       </button>
     </form>
     <div class="space-y-2">
-      <p>
+      <p data-test="hymn-title">
         Reproduciendo: <span class="text-muted">{{ hymnData?.title }}</span>
       </p>
       <audio ref="playerElement" controls>

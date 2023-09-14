@@ -11,5 +11,7 @@ export default defineConfig({
       framework: 'vue',
       bundler: 'vite'
     }
-  }
+  },
+  viewportWidth: 400,
+  viewportHeight: 300
 })

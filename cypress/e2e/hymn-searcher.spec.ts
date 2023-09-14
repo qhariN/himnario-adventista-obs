@@ -22,7 +22,7 @@ describe('Hymn Searcher', () => {
       .first()
       .click()
 
-    cy.get('p').should('contain', 'Reproduciendo: Cantad Alegres')
+    cy.get('[data-test="hymn-title"]').should('contain', 'Reproduciendo: Cantad Alegres')
   })
 
   describe('when searching', () => {
