@@ -8,7 +8,6 @@ export const store = reactive({
   onlyInstrumental: (localStorage.getItem('onlyInstrumental') === 'true') || false,
   autoplayMusic: (localStorage.getItem('autoplayMusic') === 'true') || false,
   autodriveVerses: (localStorage.getItem('autodriveVerses') === 'true') || false,
-  splitVerses: (localStorage.getItem('splitVerses') === 'true') || false,
   onSearchSwitchToHymnScene: (localStorage.getItem('onSearchSwitchToHymnScene') === 'true') || false,
   onSearchHymnScene: localStorage.getItem('onSearchHymnScene') || 'Himnario',
   onMusicEndSwitchToScene: localStorage.getItem('onMusicEndSwitchToScene') || '',

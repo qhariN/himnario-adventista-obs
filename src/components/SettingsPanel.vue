@@ -10,7 +10,6 @@ function closeDialog() {
   localStorage.setItem('onlyInstrumental', `${store.onlyInstrumental}`)
   localStorage.setItem('autoplayMusic', `${store.autoplayMusic}`)
   localStorage.setItem('autodriveVerses', `${store.autodriveVerses}`)
-  localStorage.setItem('splitVerses', `${store.splitVerses}`)
   localStorage.setItem('onSearchSwitchToHymnScene', `${store.onSearchSwitchToHymnScene}`)
   localStorage.setItem('onSearchHymnScene', `${store.onSearchHymnScene}`)
   localStorage.setItem('onMusicEndSwitchToScene', store.onMusicEndSwitchToScene)
@@ -25,7 +24,7 @@ function closeDialog() {
   <button @click="dialog!.open" title="Configuración" type="button" class="btn w-7 h-7 ml-auto">
     <GearIcon />
   </button>
-  <BasicDialog ref="dialog" title="Configuración">
+  <BasicDialog ref="dialog" title="Configuración" data-test="settings">
     <div class="text-sm">
       <div class="mb-2">
         <h3 class="font-bold">Al buscar:</h3>
@@ -41,10 +40,6 @@ function closeDialog() {
           <label for="av">Autoconducir versos</label>
           <input v-model="store.autodriveVerses" type="checkbox" id="av" class="ml-auto">
         </div>
-        <!-- <div class="flex items-center gap-1">
-          <label for="sv">Split verses (for long verses)</label>
-          <input v-model="store.splitVerses" type="checkbox" id="sv" class="ml-auto">
-        </div> -->
         <div class="flex items-center gap-1">
           <label for="sch">Cambiar a escena de himno</label>
           <input v-model="store.onSearchSwitchToHymnScene" type="checkbox" id="sch" class="ml-auto">
