@@ -17,7 +17,7 @@ describe('Hymn Searcher', () => {
       .should('contain', 'Dá gloria al Señor')
   })
 
-  it.only('selects a hymn', () => {
+  it('selects a hymn', () => {
     cy.get('[data-test="hymn-item"]')
       .first()
       .click()
