@@ -1,4 +1,3 @@
-/* eslint-disable cypress/no-unnecessary-waiting */
 describe('Panel Controls', () => {
   beforeEach(() => {
     cy.intercept('**/hymn/25').as('getHymn')
