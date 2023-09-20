@@ -3,10 +3,13 @@ import { ref } from 'vue'
 import { store, defaultValues } from '../store'
 import BasicDialog from './BasicDialog.vue'
 import GearIcon from './icons/GearIcon.vue'
+import { useObs } from '@/composables/obs';
+
+const { connect, disconnect } = useObs()
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
-function closeDialog() {
+async function closeDialog() {
   localStorage.setItem('onlyInstrumental', `${store.onlyInstrumental}`)
   localStorage.setItem('autoplayMusic', `${store.autoplayMusic}`)
   localStorage.setItem('autodriveVerses', `${store.autodriveVerses}`)
@@ -16,6 +19,8 @@ function closeDialog() {
   localStorage.setItem('obsWebsocketUrl', store.obsWebsocketUrl)
   localStorage.setItem('musicHostUrl', store.musicHostUrl)
   localStorage.setItem('hymnalApiUrl', store.hymnalApiUrl)
+  await disconnect()
+  await connect()
   dialog.value!.close()
 }
 </script>
