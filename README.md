@@ -33,10 +33,10 @@ La GUI requiere que tengas obligatoriamente la siguiente escena y fuentes en OBS
 ESCENA
 └── Himnario (nombre de ejemplo)
     └── FUENTES (las fuentes se pueden agrupar)
-        ├── hymn_number
-        ├── hymn_title
-        ├── verse_number
-        └── verse_content
+        ├── himno_numero
+        ├── himno_titulo
+        ├── verso_numero
+        └── verso_contenido
 ```
 
 Todas las fuentes requeridas deben ser de tipo **Texto (GDI+)** en Windows o **Texto (FreeType 2)** en Linux y macOS.

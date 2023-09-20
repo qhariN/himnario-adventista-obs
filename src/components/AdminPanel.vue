@@ -79,12 +79,12 @@ async function toHomeScene(fadeoutMusic = false) {
 }
 
 async function showTitle() {
-  await setSourceVisibility('hymn_number', true)
-  await setSourceVisibility('hymn_title', true)
-  await setSourceVisibility('verse_number', false)
-  await setSourceVisibility('verse_content', false)
-  await setSourceText('hymn_number', hymnData.value?.number.toString())
-  await setSourceText('hymn_title', hymnData.value?.title)
+  await setSourceVisibility('himno_numero', true)
+  await setSourceVisibility('himno_titulo', true)
+  await setSourceVisibility('verso_numero', false)
+  await setSourceVisibility('verso_contenido', false)
+  await setSourceText('himno_numero', hymnData.value?.number.toString())
+  await setSourceText('himno_titulo', hymnData.value?.title)
 }
 
 async function showVerse(index: number) {
@@ -92,12 +92,12 @@ async function showVerse(index: number) {
   const verse = hymnData.value?.verses.find(v => v.id === sequence.verseId)
   const content = verse?.contents.find(c => c.id === sequence.verseContentId)
   const verseNumber = verse?.number === 0 ? 'Coro' : String(verse?.number)
-  await setSourceVisibility('hymn_number', false)
-  await setSourceVisibility('hymn_title', false)
-  await setSourceVisibility('verse_number', true)
-  await setSourceVisibility('verse_content', true)
-  await setSourceText('verse_number', verseNumber)
-  await setSourceText('verse_content', content?.content)
+  await setSourceVisibility('himno_numero', false)
+  await setSourceVisibility('himno_titulo', false)
+  await setSourceVisibility('verso_numero', true)
+  await setSourceVisibility('verso_contenido', true)
+  await setSourceText('verso_numero', verseNumber)
+  await setSourceText('verso_contenido', content?.content)
 }
 </script>
 
