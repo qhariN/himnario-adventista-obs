@@ -31,6 +31,7 @@ function close() {
       <h1 class="font-bold leading-none">
         {{ title }}
       </h1>
+      <slot name="header"></slot>
       <button @click="close" title="Cerrar" type="button" class="btn w-7 h-7 flex-shrink-0 ms-auto">
         <CloseIcon />
       </button>

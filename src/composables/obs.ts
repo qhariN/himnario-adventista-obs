@@ -1,19 +1,35 @@
 import ObsWebSocket from 'obs-websocket-js'
-import { defaultValues, store } from '../store'
+import { defaultValues, sceneStatus, store } from '../store'
 import { ref, type Ref } from 'vue'
 
+const obs = new ObsWebSocket()
+
+export const connected: Ref<boolean> = ref(false)
+
 export function useObs() {
-  const obs = new ObsWebSocket()
-
-  const connected: Ref<boolean> = ref(false)
-
   async function connect() {
     const url = `ws://${store.obsWebsocketUrl || defaultValues.obsWebsocketUrl}`
     try {
       await obs.connect(url)
+      await getScenes()
+      if (store.sceneList.find(s => s.sceneName === store.onSearchHymnScene)) {
+        sceneStatus.scene = true
+        await getSceneItems(store.onSearchHymnScene)
+        const items = store.sourceList.map(s => s.sourceName)
+        sceneStatus.source.himno_numero = items.includes('himno_numero')
+        sceneStatus.source.himno_titulo = items.includes('himno_titulo')
+        sceneStatus.source.verso_numero = items.includes('verso_numero')
+        sceneStatus.source.verso_contenido = items.includes('verso_contenido')
+      } else {
+        sceneStatus.scene = false
+        sceneStatus.source = {
+          himno_numero: false,
+          himno_titulo: false,
+          verso_numero: false,
+          verso_contenido: false
+        }
+      }
       connected.value = true
-      getScenes()
-      getSceneItems(store.onSearchHymnScene)
     } catch {
       alert(`Conexión fallida`)
     }
@@ -69,12 +85,27 @@ export function useObs() {
     })
   }
 
+  async function createScene() {
+    await obs.call('CreateScene', { sceneName: store.onSearchHymnScene })
+    sceneStatus.scene = true
+  }
+
+  async function createSource(inputName: 'himno_numero' | 'himno_titulo' | 'verso_numero' | 'verso_contenido') {
+    await obs.call('CreateInput', {
+      sceneName: store.onSearchHymnScene,
+      inputName,
+      inputKind: 'text_gdiplus_v2'
+    })
+    sceneStatus.source[inputName] = true
+  }
+
   return {
-    connected,
     connect,
     disconnect,
     setCurrentScene,
     setSourceVisibility,
-    setSourceText
+    setSourceText,
+    createScene,
+    createSource
   }
 }

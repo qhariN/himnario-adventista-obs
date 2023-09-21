@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { store, defaultValues } from '../store'
 import BasicDialog from './BasicDialog.vue'
 import GearIcon from './icons/GearIcon.vue'
-import { useObs } from '@/composables/obs';
+import { useObs } from '@/composables/obs'
 
 const { connect, disconnect } = useObs()
 

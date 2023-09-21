@@ -16,6 +16,16 @@ export const store = reactive({
   hymnalApiUrl: localStorage.getItem('hymnalApiUrl') || ''
 })
 
+export const sceneStatus = reactive({
+  scene: false,
+  source: {
+    himno_numero: false,
+    himno_titulo: false,
+    verso_numero: false,
+    verso_contenido: false
+  }
+})
+
 export const defaultValues = {
   obsWebsocketUrl: 'localhost:4455',
   hymnalApiUrl: 'https://sdah.my.to'

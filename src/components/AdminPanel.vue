@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
 import { store } from '@/store'
-import { useObs } from '@/composables/obs'
+import { connected, useObs } from '@/composables/obs'
 import { useHymn } from '@/composables/hymn'
 import { usePlayer } from '@/composables/player'
 import SettingsPanel from './SettingsPanel.vue'
@@ -12,9 +12,9 @@ import NextIcon from './icons/NextIcon.vue'
 import PreviousIcon from './icons/PreviousIcon.vue'
 import SearchIcon from './icons/SearchIcon.vue'
 import HymnSearcher from './HymnSearcher.vue'
+import SetupScene from './SetupScene.vue'
 
 const {
-  connected,
   connect,
   disconnect,
   setCurrentScene,
@@ -109,6 +109,7 @@ async function showVerse(index: number) {
         {{ connected? 'Conectado' : 'Desconectado' }}
       </button>
       <div class="ml-auto flex gap-2">
+        <SetupScene />
         <AutodriveButton />
         <SettingsPanel />
         <AboutApp />
