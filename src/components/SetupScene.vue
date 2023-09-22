@@ -16,10 +16,10 @@ watch(connected, async connected => {
 
 async function createSceneAndSources() {
   !sceneStatus.scene && await createScene()
-  !sceneStatus.source.himno_numero && createSource('himno_numero')
-  !sceneStatus.source.himno_titulo && createSource('himno_titulo')
-  !sceneStatus.source.verso_numero && createSource('verso_numero')
-  !sceneStatus.source.verso_contenido && createSource('verso_contenido')
+  !sceneStatus.source.verso_contenido && await createSource('verso_contenido')
+  !sceneStatus.source.verso_numero && await createSource('verso_numero')
+  !sceneStatus.source.himno_titulo && await createSource('himno_titulo')
+  !sceneStatus.source.himno_numero && await createSource('himno_numero')
 }
 </script>
 

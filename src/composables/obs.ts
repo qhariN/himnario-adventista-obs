@@ -1,4 +1,4 @@
-import ObsWebSocket from 'obs-websocket-js'
+import ObsWebSocket, { OBSWebSocketError } from 'obs-websocket-js'
 import { defaultValues, sceneStatus, store } from '../store'
 import { ref, type Ref } from 'vue'
 
@@ -91,12 +91,19 @@ export function useObs() {
   }
 
   async function createSource(inputName: 'himno_numero' | 'himno_titulo' | 'verso_numero' | 'verso_contenido') {
-    await obs.call('CreateInput', {
-      sceneName: store.onSearchHymnScene,
-      inputName,
-      inputKind: 'text_gdiplus_v2'
-    })
-    sceneStatus.source[inputName] = true
+    try {
+      await obs.call('CreateInput', {
+        sceneName: store.onSearchHymnScene,
+        inputName,
+        inputKind: 'text_gdiplus_v2'
+      })
+      sceneStatus.source[inputName] = true
+    } catch (error) {
+      if (!(error instanceof OBSWebSocketError)) return
+      if (error.code === 601) {
+        alert(`Este nombre ya está en uso: ${inputName}`)
+      }
+    }
   }
 
   return {
