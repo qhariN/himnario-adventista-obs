@@ -1,8 +1,8 @@
-import ObsWebSocket, { OBSWebSocketError } from 'obs-websocket-js'
+import OBSWebSocket, { OBSWebSocketError } from 'obs-websocket-js'
 import { defaultValues, sceneStatus, store } from '../store'
 import { ref, type Ref } from 'vue'
 
-const obs = new ObsWebSocket()
+export const obs = new OBSWebSocket()
 
 export const connected: Ref<boolean> = ref(false)
 
@@ -87,7 +87,6 @@ export function useObs() {
 
   async function createScene() {
     await obs.call('CreateScene', { sceneName: store.onSearchHymnScene })
-    sceneStatus.scene = true
   }
 
   async function createSource(inputName: 'himno_numero' | 'himno_titulo' | 'verso_numero' | 'verso_contenido') {
@@ -97,7 +96,6 @@ export function useObs() {
         inputName,
         inputKind: 'text_gdiplus_v2'
       })
-      sceneStatus.source[inputName] = true
     } catch (error) {
       if (!(error instanceof OBSWebSocketError)) return
       if (error.code === 601) {
@@ -109,6 +107,7 @@ export function useObs() {
   return {
     connect,
     disconnect,
+    getSceneItems,
     setCurrentScene,
     setSourceVisibility,
     setSourceText,
