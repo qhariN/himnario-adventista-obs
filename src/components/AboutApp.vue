@@ -29,9 +29,24 @@ onMounted(() => {
       <div>
         <span class="font-bold">Notas de la versión</span>
         <ul class="list-disc pl-6">
-          <li>El <b>buscador de himnos</b> ahora es agnóstico a diacríticos, esto mejora la búsqueda de himnos</li>
-          <li>Ahora el contenido de los versos es más corto, con el fin de soportar pantallas de resolución baja</li>
-          <li>Ahora solo se hacen transiciones a la escena del himno cuando la configuración <b>Cambiar a escena de himno</b> está activada</li>
+          <li>Se renombraron las fuentes requeridas, ahora las fuentes requeridas son: <b>himno_numero, himno_titulo, verso_numero, verso_contenido</b></li>
+          <li>Ahora se mostrarán las fuentes requeridas faltantes al conectarse a <b>OBS Studio</b></li>
+          <li>Se agregó una sección de guías</li>
+        </ul>
+      </div>
+      <div>
+        <span class="font-bold">Guías</span>
+        <ul class="list-disc pl-6">
+          <li>
+            <a href="https://github.com/jhormanrus/himnario-adventista-broadcast/wiki/C%C3%B3mo-configurar-OBS-Studio-para-usar-el-Himnario-Adventista-Broadcast" target="_blank" rel="noopener noreferrer" class="link">
+              Cómo configurar OBS Studio para usar el Himnario Adventista Broadcast
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/jhormanrus/himnario-adventista-broadcast/wiki/C%C3%B3mo-configurar-el-servidor-WebSocket-en-OBS-Studio" target="_blank" rel="noopener noreferrer" class="link">
+              Cómo configurar el servidor WebSocket en OBS Studio
+            </a>
+          </li>
         </ul>
       </div>
       <div>
