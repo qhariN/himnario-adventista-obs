@@ -27,7 +27,7 @@ function close() {
 
 <template>
   <dialog ref="dialog" class="backdrop:bg-black backdrop:bg-opacity-50 w-full max-w-[280px] rounded-lg bg-light-background dark:bg-dark-background text-black dark:text-white p-0">
-    <div class="sticky top-0 inline-flex items-center bg-dark-background border-b border-dark-button-hover p-4 py-3 w-full text-base">
+    <div class="sticky top-0 inline-flex items-center bg-dark-background border-b border-dark-button-hover p-4 py-3 w-full text-base z-10">
       <h1 class="font-bold leading-none">
         {{ title }}
       </h1>
