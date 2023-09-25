@@ -13,6 +13,7 @@ import PreviousIcon from './icons/PreviousIcon.vue'
 import SearchIcon from './icons/SearchIcon.vue'
 import HymnSearcher from './HymnSearcher.vue'
 import SetupScene from './SetupScene.vue'
+import StopIcon from './icons/StopIcon.vue'
 
 const {
   connect,
@@ -131,7 +132,7 @@ async function showVerse(index: number) {
         <NextIcon />
       </button>
       <button @click="toHomeScene(true)" title="Detener" :disabled="!connected" type="button" class="btn w-8 h-8">
-        <div class="rounded-full w-4 h-4 bg-[currentcolor]"></div>
+        <StopIcon />
       </button>
     </form>
     <div class="space-y-2">
