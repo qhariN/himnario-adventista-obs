@@ -50,10 +50,6 @@ onMounted(() => {
         </ul>
       </div>
       <div>
-        <span class="font-bold">Creador</span>
-        <p><a href="https://github.com/jhormanrus" target="_blank" rel="noopener noreferrer" class="link">Jhorman Rus</a></p>
-      </div>
-      <div>
         <span class="font-bold">Repositorio</span>
         <p><a href="https://github.com/jhormanrus/himnario-adventista-broadcast" target="_blank" rel="noopener noreferrer" class="link">himnario-adventista-broadcast</a></p>
       </div>
