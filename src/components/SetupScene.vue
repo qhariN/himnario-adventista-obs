@@ -2,10 +2,10 @@
 import { ref, watch } from 'vue'
 import BasicDialog from './BasicDialog.vue'
 import { sceneStatus, store } from '@/store'
-import { connected, obs, useObs } from '@/composables/obs'
-import type { OBSEventTypes } from 'obs-websocket-js';
+import { useObs } from '@/composables/obs'
+import type { OBSEventTypes } from 'obs-websocket-js'
 
-const { getSceneItems, createScene, createSource } = useObs()
+const { on, connected, getSceneItems, createScene, createSource } = useObs()
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
@@ -15,9 +15,9 @@ watch(connected, async connected => {
   dialog.value!.open()
 })
 
-obs.on('SceneListChanged', checkScene)
-obs.on('SceneItemCreated', checkSource)
-obs.on('SceneItemRemoved', checkSource)
+on('SceneListChanged', checkScene)
+on('SceneItemCreated', checkSource)
+on('SceneItemRemoved', checkSource)
 
 function checkScene({ scenes }: OBSEventTypes['SceneListChanged']) {
   sceneStatus.scene = scenes.some(scene => scene.sceneName === store.onSearchHymnScene)

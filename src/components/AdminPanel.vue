@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
 import { store } from '@/store'
-import { connected, useObs } from '@/composables/obs'
+import { useObs } from '@/composables/obs'
 import { useHymn } from '@/composables/hymn'
 import { usePlayer } from '@/composables/player'
 import SettingsPanel from './SettingsPanel.vue'
@@ -18,6 +18,7 @@ import StopIcon from './icons/StopIcon.vue'
 const {
   connect,
   disconnect,
+  connected,
   setCurrentScene,
   setSourceVisibility,
   setSourceText

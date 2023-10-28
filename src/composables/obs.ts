@@ -2,9 +2,9 @@ import OBSWebSocket, { OBSWebSocketError } from 'obs-websocket-js'
 import { defaultValues, sceneStatus, store } from '../store'
 import { ref, type Ref } from 'vue'
 
-export const obs = new OBSWebSocket()
+const obs = new OBSWebSocket()
 
-export const connected: Ref<boolean> = ref(false)
+const connected: Ref<boolean> = ref(false)
 
 export function useObs() {
   async function connect() {
@@ -104,9 +104,15 @@ export function useObs() {
     }
   }
 
+  function on(event: 'SceneListChanged' | 'SceneItemCreated' | 'SceneItemRemoved', callback: (data: any) => void) {
+    obs.on(event, callback)
+  }
+
   return {
+    on,
     connect,
     disconnect,
+    connected,
     getSceneItems,
     setCurrentScene,
     setSourceVisibility,
