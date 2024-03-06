@@ -52,12 +52,11 @@ function normalizeWord(word: string) {
   <button @click="dialog!.open" title="Lista de himnos" type="button" class="btn w-8 h-8">
     <ListIcon />
   </button>
-  <BasicDialog ref="dialog" title="Himnario" class="h-full">
+  <BasicDialog ref="dialog" title="" class="h-full">
+    <template v-slot:header>
+      <input v-model="search" @input="filterHymns" type="search" class="input__text" id="search" placeholder="Buscar himno" data-test="search-hymn" />
+    </template>
     <div class="space-y-1">
-      <div class="flex flex-col mb-3">
-        <label for="search">Buscar himno</label>
-        <input v-model="search" @input="filterHymns" type="search" class="input__text" id="search" data-test="search-hymn" />
-      </div>
       <button @click="searchHymn(hymn.number)" v-for="hymn in filteredHymns" :key="hymn.id" type="button" class="bg-light-button-bg dark:bg-dark-button-bg hover:bg-light-button-hover dark:hover:bg-dark-button-hover w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background" data-test="hymn-item">
         <div class="px-2 py-1">
           {{ String(hymn.number).padStart(3, '0') }}
