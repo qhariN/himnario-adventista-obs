@@ -3,7 +3,7 @@ import type { OBSEventTypes } from 'obs-websocket-js'
 import { ref, watch } from 'vue'
 import { useObs } from '../composables/obs'
 import { sceneStatus, store } from '../store'
-import type BasicDialog from './BasicDialog.vue'
+import BasicDialog from './BasicDialog.vue'
 
 const { on, connected, getSceneItems, createScene, createSource } = useObs()
 
