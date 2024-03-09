@@ -1,7 +1,7 @@
-import type { HymnSequence } from '@/models/hymn'
-import sHymn from '@/services/HymnService'
-import { store } from '@/store'
-import { ref, type Ref } from 'vue'
+import { type Ref, ref } from 'vue'
+import type { HymnSequence } from '../models/hymn'
+import sHymn from '../services/HymnService'
+import { store } from '../store'
 
 export function useHymn() {
   const hymnIndex: Ref<number> = ref(0)
@@ -22,8 +22,10 @@ export function useHymn() {
     const hymnUrl = store.onlyInstrumental
       ? hymnData.value!.mp3UrlInstr
       : hymnData.value!.mp3Url
-    const hostUrl = `${store.musicHostUrl}/${store.onlyInstrumental? 'instrumental' : 'cantado'}/${encodeURIComponent(hymnData.value!.mp3Filename)}`
-    return store.musicHostUrl? hostUrl : hymnUrl
+    const hostUrl = `${store.musicHostUrl}/${
+      store.onlyInstrumental ? 'instrumental' : 'cantado'
+    }/${encodeURIComponent(hymnData.value!.mp3Filename)}`
+    return store.musicHostUrl ? hostUrl : hymnUrl
   }
 
   return {
@@ -31,6 +33,6 @@ export function useHymn() {
     hymnNumber,
     hymnData,
     searchHymn,
-    fileUrl
+    fileUrl,
   }
 }

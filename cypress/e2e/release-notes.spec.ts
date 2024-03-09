@@ -8,7 +8,7 @@ describe('Release Notes', () => {
   it('displays release notes at first visit', () => {
     cy.get('[data-test="release-notes"]')
       .should('be.visible')
-      .then($el => {
+      .then(($el) => {
         cy.wrap($el)
           .find('h1')
           .should('contain', 'Himnario Adventista Broadcast')

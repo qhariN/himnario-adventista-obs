@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import BasicDialog from './BasicDialog.vue'
-import { sceneStatus, store } from '@/store'
-import { useObs } from '@/composables/obs'
 import type { OBSEventTypes } from 'obs-websocket-js'
+import { ref, watch } from 'vue'
+import { useObs } from '../composables/obs'
+import { sceneStatus, store } from '../store'
+import type BasicDialog from './BasicDialog.vue'
 
 const { on, connected, getSceneItems, createScene, createSource } = useObs()
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
-watch(connected, async connected => {
+watch(connected, async (connected) => {
   if (!connected) return
-  if (sceneStatus.scene && Object.values(sceneStatus.source).every(v => v)) return
-  dialog.value!.open()
+  if (sceneStatus.scene && Object.values(sceneStatus.source).every((v) => v))
+    return
+  dialog.value?.open()
 })
 
 on('SceneListChanged', checkScene)
@@ -20,23 +21,38 @@ on('SceneItemCreated', checkSource)
 on('SceneItemRemoved', checkSource)
 
 function checkScene({ scenes }: OBSEventTypes['SceneListChanged']) {
-  sceneStatus.scene = scenes.some(scene => scene.sceneName === store.onSearchHymnScene)
+  sceneStatus.scene = scenes.some(
+    (scene) => scene.sceneName === store.onSearchHymnScene,
+  )
 }
 
-async function checkSource({ sceneName, sourceName }: OBSEventTypes['SceneItemCreated' | 'SceneItemRemoved']) {
+async function checkSource({
+  sceneName,
+  sourceName,
+}: OBSEventTypes['SceneItemCreated' | 'SceneItemRemoved']) {
   if (sceneName !== store.onSearchHymnScene) return
-  if (sourceName !== 'verso_contenido' && sourceName !== 'verso_numero' && sourceName !== 'himno_titulo' && sourceName !== 'himno_numero') return
+  if (
+    sourceName !== 'verso_contenido' &&
+    sourceName !== 'verso_numero' &&
+    sourceName !== 'himno_titulo' &&
+    sourceName !== 'himno_numero'
+  )
+    return
   await getSceneItems(store.onSearchHymnScene)
-  const sceneItem = store.sourceList.find(source => source.sourceName === sourceName)
-  sceneStatus.source[sourceName] = Boolean(sceneItem && sceneItem.inputKind === 'text_gdiplus_v2')
+  const sceneItem = store.sourceList.find(
+    (source) => source.sourceName === sourceName,
+  )
+  sceneStatus.source[sourceName] = Boolean(
+    sceneItem && sceneItem.inputKind === 'text_gdiplus_v2',
+  )
 }
 
 async function createSceneAndSources() {
-  !sceneStatus.scene && await createScene()
-  !sceneStatus.source.verso_contenido && await createSource('verso_contenido')
-  !sceneStatus.source.verso_numero && await createSource('verso_numero')
-  !sceneStatus.source.himno_titulo && await createSource('himno_titulo')
-  !sceneStatus.source.himno_numero && await createSource('himno_numero')
+  !sceneStatus.scene && (await createScene())
+  !sceneStatus.source.verso_contenido && (await createSource('verso_contenido'))
+  !sceneStatus.source.verso_numero && (await createSource('verso_numero'))
+  !sceneStatus.source.himno_titulo && (await createSource('himno_titulo'))
+  !sceneStatus.source.himno_numero && (await createSource('himno_numero'))
 }
 </script>
 

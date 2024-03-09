@@ -9,13 +9,15 @@ const sHymn = {
     return response.json()
   },
   async byNumber(_number: number): Promise<HymnSequence> {
-    const url = `${store.hymnalApiUrl || defaultValues.hymnalApiUrl}/hymn/${_number}`
+    const url = `${
+      store.hymnalApiUrl || defaultValues.hymnalApiUrl
+    }/hymn/${_number}`
     const response = await Fetch(url)
     if (response.status === 404) {
       return Promise.reject('Hymn not found')
     }
     return await response.json()
-  }
+  },
 }
 
 export default sHymn

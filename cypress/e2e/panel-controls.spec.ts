@@ -8,7 +8,7 @@ describe('Panel Controls', () => {
   it.skip('connects and disconnects', () => {
     cy.get('button[title="Conectar"]').click()
     cy.wait(1000)
-    cy.get('button[title="Conectar"]').should('not.exist')  
+    cy.get('button[title="Conectar"]').should('not.exist')
     cy.get('button[title="Desconectar"]').should('be.visible')
     cy.get('button[title="Desconectar"]').click()
     cy.get('button[title="Desconectar"]').should('not.exist')
@@ -19,14 +19,20 @@ describe('Panel Controls', () => {
     cy.get('input#number').type('25')
     cy.get('button[title="Buscar"]').click()
     cy.wait('@getHymn').its('response.statusCode').should('eq', 200)
-    cy.get('[data-test="hymn-title"]').should('contain', 'Reproduciendo: Siento la presencia del Señor')
+    cy.get('[data-test="hymn-title"]').should(
+      'contain',
+      'Reproduciendo: Siento la presencia del Señor',
+    )
     cy.get('audio>source').should('have.attr', 'src')
   })
 
   it('searches a hymn by pressing enter', () => {
     cy.get('input#number').type('25{enter}')
     cy.wait('@getHymn').its('response.statusCode').should('eq', 200)
-    cy.get('[data-test="hymn-title"]').should('contain', 'Reproduciendo: Siento la presencia del Señor')
+    cy.get('[data-test="hymn-title"]').should(
+      'contain',
+      'Reproduciendo: Siento la presencia del Señor',
+    )
     cy.get('audio>source').should('have.attr', 'src')
   })
 

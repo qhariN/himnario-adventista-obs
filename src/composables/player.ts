@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue'
+import { type Ref, ref } from 'vue'
 
 export function usePlayer() {
   const player: Ref<HTMLAudioElement | null> = ref(null)
@@ -21,16 +21,19 @@ export function usePlayer() {
 
   function fadeOutVolume(delay: number) {
     const originalVolume = player.value!.volume
-    return new Promise<void>(resolve => {
-      const interval = setInterval(() => {
-        if (player.value!.volume <= 0.01) {
-          player.value!.volume = 0
-          clearInterval(interval)
-          resolve()
-        } else {
-          player.value!.volume -= 0.01
-        }
-      }, delay / (originalVolume / 0.01))
+    return new Promise<void>((resolve) => {
+      const interval = setInterval(
+        () => {
+          if (player.value!.volume <= 0.01) {
+            player.value!.volume = 0
+            clearInterval(interval)
+            resolve()
+          } else {
+            player.value!.volume -= 0.01
+          }
+        },
+        delay / (originalVolume / 0.01),
+      )
     })
   }
 
@@ -52,6 +55,6 @@ export function usePlayer() {
     play,
     stop,
     onTimeUpdate,
-    onEnded
+    onEnded,
   }
 }

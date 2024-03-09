@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { store, defaultValues } from '../store'
+import { useObs } from '../composables/obs'
+import { defaultValues, store } from '../store'
 import BasicDialog from './BasicDialog.vue'
 import GearIcon from './icons/GearIcon.vue'
-import { useObs } from '@/composables/obs'
 
 const { connect, disconnect } = useObs()
 
@@ -13,7 +13,10 @@ async function closeDialog() {
   localStorage.setItem('onlyInstrumental', `${store.onlyInstrumental}`)
   localStorage.setItem('autoplayMusic', `${store.autoplayMusic}`)
   localStorage.setItem('autodriveVerses', `${store.autodriveVerses}`)
-  localStorage.setItem('onSearchSwitchToHymnScene', `${store.onSearchSwitchToHymnScene}`)
+  localStorage.setItem(
+    'onSearchSwitchToHymnScene',
+    `${store.onSearchSwitchToHymnScene}`,
+  )
   localStorage.setItem('onSearchHymnScene', `${store.onSearchHymnScene}`)
   localStorage.setItem('onMusicEndSwitchToScene', store.onMusicEndSwitchToScene)
   localStorage.setItem('obsWebsocketUrl', store.obsWebsocketUrl)

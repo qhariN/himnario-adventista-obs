@@ -10,8 +10,6 @@
     "test:e2e:dev": "start-server-and-test 'vite dev' http://localhost:5173 'cypress open --e2e'",
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.cypress-ct.json --composite false",
     "lint": "biome check .",
     "lint:fix": "biome check . --apply"
   },

@@ -1,6 +1,6 @@
 import OBSWebSocket, { OBSWebSocketError } from 'obs-websocket-js'
+import { type Ref, ref } from 'vue'
 import { defaultValues, sceneStatus, store } from '../store'
-import { ref, type Ref } from 'vue'
 
 const obs = new OBSWebSocket()
 
@@ -12,10 +12,12 @@ export function useObs() {
     try {
       await obs.connect(url)
       await getScenes()
-      if (store.sceneList.find(s => s.sceneName === store.onSearchHymnScene)) {
+      if (
+        store.sceneList.find((s) => s.sceneName === store.onSearchHymnScene)
+      ) {
         sceneStatus.scene = true
         await getSceneItems(store.onSearchHymnScene)
-        const items = store.sourceList.map(s => s.sourceName)
+        const items = store.sourceList.map((s) => s.sourceName)
         sceneStatus.source.himno_numero = items.includes('himno_numero')
         sceneStatus.source.himno_titulo = items.includes('himno_titulo')
         sceneStatus.source.verso_numero = items.includes('verso_numero')
@@ -26,7 +28,7 @@ export function useObs() {
           himno_numero: false,
           himno_titulo: false,
           verso_numero: false,
-          verso_contenido: false
+          verso_contenido: false,
         }
       }
       connected.value = true
@@ -44,7 +46,7 @@ export function useObs() {
     const { scenes } = await obs.call('GetSceneList')
     store.sceneList = scenes
   }
-  
+
   async function getSceneItems(sceneName: string) {
     let { sceneItems } = await obs.call('GetSceneItemList', { sceneName })
     // Get group scene items
@@ -52,12 +54,12 @@ export function useObs() {
     for (const item of sceneItems) {
       if (!item.isGroup) continue
       const { sceneItems } = await obs.call('GetGroupSceneItemList', {
-        sceneName: item.sourceName as string
+        sceneName: item.sourceName as string,
       })
-      sceneItems.map(i => i.groupName = item.sourceName)
+      sceneItems.map((i) => (i.groupName = item.sourceName))
       groupSceneItems.push(...sceneItems)
     }
-    sceneItems = sceneItems.filter(item => !item.isGroup)
+    sceneItems = sceneItems.filter((item) => !item.isGroup)
     sceneItems.push(...groupSceneItems)
     // Set source list
     store.sourceList = sceneItems
@@ -68,20 +70,20 @@ export function useObs() {
   }
 
   async function setSourceVisibility(sourceName: string, visible: boolean) {
-    const sceneItem = store.sourceList.find(s => s.sourceName === sourceName)
+    const sceneItem = store.sourceList.find((s) => s.sourceName === sourceName)
     await obs.call('SetSceneItemEnabled', {
-      sceneName: sceneItem.groupName?? store.onSearchHymnScene,
+      sceneName: sceneItem.groupName ?? store.onSearchHymnScene,
       sceneItemId: sceneItem.sceneItemId,
-      sceneItemEnabled: visible
+      sceneItemEnabled: visible,
     })
   }
 
-  async function setSourceText(sourceName: string, text: string = '') {
+  async function setSourceText(sourceName: string, text = '') {
     await obs.call('SetInputSettings', {
       inputName: sourceName,
       inputSettings: {
-        text: text
-      }
+        text: text,
+      },
     })
   }
 
@@ -89,12 +91,18 @@ export function useObs() {
     await obs.call('CreateScene', { sceneName: store.onSearchHymnScene })
   }
 
-  async function createSource(inputName: 'himno_numero' | 'himno_titulo' | 'verso_numero' | 'verso_contenido') {
+  async function createSource(
+    inputName:
+      | 'himno_numero'
+      | 'himno_titulo'
+      | 'verso_numero'
+      | 'verso_contenido',
+  ) {
     try {
       await obs.call('CreateInput', {
         sceneName: store.onSearchHymnScene,
         inputName,
-        inputKind: 'text_gdiplus_v2'
+        inputKind: 'text_gdiplus_v2',
       })
     } catch (error) {
       if (!(error instanceof OBSWebSocketError)) return
@@ -104,7 +112,10 @@ export function useObs() {
     }
   }
 
-  function on(event: 'SceneListChanged' | 'SceneItemCreated' | 'SceneItemRemoved', callback: (data: any) => void) {
+  function on(
+    event: 'SceneListChanged' | 'SceneItemCreated' | 'SceneItemRemoved',
+    callback: (data: any) => void,
+  ) {
     obs.on(event, callback)
   }
 
@@ -118,6 +129,6 @@ export function useObs() {
     setSourceVisibility,
     setSourceText,
     createScene,
-    createSource
+    createSource,
   }
 }

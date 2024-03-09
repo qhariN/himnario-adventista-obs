@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
-import { store } from '@/store'
-import { useObs } from '@/composables/obs'
-import { useHymn } from '@/composables/hymn'
-import { usePlayer } from '@/composables/player'
-import SettingsPanel from './SettingsPanel.vue'
+import { useHymn } from '../composables/hymn'
+import { useObs } from '../composables/obs'
+import { usePlayer } from '../composables/player'
+import { store } from '../store'
 import AboutApp from './AboutApp.vue'
 import AutodriveButton from './AutodriveButton.vue'
+import HymnSearcher from './HymnSearcher.vue'
+import SettingsPanel from './SettingsPanel.vue'
+import SetupScene from './SetupScene.vue'
 import HomeIcon from './icons/HomeIcon.vue'
 import NextIcon from './icons/NextIcon.vue'
 import PreviousIcon from './icons/PreviousIcon.vue'
 import SearchIcon from './icons/SearchIcon.vue'
-import HymnSearcher from './HymnSearcher.vue'
-import SetupScene from './SetupScene.vue'
 import StopIcon from './icons/StopIcon.vue'
 
 const {
@@ -21,30 +21,19 @@ const {
   connected,
   setCurrentScene,
   setSourceVisibility,
-  setSourceText
+  setSourceText,
 } = useObs()
 
-const {
-  hymnIndex,
-  hymnNumber,
-  hymnData,
-  searchHymn,
-  fileUrl
-} = useHymn()
+const { hymnIndex, hymnNumber, hymnData, searchHymn, fileUrl } = useHymn()
 
-const {
-  onTimeUpdate,
-  onEnded,
-  player: playerElement,
-  ...player
-} = usePlayer()
+const { onTimeUpdate, onEnded, player: playerElement, ...player } = usePlayer()
 
 onMounted(() => {
   onTimeUpdate(() => handleMusicTimestamp())
   onEnded(() => toHomeScene())
 })
 
-watch(hymnIndex, async index => {
+watch(hymnIndex, async (index) => {
   if (index === 0) return
   await showVerse(index - 1)
   if (!store.onSearchSwitchToHymnScene || !store.onSearchHymnScene) return
@@ -60,7 +49,11 @@ async function search(number: number | string) {
 
 function handleMusicTimestamp() {
   if (!connected.value || !store.autodriveVerses) return
-  const nextSequence = hymnData.value!.sequence.filter(v => v.timestamp && (v.timestamp - 0.5) < player.currentTime.value).reverse()[0]
+  const nextSequence = hymnData
+    .value!.sequence.filter(
+      (v) => v.timestamp && v.timestamp - 0.5 < player.currentTime.value,
+    )
+    .reverse()[0]
   const position = hymnData.value!.sequence.indexOf(nextSequence) + 1
   if (nextSequence && position !== hymnIndex.value) {
     hymnIndex.value = position
@@ -77,7 +70,8 @@ async function goTitle() {
 async function toHomeScene(fadeoutMusic = false) {
   if (fadeoutMusic) await player.stop()
   if (!connected.value) return
-  if (store.onMusicEndSwitchToScene) await setCurrentScene(store.onMusicEndSwitchToScene)
+  if (store.onMusicEndSwitchToScene)
+    await setCurrentScene(store.onMusicEndSwitchToScene)
 }
 
 async function showTitle() {
@@ -91,8 +85,8 @@ async function showTitle() {
 
 async function showVerse(index: number) {
   const sequence = hymnData.value!.sequence[index]
-  const verse = hymnData.value?.verses.find(v => v.id === sequence.verseId)
-  const content = verse?.contents.find(c => c.id === sequence.verseContentId)
+  const verse = hymnData.value?.verses.find((v) => v.id === sequence.verseId)
+  const content = verse?.contents.find((c) => c.id === sequence.verseContentId)
   const verseNumber = verse?.number === 0 ? 'Coro' : String(verse?.number)
   await setSourceVisibility('himno_numero', false)
   await setSourceVisibility('himno_titulo', false)

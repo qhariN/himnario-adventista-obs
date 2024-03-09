@@ -9,7 +9,7 @@ describe('Hymn Searcher', () => {
   })
 
   it('has a list of hymns', () => {
-    cy.get('[data-test="hymn-item"]') 
+    cy.get('[data-test="hymn-item"]')
       .should('have.length', 613)
       .first()
       .should('contain', 'Cantad Alegres')
@@ -18,17 +18,17 @@ describe('Hymn Searcher', () => {
   })
 
   it('selects a hymn', () => {
-    cy.get('[data-test="hymn-item"]')
-      .first()
-      .click()
+    cy.get('[data-test="hymn-item"]').first().click()
 
-    cy.get('[data-test="hymn-title"]').should('contain', 'Reproduciendo: Cantad Alegres')
+    cy.get('[data-test="hymn-title"]').should(
+      'contain',
+      'Reproduciendo: Cantad Alegres',
+    )
   })
 
   describe('when searching', () => {
     it('shows only the hymns that match the search', () => {
-      cy.get('[data-test="search-hymn"]')
-        .type('Cantad Alegres')
+      cy.get('[data-test="search-hymn"]').type('Cantad Alegres')
 
       cy.get('[data-test="hymn-item"]')
         .should('have.length', 1)
@@ -36,8 +36,7 @@ describe('Hymn Searcher', () => {
     })
 
     it('is diacritics insensitive', () => {
-      cy.get('[data-test="search-hymn"]')
-        .type('da gloria al senor')
+      cy.get('[data-test="search-hymn"]').type('da gloria al senor')
 
       cy.get('[data-test="hymn-item"]')
         .should('have.length', 1)

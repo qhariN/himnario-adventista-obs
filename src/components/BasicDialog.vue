@@ -5,23 +5,23 @@ import CloseIcon from './icons/CloseIcon.vue'
 defineProps({
   title: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 defineExpose({
   open,
-  close
+  close,
 })
 
 const dialog = ref<HTMLDialogElement | null>(null)
 
 function open() {
-  dialog.value!.showModal()
+  dialog.value?.showModal()
 }
 
 function close() {
-  dialog.value!.close()
+  dialog.value?.close()
 }
 </script>
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import BasicDialog from './BasicDialog.vue'
-import sHymn from '../services/HymnService'
-import ListIcon from './icons/ListIcon.vue'
 import type { Hymn } from '../models/hymn'
+import sHymn from '../services/HymnService'
+import BasicDialog from './BasicDialog.vue'
+import ListIcon from './icons/ListIcon.vue'
 import PlayIcon from './icons/PlayIcon.vue'
 
 const emit = defineEmits(['onPlayHymn'])
@@ -24,16 +24,19 @@ async function list() {
 
 function searchHymn(hymnNumber: number) {
   emit('onPlayHymn', hymnNumber)
-  dialog.value!.close()
+  dialog.value?.close()
 }
 
 function filterHymns() {
   if (search.value.length > 0) {
-    filteredHymns.value = hymns.value.filter(hymn => {
+    filteredHymns.value = hymns.value.filter((hymn) => {
       const parsedNumber = String(hymn.number)
       const parsedTitle = normalizeWord(hymn.title.toLowerCase())
       const parsedSearch = normalizeWord(search.value.toLowerCase())
-      return parsedNumber.includes(parsedSearch) || parsedTitle.includes(parsedSearch)
+      return (
+        parsedNumber.includes(parsedSearch) ||
+        parsedTitle.includes(parsedSearch)
+      )
     })
   } else {
     filteredHymns.value = hymns.value
