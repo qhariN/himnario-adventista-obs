@@ -19,13 +19,21 @@ export function useHymn() {
   }
 
   function fileUrl() {
-    const hymnUrl = store.onlyInstrumental
-      ? hymnData.value!.mp3UrlInstr
-      : hymnData.value!.mp3Url
+    const hymnUrl = useProxy(
+      store.onlyInstrumental
+        ? hymnData.value!.mp3UrlInstr
+        : hymnData.value!.mp3Url
+    )
     const hostUrl = `${store.musicHostUrl}/${
       store.onlyInstrumental ? 'instrumental' : 'cantado'
     }/${encodeURIComponent(hymnData.value!.mp3Filename)}`
     return store.musicHostUrl ? hostUrl : hymnUrl
+  }
+
+  function useProxy(url: string) {
+    const proxy = 'https://drive.lienuc.com'
+    const newUrl = url.replace('https://docs.google.com', proxy)
+    return newUrl
   }
 
   return {

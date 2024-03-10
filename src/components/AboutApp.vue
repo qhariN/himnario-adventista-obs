@@ -29,9 +29,8 @@ onMounted(() => {
       <div>
         <span class="font-bold">Notas de la versión</span>
         <ul class="list-disc pl-6">
-          <li>Se renombraron las fuentes requeridas, ahora las fuentes requeridas son: <b>himno_numero, himno_titulo, verso_numero, verso_contenido</b></li>
-          <li>Ahora se mostrarán las fuentes requeridas faltantes al conectarse a <b>OBS Studio</b></li>
-          <li>Se agregó una sección de guías</li>
+          <li>Se reorganizó la interfaz del buscador de himnos para una mejor experiencia de usuario</li>
+          <li>Se resolvió un error que impedía que los audios se cargaran correctamente</li>
         </ul>
       </div>
       <div>
