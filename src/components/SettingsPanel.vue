@@ -24,7 +24,7 @@ async function closeDialog() {
   localStorage.setItem('hymnalApiUrl', store.hymnalApiUrl)
   await disconnect()
   await connect()
-  dialog.value!.close()
+  dialog.value?.close()
 }
 </script>
 

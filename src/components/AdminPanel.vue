@@ -36,7 +36,8 @@ onMounted(() => {
 watch(hymnIndex, async (index) => {
   if (index === 0) return
   await showVerse(index - 1)
-  if (!store.onSearchSwitchToHymnScene || !store.onSearchHymnScene) return
+  if (!store.onSearchSwitchToHymnScene) return
+  if (!store.onSearchHymnScene) return
   await setCurrentScene(store.onSearchHymnScene)
 })
 
@@ -48,13 +49,14 @@ async function search(number: number | string) {
 }
 
 function handleMusicTimestamp() {
-  if (!connected.value || !store.autodriveVerses) return
-  const nextSequence = hymnData
-    .value!.sequence.filter(
-      (v) => v.timestamp && v.timestamp - 0.5 < player.currentTime.value,
-    )
+  if (!connected.value) return
+  if (!store.autodriveVerses) return
+  const nextSequence = hymnData.value?.sequence
+    .filter((v) => v.timestamp && v.timestamp - 0.5 < player.currentTime.value)
     .reverse()[0]
-  const position = hymnData.value!.sequence.indexOf(nextSequence) + 1
+  if (!nextSequence) return
+  if (!hymnData.value) return
+  const position = hymnData.value.sequence.indexOf(nextSequence) + 1
   if (nextSequence && position !== hymnIndex.value) {
     hymnIndex.value = position
   }
@@ -63,7 +65,8 @@ function handleMusicTimestamp() {
 async function goTitle() {
   hymnIndex.value = 0
   await showTitle()
-  if (!store.onSearchSwitchToHymnScene || !store.onSearchHymnScene) return
+  if (!store.onSearchSwitchToHymnScene) return
+  if (!store.onSearchHymnScene) return
   await setCurrentScene(store.onSearchHymnScene)
 }
 
@@ -84,7 +87,8 @@ async function showTitle() {
 }
 
 async function showVerse(index: number) {
-  const sequence = hymnData.value!.sequence[index]
+  if (!hymnData.value) return
+  const sequence = hymnData.value.sequence[index]
   const verse = hymnData.value?.verses.find((v) => v.id === sequence.verseId)
   const content = verse?.contents.find((c) => c.id === sequence.verseContentId)
   const verseNumber = verse?.number === 0 ? 'Coro' : String(verse?.number)

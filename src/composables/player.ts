@@ -5,31 +5,34 @@ export function usePlayer() {
   const currentTime = ref(0)
 
   function load() {
-    player.value!.load()
+    player.value?.load()
   }
 
   function play() {
-    player.value!.play()
+    player.value?.play()
   }
 
   async function stop() {
+    if (!player.value) return
     const delay = 2000
     await fadeOutVolume(delay)
-    player.value!.pause()
-    player.value!.volume = 1
+    player.value.pause()
+    player.value.volume = 1
   }
 
   function fadeOutVolume(delay: number) {
-    const originalVolume = player.value!.volume
+    if (!player.value) return
+    const originalVolume = player.value.volume
     return new Promise<void>((resolve) => {
       const interval = setInterval(
         () => {
-          if (player.value!.volume <= 0.01) {
-            player.value!.volume = 0
+          if (!player.value) return
+          if (player.value.volume <= 0.01) {
+            player.value.volume = 0
             clearInterval(interval)
             resolve()
           } else {
-            player.value!.volume -= 0.01
+            player.value.volume -= 0.01
           }
         },
         delay / (originalVolume / 0.01),
@@ -38,14 +41,15 @@ export function usePlayer() {
   }
 
   function onTimeUpdate(callback: () => void) {
-    player.value!.addEventListener('timeupdate', () => {
-      currentTime.value = player.value!.currentTime
+    player.value?.addEventListener('timeupdate', () => {
+      if (!player.value) return
+      currentTime.value = player.value.currentTime
       callback()
     })
   }
 
   function onEnded(callback: () => void) {
-    player.value!.addEventListener('ended', callback)
+    player.value?.addEventListener('ended', callback)
   }
 
   return {

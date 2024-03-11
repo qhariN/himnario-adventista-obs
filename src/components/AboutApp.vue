@@ -11,7 +11,7 @@ onMounted(() => {
   if (store.isFirstTimeInVersion) {
     store.isFirstTimeInVersion = false
     localStorage.setItem('version', packageJson.version)
-    dialog.value!.open()
+    dialog.value?.open()
   }
 })
 </script>

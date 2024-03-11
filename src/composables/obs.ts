@@ -33,7 +33,7 @@ export function useObs() {
       }
       connected.value = true
     } catch {
-      alert(`Conexión fallida`)
+      alert('Conexión fallida')
     }
   }
 
@@ -56,7 +56,10 @@ export function useObs() {
       const { sceneItems } = await obs.call('GetGroupSceneItemList', {
         sceneName: item.sourceName as string,
       })
-      sceneItems.map((i) => (i.groupName = item.sourceName))
+      sceneItems.map((i) => {
+        i.groupName = item.sourceName
+        return i
+      })
       groupSceneItems.push(...sceneItems)
     }
     sceneItems = sceneItems.filter((item) => !item.isGroup)

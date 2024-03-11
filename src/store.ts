@@ -5,12 +5,11 @@ export const store = reactive({
   sceneList: [] as any[],
   sourceList: [] as any[],
   isFirstTimeInVersion: localStorage.getItem('version') !== packageJson.version,
-  onlyInstrumental:
-    localStorage.getItem('onlyInstrumental') === 'true' || false,
-  autoplayMusic: localStorage.getItem('autoplayMusic') === 'true' || false,
-  autodriveVerses: localStorage.getItem('autodriveVerses') === 'true' || false,
+  onlyInstrumental: localStorage.getItem('onlyInstrumental') === 'true',
+  autoplayMusic: localStorage.getItem('autoplayMusic') === 'true',
+  autodriveVerses: localStorage.getItem('autodriveVerses') === 'true',
   onSearchSwitchToHymnScene:
-    localStorage.getItem('onSearchSwitchToHymnScene') === 'true' || false,
+    localStorage.getItem('onSearchSwitchToHymnScene') === 'true',
   onSearchHymnScene: localStorage.getItem('onSearchHymnScene') || 'Himnario',
   onMusicEndSwitchToScene:
     localStorage.getItem('onMusicEndSwitchToScene') || '',
