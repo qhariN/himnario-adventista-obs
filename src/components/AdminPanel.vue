@@ -138,7 +138,7 @@ async function showVerse(index: number) {
       <p data-test="hymn-title">
         Reproduciendo: <span class="text-muted">{{ hymnData?.title }}</span>
       </p>
-      <audio ref="playerElement" crossorigin="anonymous" controls>
+      <audio ref="playerElement" :crossorigin="store.musicHostUrl ? undefined : 'anonymous'" controls>
         <source :src="hymnData && fileUrl()" type="audio/mpeg">
         Tu navegador no soporta el elemento <code>audio</code>.
       </audio>
