@@ -9,20 +9,15 @@ jobs:
 
     steps:
       - name: 👍 Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: ❇️ Use Node.js
-        uses: actions/setup-node@v3
+      - name: 🧄 Use Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 18.x
-
-      - name: 📥 Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          bun-version: latest
 
       - name: 📥 Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: 🧑‍🔬 Run tests
-        run: pnpm test:e2e
+        run: bun test:e2e
