@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.6.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.6.3/schema.json",
   "linter": {
     "rules": {
       "all": true,
@@ -7,8 +7,8 @@
         "noUndeclaredVariables": "off"
       },
       "style": {
-        "useBlockStatements": "off",
-        "useFilenamingConvention": "off"
+        "useFilenamingConvention": "off",
+        "noDefaultExport": "off"
       },
       "nursery": {
         "all": false

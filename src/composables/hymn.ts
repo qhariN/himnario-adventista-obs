@@ -23,7 +23,7 @@ export function useHymn() {
     const hymnUrl = useProxy(
       store.onlyInstrumental
         ? hymnData.value.mp3UrlInstr
-        : hymnData.value.mp3Url
+        : hymnData.value.mp3Url,
     )
     const hostUrl = `${store.musicHostUrl}/${
       store.onlyInstrumental ? 'instrumental' : 'cantado'
