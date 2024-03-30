@@ -1,0 +1,55 @@
+name: 🚀 Deploy
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  test:
+    name: 🧪 E2E Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 👍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🧄 Use Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: 📥 Install dependencies
+        run: bun install
+
+      - name: 🧑‍🔬 Run tests
+        run: bun test:e2e
+
+  publish:
+    name: 🚀 Publish
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: 👍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🧄 Use Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: 📥 Install dependencies
+        run: bun install
+  
+      - name: ⚒️ Build project
+        run: bun run build
+
+      - name: ⚒️ Build executable
+        run: cp scripts/serve.ts dist && cd dist && bun build serve.ts --compile --outfile Himnario
+
+      - name: 🗒️ Generate release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: dist/Himnario
