@@ -10,9 +10,8 @@ const { on, connected, getSceneItems, createScene, createSource } = useObs()
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
 watch(connected, async (connected) => {
-  if (!connected) return
-  if (sceneStatus.scene && Object.values(sceneStatus.source).every((v) => v))
-    return
+  if (!connected) { return }
+  if (sceneStatus.scene && Object.values(sceneStatus.source).every((v) => v)) { return }
   dialog.value?.open()
 })
 
@@ -30,29 +29,28 @@ async function checkSource({
   sceneName,
   sourceName,
 }: OBSEventTypes['SceneItemCreated' | 'SceneItemRemoved']) {
-  if (sceneName !== store.onSearchHymnScene) return
-  if (
-    sourceName !== 'verso_contenido' &&
-    sourceName !== 'verso_numero' &&
-    sourceName !== 'himno_titulo' &&
-    sourceName !== 'himno_numero'
-  )
-    return
+  if (sceneName !== store.onSearchHymnScene) { return }
+  let source: keyof typeof sceneStatus.source
+  if (sourceName === 'verso_contenido') { source = 'versoContenido' }
+  else if (sourceName === 'verso_numero') { source = 'versoNumero' }
+  else if (sourceName === 'himno_titulo') { source = 'himnoTitulo' }
+  else if (sourceName === 'himno_numero') { source = 'himnoNumero' }
+  else { return }
   await getSceneItems(store.onSearchHymnScene)
   const sceneItem = store.sourceList.find(
     (source) => source.sourceName === sourceName,
   )
-  sceneStatus.source[sourceName] = Boolean(
+  sceneStatus.source[source] = Boolean(
     sceneItem && sceneItem.inputKind === 'text_gdiplus_v2',
   )
 }
 
 async function createSceneAndSources() {
   !sceneStatus.scene && (await createScene())
-  !sceneStatus.source.verso_contenido && (await createSource('verso_contenido'))
-  !sceneStatus.source.verso_numero && (await createSource('verso_numero'))
-  !sceneStatus.source.himno_titulo && (await createSource('himno_titulo'))
-  !sceneStatus.source.himno_numero && (await createSource('himno_numero'))
+  !sceneStatus.source.versoContenido && (await createSource('verso_contenido'))
+  !sceneStatus.source.versoNumero && (await createSource('verso_numero'))
+  !sceneStatus.source.himnoTitulo && (await createSource('himno_titulo'))
+  !sceneStatus.source.himnoNumero && (await createSource('himno_numero'))
 }
 </script>
 
@@ -67,7 +65,7 @@ async function createSceneAndSources() {
     <div class="space-y-1">
       <div class="bg-light-button-bg dark:bg-dark-button-bg w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background">
         <div class="px-2 py-1 flex items-center">
-          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.himno_numero? 'bg-green' : 'bg-red'"></div>
+          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.himnoNumero? 'bg-green' : 'bg-red'"></div>
         </div>
         <div class="px-2 py-1 grow flex">
           himno_numero
@@ -76,7 +74,7 @@ async function createSceneAndSources() {
       </div>
       <div class="bg-light-button-bg dark:bg-dark-button-bg w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background">
         <div class="px-2 py-1 flex items-center">
-          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.himno_titulo? 'bg-green' : 'bg-red'"></div>
+          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.himnoTitulo? 'bg-green' : 'bg-red'"></div>
         </div>
         <div class="px-2 py-1 grow flex">
           himno_titulo
@@ -85,7 +83,7 @@ async function createSceneAndSources() {
       </div>
       <div class="bg-light-button-bg dark:bg-dark-button-bg w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background">
         <div class="px-2 py-1 flex items-center">
-          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.verso_numero? 'bg-green' : 'bg-red'"></div>
+          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.versoNumero? 'bg-green' : 'bg-red'"></div>
         </div>
         <div class="px-2 py-1 grow flex">
           verso_numero
@@ -94,7 +92,7 @@ async function createSceneAndSources() {
       </div>
       <div class="bg-light-button-bg dark:bg-dark-button-bg w-full flex items-stretch rounded divide-x divide-light-background dark:divide-dark-background">
         <div class="px-2 py-1 flex items-center">
-          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.verso_contenido? 'bg-green' : 'bg-red'"></div>
+          <div class="rounded-full w-2 h-2" :class="sceneStatus.source.versoContenido? 'bg-green' : 'bg-red'"></div>
         </div>
         <div class="px-2 py-1 grow flex">
           verso_contenido

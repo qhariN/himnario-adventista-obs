@@ -21,10 +21,10 @@ export const store = reactive({
 export const sceneStatus = reactive({
   scene: false,
   source: {
-    himno_numero: false,
-    himno_titulo: false,
-    verso_numero: false,
-    verso_contenido: false,
+    himnoNumero: false,
+    himnoTitulo: false,
+    versoNumero: false,
+    versoContenido: false,
   },
 })
 

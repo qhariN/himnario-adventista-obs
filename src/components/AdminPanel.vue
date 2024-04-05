@@ -34,28 +34,28 @@ onMounted(() => {
 })
 
 watch(hymnIndex, async (index) => {
-  if (index === 0) return
+  if (index === 0) { return }
   await showVerse(index - 1)
-  if (!store.onSearchSwitchToHymnScene) return
-  if (!store.onSearchHymnScene) return
+  if (!store.onSearchSwitchToHymnScene) { return }
+  if (!store.onSearchHymnScene) { return }
   await setCurrentScene(store.onSearchHymnScene)
 })
 
 async function search(number: number | string) {
   await searchHymn(number)
   player.load()
-  if (connected.value) goTitle()
-  if (store.autoplayMusic) player.play()
+  if (connected.value) { goTitle() }
+  if (store.autoplayMusic) { player.play() }
 }
 
 function handleMusicTimestamp() {
-  if (!connected.value) return
-  if (!store.autodriveVerses) return
+  if (!connected.value) { return }
+  if (!store.autodriveVerses) { return }
   const nextSequence = hymnData.value?.sequence
     .filter((v) => v.timestamp && v.timestamp - 0.5 < player.currentTime.value)
     .reverse()[0]
-  if (!nextSequence) return
-  if (!hymnData.value) return
+  if (!nextSequence) { return }
+  if (!hymnData.value) { return }
   const position = hymnData.value.sequence.indexOf(nextSequence) + 1
   if (nextSequence && position !== hymnIndex.value) {
     hymnIndex.value = position
@@ -65,16 +65,17 @@ function handleMusicTimestamp() {
 async function goTitle() {
   hymnIndex.value = 0
   await showTitle()
-  if (!store.onSearchSwitchToHymnScene) return
-  if (!store.onSearchHymnScene) return
+  if (!store.onSearchSwitchToHymnScene) { return }
+  if (!store.onSearchHymnScene) { return }
   await setCurrentScene(store.onSearchHymnScene)
 }
 
 async function toHomeScene(fadeoutMusic = false) {
-  if (fadeoutMusic) await player.stop()
-  if (!connected.value) return
-  if (store.onMusicEndSwitchToScene)
+  if (fadeoutMusic) { await player.stop() }
+  if (!connected.value) { return }
+  if (store.onMusicEndSwitchToScene) {
     await setCurrentScene(store.onMusicEndSwitchToScene)
+  }
 }
 
 async function showTitle() {
@@ -87,7 +88,7 @@ async function showTitle() {
 }
 
 async function showVerse(index: number) {
-  if (!hymnData.value) return
+  if (!hymnData.value) { return }
   const sequence = hymnData.value.sequence[index]
   const verse = hymnData.value?.verses.find((v) => v.id === sequence.verseId)
   const content = verse?.contents.find((c) => c.id === sequence.verseContentId)

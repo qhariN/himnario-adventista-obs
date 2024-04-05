@@ -18,17 +18,17 @@ export function useObs() {
         sceneStatus.scene = true
         await getSceneItems(store.onSearchHymnScene)
         const items = store.sourceList.map((s) => s.sourceName)
-        sceneStatus.source.himno_numero = items.includes('himno_numero')
-        sceneStatus.source.himno_titulo = items.includes('himno_titulo')
-        sceneStatus.source.verso_numero = items.includes('verso_numero')
-        sceneStatus.source.verso_contenido = items.includes('verso_contenido')
+        sceneStatus.source.himnoNumero = items.includes('himno_numero')
+        sceneStatus.source.himnoTitulo = items.includes('himno_titulo')
+        sceneStatus.source.versoNumero = items.includes('verso_numero')
+        sceneStatus.source.versoContenido = items.includes('verso_contenido')
       } else {
         sceneStatus.scene = false
         sceneStatus.source = {
-          himno_numero: false,
-          himno_titulo: false,
-          verso_numero: false,
-          verso_contenido: false,
+          himnoNumero: false,
+          himnoTitulo: false,
+          versoNumero: false,
+          versoContenido: false,
         }
       }
       connected.value = true
@@ -50,9 +50,9 @@ export function useObs() {
   async function getSceneItems(sceneName: string) {
     let { sceneItems } = await obs.call('GetSceneItemList', { sceneName })
     // Get group scene items
-    const groupSceneItems = [] as any[]
+    const groupSceneItems = []
     for (const item of sceneItems) {
-      if (!item.isGroup) continue
+      if (!item.isGroup) { continue }
       const { sceneItems } = await obs.call('GetGroupSceneItemList', {
         sceneName: item.sourceName as string,
       })
@@ -108,7 +108,7 @@ export function useObs() {
         inputKind: 'text_gdiplus_v2',
       })
     } catch (error) {
-      if (!(error instanceof OBSWebSocketError)) return
+      if (!(error instanceof OBSWebSocketError)) { return }
       if (error.code === 601) {
         alert(`Este nombre ya está en uso: ${inputName}`)
       }
