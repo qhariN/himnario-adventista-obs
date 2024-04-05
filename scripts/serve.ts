@@ -1,13 +1,18 @@
-console.info('➜  Local:   http://localhost:3000/')
+console.info('➜  Local:   http://localhost/')
 
 Bun.serve({
   port: 80,
   fetch(request) {
     const path = new URL(request.url).pathname
-    if (path === '/favicon.ico') {
-      return new Response(null, { status: 404 })
+    if (path === '/') {
+      return new Response(Bun.file('./index.html'))
     }
-    const url = path === '/' ? '/index.html' : path
-    return new Response(Bun.file(`.${url}`))
+    if (path === '/assets/index.js') {
+      return new Response(Bun.file('./assets/index.js'))
+    }
+    if (path === '/assets/index.css') {
+      return new Response(Bun.file('./assets/index.css'))
+    }
+    return new Response(null, { status: 404 })
   },
 })
