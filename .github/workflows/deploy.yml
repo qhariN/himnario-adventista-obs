@@ -36,23 +36,15 @@ jobs:
 
       - name: 🧄 Use Bun
         uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: 📥 Install dependencies
-        run: bun install --production
-  
-      - name: ⚒️ Build project
-        run: bun run build --config vite-no-hash.config.ts
 
       - name: ⚒️ Build executable
-        run: cp scripts/serve.ts dist && cd dist && bun build serve.ts --compile --outfile Himnario
+        run: bun scripts/build-executable.ts
 
       - name: ⬆️ Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux-executable
-          path: dist
+          name: himnario-adventista-linux
+          path: himnario-adventista
           if-no-files-found: error
 
   build-macos-executable:
@@ -66,23 +58,15 @@ jobs:
 
       - name: 🧄 Use Bun
         uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: 📥 Install dependencies
-        run: bun install --production
-  
-      - name: ⚒️ Build project
-        run: bun run build --config vite-no-hash.config.ts
 
       - name: ⚒️ Build executable
-        run: cp scripts/serve.ts dist && cd dist && bun build serve.ts --compile --outfile Himnario
+        run: bun scripts/build-executable.ts
 
       - name: ⬆️ Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: macos-executable
-          path: dist
+          name: himnario-adventista-macos
+          path: himnario-adventista
           if-no-files-found: error
 
   build-windows-executable:
@@ -96,23 +80,15 @@ jobs:
 
       - name: 🧄 Use Bun
         uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: canary
-
-      - name: 📥 Install dependencies
-        run: bun install --production
-  
-      - name: ⚒️ Build project
-        run: bun run build --config vite-no-hash.config.ts
 
       - name: ⚒️ Build executable
-        run: cp scripts/serve.ts dist && cd dist && bun build serve.ts --compile --outfile Himnario.exe
+        run: bun scripts/build-executable.ts
 
       - name: ⬆️ Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows-executable
-          path: dist
+          name: himnario-adventista-windows
+          path: himnario-adventista
           if-no-files-found: error
 
   create-release:
@@ -125,7 +101,7 @@ jobs:
         uses: actions/download-artifact@v4
 
       - name: 📦 Zip executables
-        run: zip -r himnario-linux.zip linux-executable && zip -r himnario-macos.zip macos-executable && zip -r himnario-windows.zip windows-executable
+        run: zip -r himnario-linux.zip himnario-adventista-linux && zip -r himnario-macos.zip himnario-adventista-macos && zip -r himnario-windows.zip himnario-adventista-windows
 
       - name: 🗒️ Create release
         uses: softprops/action-gh-release@v2
