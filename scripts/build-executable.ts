@@ -1,4 +1,5 @@
 import { $, write } from 'bun'
+import Database from 'bun:sqlite'
 
 await $`git clone https://github.com/qhariN/himnario-adventista-api.git`
 
@@ -32,3 +33,10 @@ await $`cd himnario-adventista && bun i --production`
 await $`cd himnario-adventista && bun build src/index.ts --compile --outfile Himnario`
 
 await $`rm -rf himnario-adventista/node_modules`
+
+const db = new Database('himnario-adventista/src/database/himnario.db')
+const query = db.query('SELECT * FROM hymn')
+const hymns = query.all() as { mp3Url: string, mp3Filename: string }[]
+const responses = await Promise.all(hymns.map(async hymn => fetch(hymn.mp3Url)))
+const buffers = await Promise.all(responses.map(async response => response.arrayBuffer()))
+await Promise.all(buffers.map(async (buffer, i) => write(`himnario-adventista/assets/hymns/${hymns[i].mp3Filename}`, buffer)))
