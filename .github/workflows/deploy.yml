@@ -40,6 +40,12 @@ jobs:
       - name: ⚒️ Build executable
         run: bun scripts/build-executable.ts
 
+      - name: 💾 Save music files
+        uses: actions/cache/save@v4
+        with:
+          path: himnario-adventista/assets/hymns
+          key: cache-music
+
       - name: ⬆️ Upload artifact
         uses: actions/upload-artifact@v4
         with:
