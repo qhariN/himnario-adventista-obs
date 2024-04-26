@@ -2,8 +2,8 @@ name: 🚀 Deploy
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*.*.*"
 
 jobs:
   test:
@@ -39,12 +39,6 @@ jobs:
 
       - name: 🔨 Build executable
         run: bun scripts/build-executable.ts
-
-      - name: 💾 Save music files
-        uses: actions/cache/save@v4
-        with:
-          path: hymns
-          key: music-files
 
       - name: ⬆️ Upload artifact
         uses: actions/upload-artifact@v4
@@ -112,8 +106,20 @@ jobs:
           path: hymns
           key: music-files
 
-      - name: 📩 Copy music folder to executables
-        run: cp hymns himnario-adventista-linux/himnario-adventista/assets && cp hymns himnario-adventista-macos/himnario-adventista/assets && cp hymns himnario-adventista-windows/himnario-adventista/assets
+      - name: 📩 Copy music folder to Linux executable
+        run: |
+          mkdir -p himnario-adventista-linux/himnario-adventista/assets
+          cp -r hymns himnario-adventista-linux/himnario-adventista/assets
+
+      - name: 📩 Copy music folder to macOS executable
+        run: |
+          mkdir -p himnario-adventista-macos/himnario-adventista/assets
+          cp -r hymns himnario-adventista-macos/himnario-adventista/assets
+
+      - name: 📩 Copy music folder to Windows executable
+        run: |
+          mkdir -p himnario-adventista-windows/himnario-adventista/assets
+          cp -r hymns himnario-adventista-windows/himnario-adventista/assets
 
       - name: 📦 Zip executables
         run: zip -r himnario-linux.zip himnario-adventista-linux && zip -r himnario-macos.zip himnario-adventista-macos && zip -r himnario-windows.zip himnario-adventista-windows
