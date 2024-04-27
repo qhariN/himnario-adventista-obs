@@ -108,21 +108,24 @@ jobs:
 
       - name: 📩 Copy music folder to Linux executable
         run: |
-          mkdir -p himnario-adventista-linux/himnario-adventista/assets
-          cp -r hymns himnario-adventista-linux/himnario-adventista/assets
+          mkdir -p himnario-adventista-linux/assets
+          cp -r hymns himnario-adventista-linux/assets
 
       - name: 📩 Copy music folder to macOS executable
         run: |
-          mkdir -p himnario-adventista-macos/himnario-adventista/assets
-          cp -r hymns himnario-adventista-macos/himnario-adventista/assets
+          mkdir -p himnario-adventista-macos/assets
+          cp -r hymns himnario-adventista-macos/assets
 
       - name: 📩 Copy music folder to Windows executable
         run: |
-          mkdir -p himnario-adventista-windows/himnario-adventista/assets
-          cp -r hymns himnario-adventista-windows/himnario-adventista/assets
+          mkdir -p himnario-adventista-windows/assets
+          cp -r hymns himnario-adventista-windows/assets
 
       - name: 📦 Zip executables
-        run: zip -r himnario-linux.zip himnario-adventista-linux && zip -r himnario-macos.zip himnario-adventista-macos && zip -r himnario-windows.zip himnario-adventista-windows
+        run: |
+          zip -r himnario-linux.zip himnario-adventista-linux
+          zip -r himnario-macos.zip himnario-adventista-macos
+          zip -r himnario-windows.zip himnario-adventista-windows
 
       - name: 🗒️ Create release
         uses: softprops/action-gh-release@v2
