@@ -100,32 +100,38 @@ jobs:
       - name: ⬇️ Download artifacts
         uses: actions/download-artifact@v4
 
-      - name: ⬇️ Restore music files
+      - name: 🎵 Restore cantado files
         uses: actions/cache/restore@v4
         with:
-          path: hymns
-          key: music-files
+          path: cantado
+          key: cantado
 
-      - name: 📩 Copy music folder to Linux executable
-        run: |
-          mkdir -p himnario-adventista-linux/assets
-          cp -r hymns himnario-adventista-linux/assets
+      - name: 🎵 Restore instrumental files
+        uses: actions/cache/restore@v4
+        with:
+          path: instrumental
+          key: instrumental
 
-      - name: 📩 Copy music folder to macOS executable
+      - name: 📦 Prepare Linux executable
         run: |
-          mkdir -p himnario-adventista-macos/assets
-          cp -r hymns himnario-adventista-macos/assets
-
-      - name: 📩 Copy music folder to Windows executable
-        run: |
-          mkdir -p himnario-adventista-windows/assets
-          cp -r hymns himnario-adventista-windows/assets
-
-      - name: 📦 Zip executables
-        run: |
+          cp -r cantado himnario-adventista-linux/assets
+          cp -r instrumental himnario-adventista-linux/assets
           zip -r himnario-linux.zip himnario-adventista-linux
+          rm -rf himnario-adventista-linux
+
+      - name: 📦 Prepare MacOS executable
+        run: |
+          cp -r cantado himnario-adventista-macos/assets
+          cp -r instrumental himnario-adventista-macos/assets
           zip -r himnario-macos.zip himnario-adventista-macos
+          rm -rf himnario-adventista-macos
+
+      - name: 📦 Prepare Windows executable
+        run: |
+          cp -r cantado himnario-adventista-windows/assets
+          cp -r instrumental himnario-adventista-windows/assets
           zip -r himnario-windows.zip himnario-adventista-windows
+          rm -rf himnario-adventista-windows
 
       - name: 🗒️ Create release
         uses: softprops/action-gh-release@v2

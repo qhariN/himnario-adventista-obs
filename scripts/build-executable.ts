@@ -16,7 +16,7 @@ await write('himnario-adventista/api/assets/[...slug].ts', `import { file } from
 import type { CromoHandler } from 'cromo'
 
 export const GET: CromoHandler = ({ url, responseInit }) => {
-  const path = url.pathname
+  const path = decodeURIComponent(url.pathname)
   const asset = file(\`.\${path}\`)
   return new Response(asset, responseInit)
 }`)
@@ -29,6 +29,6 @@ await $`cp -r dist/* himnario-adventista && rm -rf dist`
 
 await $`cd himnario-adventista && bun i --production`
 
-await $`cd himnario-adventista && bun build src/index.ts --compile --outfile Himnario`
+await $`cd himnario-adventista && bun build src/index.ts --compile --minify --sourcemap --outfile Himnario`
 
 await $`rm -rf himnario-adventista/node_modules`
