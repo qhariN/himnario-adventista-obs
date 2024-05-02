@@ -2,8 +2,8 @@ name: 🚀 Deploy
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - main
 
 jobs:
   test:
@@ -37,8 +37,23 @@ jobs:
       - name: 🧄 Use Bun
         uses: oven-sh/setup-bun@v1
 
+      - name: Setup FFmpeg
+        uses: AnimMouse/setup-ffmpeg@v1
+
       - name: 🔨 Build executable
         run: bun scripts/build-executable.ts
+
+      - name: 💾 Save cantado files
+        uses: actions/cache/save@v4
+        with:
+          path: cantado
+          key: cantado
+
+      - name: 💾 Save instrumental files
+        uses: actions/cache/save@v4
+        with:
+          path: instrumental
+          key: instrumental
 
       - name: ⬆️ Upload artifact
         uses: actions/upload-artifact@v4
@@ -47,54 +62,54 @@ jobs:
           path: himnario-adventista
           if-no-files-found: error
 
-  build-macos-executable:
-    name: 🔨 Build MacOS executable
-    runs-on: macos-latest
-    needs: test
+  # build-macos-executable:
+  #   name: 🔨 Build MacOS executable
+  #   runs-on: macos-latest
+  #   needs: test
 
-    steps:
-      - name: 👍 Checkout
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: 👍 Checkout
+  #       uses: actions/checkout@v4
 
-      - name: 🧄 Use Bun
-        uses: oven-sh/setup-bun@v1
+  #     - name: 🧄 Use Bun
+  #       uses: oven-sh/setup-bun@v1
 
-      - name: 🔨 Build executable
-        run: bun scripts/build-executable.ts
+  #     - name: 🔨 Build executable
+  #       run: bun scripts/build-executable.ts
 
-      - name: ⬆️ Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: himnario-adventista-macos
-          path: himnario-adventista
-          if-no-files-found: error
+  #     - name: ⬆️ Upload artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: himnario-adventista-macos
+  #         path: himnario-adventista
+  #         if-no-files-found: error
 
-  build-windows-executable:
-    name: 🔨 Build Windows executable
-    runs-on: windows-latest
-    needs: test
+  # build-windows-executable:
+  #   name: 🔨 Build Windows executable
+  #   runs-on: windows-latest
+  #   needs: test
 
-    steps:
-      - name: 👍 Checkout
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: 👍 Checkout
+  #       uses: actions/checkout@v4
 
-      - name: 🧄 Use Bun
-        uses: oven-sh/setup-bun@v1
+  #     - name: 🧄 Use Bun
+  #       uses: oven-sh/setup-bun@v1
 
-      - name: 🔨 Build executable
-        run: bun scripts/build-executable.ts
+  #     - name: 🔨 Build executable
+  #       run: bun scripts/build-executable.ts
 
-      - name: ⬆️ Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: himnario-adventista-windows
-          path: himnario-adventista
-          if-no-files-found: error
+  #     - name: ⬆️ Upload artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: himnario-adventista-windows
+  #         path: himnario-adventista
+  #         if-no-files-found: error
 
   create-release:
     name: 🚀 Create Release
     runs-on: ubuntu-latest
-    needs: [build-linux-executable, build-macos-executable, build-windows-executable]
+    needs: [build-linux-executable]
 
     steps:
       - name: ⬇️ Download artifacts
