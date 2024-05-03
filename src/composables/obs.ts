@@ -42,6 +42,12 @@ export function useObs() {
     connected.value = false
   }
 
+  async function reconnect() {
+    if (!connected.value) { return }
+    await disconnect()
+    await connect()
+  }
+
   async function getScenes() {
     const { scenes } = await obs.call('GetSceneList')
     store.sceneList = scenes
@@ -126,6 +132,7 @@ export function useObs() {
     on,
     connect,
     disconnect,
+    reconnect,
     connected,
     getSceneItems,
     setCurrentScene,

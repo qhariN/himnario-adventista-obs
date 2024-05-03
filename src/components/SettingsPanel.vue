@@ -5,7 +5,7 @@ import { defaultValues, store } from '../store'
 import BasicDialog from './BasicDialog.vue'
 import GearIcon from './icons/GearIcon.vue'
 
-const { connect, disconnect } = useObs()
+const { reconnect } = useObs()
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
@@ -22,8 +22,7 @@ async function closeDialog() {
   localStorage.setItem('obsWebsocketUrl', store.obsWebsocketUrl)
   localStorage.setItem('musicHostUrl', store.musicHostUrl)
   localStorage.setItem('hymnalApiUrl', store.hymnalApiUrl)
-  await disconnect()
-  await connect()
+  await reconnect()
   dialog.value?.close()
 }
 </script>
