@@ -25,8 +25,8 @@ jobs:
       - name: 🧑‍🔬 Run tests
         run: bun test:e2e
 
-  build-linux-executable:
-    name: 🔨 Build Linux executable
+  build-executables:
+    name: 🔨 Build executables
     runs-on: ubuntu-latest
     needs: test
 
@@ -37,68 +37,39 @@ jobs:
       - name: 🧄 Use Bun
         uses: oven-sh/setup-bun@v1
 
-      - name: 🔨 Build executable
-        run: bun scripts/build-executable.ts
+      - name: ⬇️ Clone Himnario API
+        run: |
+          git clone https://github.com/qhariN/himnario-adventista-api.git
+          mv himnario-adventista-api himnario-adventista
 
-      - name: ⬆️ Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: himnario-adventista-linux
-          path: himnario-adventista
-          if-no-files-found: error
+      - name: 🔨 Build Himnario OBS
+        run: |
+          bun i --production
+          bun run build
+          cp -r dist/* himnario-adventista && rm -rf dist
 
-  build-macos-executable:
-    name: 🔨 Build MacOS executable
-    runs-on: macos-latest
-    needs: test
+      - name: ✍️ Write asset handlers
+        run: bun scripts/write-asset-handlers.ts
 
-    steps:
-      - name: 👍 Checkout
-        uses: actions/checkout@v4
+      - name: 📥 Install dependencies
+        run: cd himnario-adventista && bun i --production
 
-      - name: 🧄 Use Bun
-        uses: oven-sh/setup-bun@v1
-
-      - name: 🔨 Build executable
-        run: bun scripts/build-executable.ts
-
-      - name: ⬆️ Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: himnario-adventista-macos
-          path: himnario-adventista
-          if-no-files-found: error
-
-  build-windows-executable:
-    name: 🔨 Build Windows executable
-    runs-on: windows-latest
-    needs: test
-
-    steps:
-      - name: 👍 Checkout
-        uses: actions/checkout@v4
-
-      - name: 🧄 Use Bun
-        uses: oven-sh/setup-bun@v1
-
-      - name: 🔨 Build executable
-        run: bun scripts/build-executable.ts
-
-      - name: ⬆️ Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: himnario-adventista-windows
-          path: himnario-adventista
-          if-no-files-found: error
-
-  create-release:
-    name: 🚀 Create Release
-    runs-on: ubuntu-latest
-    needs: [build-linux-executable, build-macos-executable, build-windows-executable]
-
-    steps:
-      - name: ⬇️ Download artifacts
-        uses: actions/download-artifact@v4
+      - name: 🔨 Build executables
+        run: |
+          cd himnario-adventista
+          mkdir ../himnario-adventista-linux-x64
+          bun build src/index.ts --compile --minify --sourcemap --outfile Himnario --target bun-linux-x64
+          mv Himnario ../himnario-adventista-linux-x64
+          mkdir ../himnario-adventista-macos-darwin-x64
+          bun build src/index.ts --compile --minify --sourcemap --outfile Himnario --target bun-darwin-x64
+          mv Himnario ../himnario-adventista-macos-darwin-x64
+          mkdir ../himnario-adventista-macos-darwin-arm64
+          bun build src/index.ts --compile --minify --sourcemap --outfile Himnario --target bun-darwin-arm64
+          mv Himnario ../himnario-adventista-macos-darwin-arm64
+          mkdir ../himnario-adventista-windows-x64
+          bun build src/index.ts --compile --minify --sourcemap --outfile Himnario --target bun-windows-x64
+          mv Himnario.exe ../himnario-adventista-windows-x64
+          rm -rf node_modules
 
       - name: 🎵 Restore cantado files
         uses: actions/cache/restore@v4
@@ -112,32 +83,45 @@ jobs:
           path: instrumental
           key: instrumental
 
-      - name: 📦 Prepare Linux executable
+      - name: 🛻 Move music files to build
         run: |
-          cp -r cantado himnario-adventista-linux/assets
-          cp -r instrumental himnario-adventista-linux/assets
-          zip -r himnario-linux.zip himnario-adventista-linux
-          rm -rf himnario-adventista-linux
+          mv cantado himnario-adventista/assets
+          mv instrumental himnario-adventista/assets
 
-      - name: 📦 Prepare MacOS executable
+      - name: 📦 Prepare linux-x64 zip
         run: |
-          cp -r cantado himnario-adventista-macos/assets
-          cp -r instrumental himnario-adventista-macos/assets
-          zip -r himnario-macos.zip himnario-adventista-macos
-          rm -rf himnario-adventista-macos
+          mv himnario-adventista-linux-x64/Himnario himnario-adventista
+          rm -rf himnario-adventista-linux-x64
+          zip -r himnario-linux-x64.zip himnario-adventista
+          rm himnario-adventista/Himnario
 
-      - name: 📦 Prepare Windows executable
+      - name: 📦 Prepare macos-darwin-x64 zip
         run: |
-          cp -r cantado himnario-adventista-windows/assets
-          cp -r instrumental himnario-adventista-windows/assets
-          zip -r himnario-windows.zip himnario-adventista-windows
-          rm -rf himnario-adventista-windows
+          mv himnario-adventista-macos-darwin-x64/Himnario himnario-adventista
+          rm -rf himnario-adventista-macos-darwin-x64
+          zip -r himnario-macos-darwin-x64.zip himnario-adventista
+          rm himnario-adventista/Himnario
+
+      - name: 📦 Prepare macos-darwin-arm64 zip
+        run: |
+          mv himnario-adventista-macos-darwin-arm64/Himnario himnario-adventista
+          rm -rf himnario-adventista-macos-darwin-arm64
+          zip -r himnario-macos-darwin-arm64.zip himnario-adventista
+          rm himnario-adventista/Himnario
+
+      - name: 📦 Prepare windows-x64 zip
+        run: |
+          mv himnario-adventista-windows-x64/Himnario.exe himnario-adventista
+          rm -rf himnario-adventista-windows-x64
+          zip -r himnario-windows-x64.zip himnario-adventista
+          rm himnario-adventista/Himnario.exe
 
       - name: 🗒️ Create release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           files: |
-            himnario-linux.zip
-            himnario-macos.zip
-            himnario-windows.zip
+            himnario-linux-x64.zip
+            himnario-macos-darwin-x64.zip
+            himnario-macos-darwin-arm64.zip
+            himnario-windows-x64.zip

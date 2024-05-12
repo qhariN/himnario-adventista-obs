@@ -1,8 +1,4 @@
-import { $, write } from 'bun'
-
-await $`git clone https://github.com/qhariN/himnario-adventista-api.git`
-
-await $`mv himnario-adventista-api himnario-adventista`
+import { write } from 'bun'
 
 await write('himnario-adventista/api/index.ts', `import { file } from 'bun'
 import type { CromoHandler } from 'cromo'
@@ -17,18 +13,7 @@ import type { CromoHandler } from 'cromo'
 
 export const GET: CromoHandler = ({ url, responseInit }) => {
   const path = decodeURIComponent(url.pathname)
+  path = path.replace('.mp3', '.ogg')
   const asset = file(\`.\${path}\`)
   return new Response(asset, responseInit)
 }`)
-
-await $`bun i --production`
-
-await $`bun run build`
-
-await $`cp -r dist/* himnario-adventista && rm -rf dist`
-
-await $`cd himnario-adventista && bun i --production`
-
-await $`cd himnario-adventista && bun build src/index.ts --compile --minify --sourcemap --outfile Himnario`
-
-await $`rm -rf himnario-adventista/node_modules`
