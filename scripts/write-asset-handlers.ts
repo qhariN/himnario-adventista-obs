@@ -13,7 +13,6 @@ import type { CromoHandler } from 'cromo'
 
 export const GET: CromoHandler = ({ url, responseInit }) => {
   const path = decodeURIComponent(url.pathname)
-  path = path.replace('.mp3', '.ogg')
-  const asset = file(\`.\${path}\`)
+  const asset = file(\`.\${path.replace('.mp3', '.ogg')}\`)
   return new Response(asset, responseInit)
 }`)

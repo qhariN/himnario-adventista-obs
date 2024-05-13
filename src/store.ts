@@ -1,6 +1,8 @@
 import { reactive } from 'vue'
 import packageJson from '../package.json'
 
+const SAME_HOST = import.meta.env.VITE_SAME_HOST === 'true'
+
 export const store = reactive({
   sceneList: [] as any[],
   sourceList: [] as any[],
@@ -30,5 +32,6 @@ export const sceneStatus = reactive({
 
 export const defaultValues = {
   obsWebsocketUrl: 'localhost:4455',
-  hymnalApiUrl: 'https://sdah.my.to',
+  musicHostUrl: SAME_HOST ? `${location.origin}/assets` : undefined,
+  hymnalApiUrl: SAME_HOST ? location.origin : 'https://sdah.my.to',
 }

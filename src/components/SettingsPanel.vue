@@ -79,7 +79,7 @@ async function closeDialog() {
         </div>
         <div class="flex flex-col">
           <label for="mh">URL de host de música</label>
-          <input v-model="store.musicHostUrl" type="text" class="input__text" id="mh" placeholder="default">
+          <input v-model="store.musicHostUrl" type="text" class="input__text" id="mh" :placeholder="defaultValues.musicHostUrl ?? 'default'">
         </div>
         <div class="flex flex-col">
           <label for="ha">URL de API de himnario</label>

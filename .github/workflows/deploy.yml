@@ -45,7 +45,7 @@ jobs:
       - name: 🔨 Build Himnario OBS
         run: |
           bun i --production
-          bun run build
+          VITE_SAME_HOST=true bun run build 
           cp -r dist/* himnario-adventista && rm -rf dist
 
       - name: ✍️ Write asset handlers
