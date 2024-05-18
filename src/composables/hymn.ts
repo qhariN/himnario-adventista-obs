@@ -25,10 +25,10 @@ export function useHymn() {
         ? hymnData.value.mp3UrlInstr
         : hymnData.value.mp3Url,
     )
-    const hostUrl = `${defaultValues.musicHostUrl ?? store.musicHostUrl}/${
+    const hostUrl = `${store.musicHostUrl ? store.musicHostUrl : defaultValues.musicHostUrl}/${
       store.onlyInstrumental ? 'instrumental' : 'cantado'
     }/${encodeURIComponent(hymnData.value.mp3Filename)}`
-    return store.musicHostUrl ? hostUrl : hymnUrl
+    return store.musicHostUrl || defaultValues.musicHostUrl ? hostUrl : hymnUrl
   }
 
   function useProxy(url: string) {
