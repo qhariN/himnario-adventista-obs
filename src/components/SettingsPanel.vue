@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useObs } from '../composables/obs'
 import { defaultValues, store } from '../store'
 import BasicDialog from './BasicDialog.vue'
@@ -8,6 +8,25 @@ import GearIcon from './icons/GearIcon.vue'
 const { reconnect } = useObs()
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
+const darkMode = ref<'light' | 'dark'>((() => {
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark')
+    return 'dark'
+  } else {
+    document.documentElement.classList.remove('dark')
+    return 'light'
+  }
+})())
+
+watch(darkMode, value => {
+  localStorage.theme = value
+  if (value === 'light') {
+    document.documentElement.classList.remove('dark')
+  }
+  if (value === 'dark') {
+    document.documentElement.classList.add('dark')
+  }
+})
 
 async function closeDialog() {
   localStorage.setItem('onlyInstrumental', `${store.onlyInstrumental}`)
@@ -71,7 +90,7 @@ async function closeDialog() {
           </select>
         </div>  
       </div>
-      <div class="mb-3">
+      <div class="mb-2">
         <h3 class="font-bold">Red:</h3>
         <div class="flex flex-col">
           <label for="ow">URL de OBS Websocket</label>
@@ -84,6 +103,16 @@ async function closeDialog() {
         <div class="flex flex-col">
           <label for="ha">URL de API de himnario</label>
           <input v-model="store.hymnalApiUrl" type="text" class="input__text" id="ha" :placeholder="defaultValues.hymnalApiUrl">
+        </div>
+      </div>
+      <div class="mb-3">
+        <h3 class="font-bold">Personalización:</h3>
+        <div class="flex flex-col">
+          <label for="tm">Tema</label>
+          <select v-model="darkMode" class="input__text" id="tm">
+            <option value="light">claro</option>
+            <option value="dark">oscuro</option>
+          </select>
         </div>
       </div>
     </div>
