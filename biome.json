@@ -7,8 +7,8 @@
         "noUndeclaredVariables": "off"
       },
       "style": {
-        "useFilenamingConvention": "off",
-        "noDefaultExport": "off"
+        "noDefaultExport": "off",
+        "useFilenamingConvention": "off"
       },
       "nursery": {
         "all": false

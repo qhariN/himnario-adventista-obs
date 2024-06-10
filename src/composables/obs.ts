@@ -43,7 +43,9 @@ export function useObs() {
   }
 
   async function reconnect() {
-    if (!connected.value) { return }
+    if (!connected.value) {
+      return
+    }
     await disconnect()
     await connect()
   }
@@ -58,7 +60,9 @@ export function useObs() {
     // Get group scene items
     const groupSceneItems = []
     for (const item of sceneItems) {
-      if (!item.isGroup) { continue }
+      if (!item.isGroup) {
+        continue
+      }
       const { sceneItems } = await obs.call('GetGroupSceneItemList', {
         sceneName: item.sourceName as string,
       })
@@ -114,7 +118,9 @@ export function useObs() {
         inputKind: 'text_gdiplus_v2',
       })
     } catch (error) {
-      if (!(error instanceof OBSWebSocketError)) { return }
+      if (!(error instanceof OBSWebSocketError)) {
+        return
+      }
       if (error.code === 601) {
         alert(`Este nombre ya está en uso: ${inputName}`)
       }

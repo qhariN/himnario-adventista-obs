@@ -10,8 +10,12 @@ const { on, connected, getSceneItems, createScene, createSource } = useObs()
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
 
 watch(connected, async (connected) => {
-  if (!connected) { return }
-  if (sceneStatus.scene && Object.values(sceneStatus.source).every((v) => v)) { return }
+  if (!connected) {
+    return
+  }
+  if (sceneStatus.scene && Object.values(sceneStatus.source).every((v) => v)) {
+    return
+  }
   dialog.value?.open()
 })
 
@@ -29,13 +33,21 @@ async function checkSource({
   sceneName,
   sourceName,
 }: OBSEventTypes['SceneItemCreated' | 'SceneItemRemoved']) {
-  if (sceneName !== store.onSearchHymnScene) { return }
+  if (sceneName !== store.onSearchHymnScene) {
+    return
+  }
   let source: keyof typeof sceneStatus.source
-  if (sourceName === 'verso_contenido') { source = 'versoContenido' }
-  else if (sourceName === 'verso_numero') { source = 'versoNumero' }
-  else if (sourceName === 'himno_titulo') { source = 'himnoTitulo' }
-  else if (sourceName === 'himno_numero') { source = 'himnoNumero' }
-  else { return }
+  if (sourceName === 'verso_contenido') {
+    source = 'versoContenido'
+  } else if (sourceName === 'verso_numero') {
+    source = 'versoNumero'
+  } else if (sourceName === 'himno_titulo') {
+    source = 'himnoTitulo'
+  } else if (sourceName === 'himno_numero') {
+    source = 'himnoNumero'
+  } else {
+    return
+  }
   await getSceneItems(store.onSearchHymnScene)
   const sceneItem = store.sourceList.find(
     (source) => source.sourceName === sourceName,

@@ -8,17 +8,22 @@ import GearIcon from './icons/GearIcon.vue'
 const { reconnect } = useObs()
 
 const dialog = ref<InstanceType<typeof BasicDialog> | null>(null)
-const darkMode = ref<'light' | 'dark'>((() => {
-  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark')
-    return 'dark'
-  } else {
+const darkMode = ref<'light' | 'dark'>(
+  (() => {
+    if (
+      localStorage.theme === 'dark' ||
+      (!('theme' in localStorage) &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.documentElement.classList.add('dark')
+      return 'dark'
+    }
     document.documentElement.classList.remove('dark')
     return 'light'
-  }
-})())
+  })(),
+)
 
-watch(darkMode, value => {
+watch(darkMode, (value) => {
   localStorage.theme = value
   if (value === 'light') {
     document.documentElement.classList.remove('dark')

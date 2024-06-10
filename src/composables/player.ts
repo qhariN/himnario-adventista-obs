@@ -13,7 +13,9 @@ export function usePlayer() {
   }
 
   async function stop() {
-    if (!player.value) { return }
+    if (!player.value) {
+      return
+    }
     const delay = 2000
     await fadeOutVolume(delay)
     player.value.pause()
@@ -21,12 +23,16 @@ export function usePlayer() {
   }
 
   function fadeOutVolume(delay: number) {
-    if (!player.value) { return }
+    if (!player.value) {
+      return
+    }
     const originalVolume = player.value.volume
     return new Promise<void>((resolve) => {
       const interval = setInterval(
         () => {
-          if (!player.value) { return }
+          if (!player.value) {
+            return
+          }
           if (player.value.volume <= 0.01) {
             player.value.volume = 0
             clearInterval(interval)
@@ -42,7 +48,9 @@ export function usePlayer() {
 
   function onTimeUpdate(callback: () => void) {
     player.value?.addEventListener('timeupdate', () => {
-      if (!player.value) { return }
+      if (!player.value) {
+        return
+      }
       currentTime.value = player.value.currentTime
       callback()
     })

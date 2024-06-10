@@ -19,7 +19,9 @@ export function useHymn() {
   }
 
   function fileUrl() {
-    if (!hymnData.value) { return '' }
+    if (!hymnData.value) {
+      return ''
+    }
     const hymnUrl = useProxy(
       store.onlyInstrumental
         ? hymnData.value.mp3UrlInstr
