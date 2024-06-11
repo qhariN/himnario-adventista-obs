@@ -1,0 +1,46 @@
+name: 💾 Cache music files
+
+on: workflow_dispatch
+
+jobs:
+  build-linux-executable:
+    name: 🔨 Build Linux executable
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 👍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🧄 Use Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Setup FFmpeg
+        uses: AnimMouse/setup-ffmpeg@v1
+
+      - name: ⬇️ Clone Himnario API
+        run: git clone https://github.com/qhariN/himnario-adventista-api.git
+
+      - name: 🔨 Build cantado music files
+        run: bun scripts/download-music-files.ts
+
+      - name: 🔨 Build instrumental music files
+        run: bun scripts/download-music-files.ts --instrumental
+
+      - name: 💾 Save cantado files
+        uses: actions/cache/save@v4
+        with:
+          path: cantado
+          key: cantado
+
+      - name: 💾 Save instrumental files
+        uses: actions/cache/save@v4
+        with:
+          path: instrumental
+          key: instrumental
+
+      - name: ⬆️ Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: himnario-adventista-linux
+          path: himnario-adventista
+          if-no-files-found: error
