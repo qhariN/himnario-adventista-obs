@@ -37,10 +37,3 @@ jobs:
         with:
           path: instrumental
           key: instrumental
-
-      - name: ⬆️ Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: himnario-adventista-linux
-          path: himnario-adventista
-          if-no-files-found: error
