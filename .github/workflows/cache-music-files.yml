@@ -20,17 +20,17 @@ jobs:
       - name: ⬇️ Clone Himnario API
         run: git clone https://github.com/qhariN/himnario-adventista-api.git
 
-      - name: 🔨 Build cantado music files
+      - name: 🔨 Build vocal music files
         run: bun scripts/download-music-files.ts
 
       - name: 🔨 Build instrumental music files
         run: bun scripts/download-music-files.ts --instrumental
 
-      - name: 💾 Save cantado files
+      - name: 💾 Save vocal files
         uses: actions/cache/save@v4
         with:
-          path: cantado
-          key: cantado
+          path: vocal
+          key: vocal
 
       - name: 💾 Save instrumental files
         uses: actions/cache/save@v4

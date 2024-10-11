@@ -71,11 +71,11 @@ jobs:
           mv Himnario.exe ../himnario-adventista-windows-x64
           rm -rf node_modules
 
-      - name: 🎵 Restore cantado files
+      - name: 🎵 Restore vocal files
         uses: actions/cache/restore@v4
         with:
-          path: cantado
-          key: cantado
+          path: vocal
+          key: vocal
 
       - name: 🎵 Restore instrumental files
         uses: actions/cache/restore@v4
@@ -85,7 +85,7 @@ jobs:
 
       - name: 🛻 Move music files to build
         run: |
-          mv cantado himnario-adventista/assets
+          mv vocal himnario-adventista/assets
           mv instrumental himnario-adventista/assets
 
       - name: 📦 Prepare linux-x64 zip

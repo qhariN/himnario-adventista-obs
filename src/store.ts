@@ -32,6 +32,6 @@ export const sceneStatus = reactive({
 
 export const defaultValues = {
   obsWebsocketUrl: 'localhost:4455',
-  musicHostUrl: SAME_HOST ? `${location.origin}/assets` : undefined,
+  musicHostUrl: SAME_HOST ? `${location.origin}/assets` : 'https://himnario-music.qhar.in',
   hymnalApiUrl: SAME_HOST ? location.origin : 'https://sdah.my.to',
 }

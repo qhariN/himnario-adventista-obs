@@ -22,21 +22,10 @@ export function useHymn() {
     if (!hymnData.value) {
       return ''
     }
-    const hymnUrl = useProxy(
-      store.onlyInstrumental
-        ? hymnData.value.mp3UrlInstr
-        : hymnData.value.mp3Url,
-    )
     const hostUrl = `${store.musicHostUrl ? store.musicHostUrl : defaultValues.musicHostUrl}/${
-      store.onlyInstrumental ? 'instrumental' : 'cantado'
+      store.onlyInstrumental ? 'instrumental' : 'vocal'
     }/${encodeURIComponent(hymnData.value.mp3Filename)}`
-    return store.musicHostUrl || defaultValues.musicHostUrl ? hostUrl : hymnUrl
-  }
-
-  function useProxy(url: string) {
-    const proxy = 'https://drive.lienuc.com'
-    const newUrl = url.replace('https://docs.google.com', proxy)
-    return newUrl
+    return hostUrl
   }
 
   return {

@@ -29,8 +29,7 @@ onMounted(() => {
       <div>
         <span class="font-bold">Notas de la versión</span>
         <ul class="list-disc pl-6">
-          <li>Se reorganizó la interfaz del buscador de himnos para una mejor experiencia de usuario</li>
-          <li>Se resolvió un error que impedía que los audios se cargaran correctamente</li>
+          <li>Se cambió el host donde se alojaban los archivos de audio.</li>
         </ul>
       </div>
       <div>

@@ -3,7 +3,7 @@ import { $, write } from 'bun'
 
 const flags = process.argv
 const instrumental = flags.includes('--instrumental')
-const directory = instrumental ? 'instrumental' : 'cantado'
+const directory = instrumental ? 'instrumental' : 'vocal'
 
 console.info('Reading hymn data from database...')
 const db = new Database('himnario-adventista-api/src/database/himnario.db')
