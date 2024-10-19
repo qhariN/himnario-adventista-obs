@@ -1,10 +1,9 @@
-// @vitest-environment happy-dom
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, spyOn } from 'bun:test'
 import HymnSearcherVue from '../HymnSearcher.vue'
 import sHymn from '../../services/HymnService'
 
-vi.spyOn(sHymn, 'all').mockResolvedValue([
+spyOn(sHymn, 'all').mockResolvedValue([
   {
     id: 1,
     number: 1,
