@@ -1,7 +1,7 @@
 import { type Ref, ref } from 'vue'
-import type { HymnSequence } from '../models/hymn'
-import sHymn from '../services/HymnService'
-import { defaultValues, store } from '../store'
+import type { HymnSequence } from '../models/hymn.ts'
+import sHymn from '../services/HymnService.ts'
+import { defaultValues, store } from '../store.ts'
 
 export function useHymn() {
   const hymnIndex: Ref<number> = ref(0)

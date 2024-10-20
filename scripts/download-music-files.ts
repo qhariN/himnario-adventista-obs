@@ -27,10 +27,7 @@ const buffers = await Promise.all(
 console.info('Writing files...')
 await Promise.all(
   buffers.map(async (buffer, i) =>
-    write(
-      `${directory}/${hymns[i].mp3Filename}`,
-      buffer,
-    ),
+    write(`${directory}/${hymns[i].mp3Filename}`, buffer),
   ),
 )
 

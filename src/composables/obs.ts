@@ -1,6 +1,6 @@
 import obsWebSocket, { OBSWebSocketError } from 'obs-websocket-js'
 import { type Ref, ref } from 'vue'
-import { defaultValues, sceneStatus, store } from '../store'
+import { defaultValues, sceneStatus, store } from '../store.ts'
 
 const obs = new obsWebSocket()
 

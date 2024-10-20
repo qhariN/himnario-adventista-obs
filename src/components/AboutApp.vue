@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import packageJson from '../../package.json'
-import { store } from '../store'
+import { store } from '../store.ts'
 import BasicDialog from './BasicDialog.vue'
 import AboutIcon from './icons/AboutIcon.vue'
 

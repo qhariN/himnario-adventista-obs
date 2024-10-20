@@ -1,6 +1,6 @@
-import type { Hymn, HymnSequence } from '../models/hymn'
-import { defaultValues, store } from '../store'
-import Fetch from './api'
+import type { Hymn, HymnSequence } from '../models/hymn.ts'
+import { defaultValues, store } from '../store.ts'
+import Fetch from './api.ts'
 
 const sHymn = {
   async all(): Promise<Hymn[]> {
