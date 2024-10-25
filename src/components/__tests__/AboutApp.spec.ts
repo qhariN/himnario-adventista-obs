@@ -10,7 +10,7 @@ describe("AboutApp component", () => {
     const wrapper = mount(AboutApp)
     const hymns = wrapper.find('[data-test="release-notes"]')
     const dialog = hymns.element as DialogHTMLAttributes
-    expect(dialog.open).toBe(true)
+    expect(dialog.open).toBeTrue()
     expect(hymns.text()).toContain(packageJson.version)
   })
 
@@ -18,15 +18,15 @@ describe("AboutApp component", () => {
     spyOn(store, 'isFirstTimeInVersion').mockResolvedValue(false)
     const wrapper = mount(AboutApp)
     const dialog = wrapper.find('[data-test="release-notes"]').element as DialogHTMLAttributes
-    expect(dialog.open).toBe(false)
+    expect(dialog.open).toBeFalse()
   })
 
   it('displays release notes when clicking on "Acerca de" button', async () => {
     const wrapper = mount(AboutApp)
     const dialog = wrapper.find('[data-test="release-notes"]').element as DialogHTMLAttributes
-    expect(dialog.open).toBe(false)
+    expect(dialog.open).toBeFalse()
     const aboutButton = wrapper.find('[title="Acerca de"]')
     await aboutButton.trigger('click')
-    expect(dialog.open).toBe(true)
+    expect(dialog.open).toBeTrue()
   })
 })

@@ -145,7 +145,7 @@ async function showVerse(index: number) {
       </div>
     </div>
     <form class="flex gap-2" onsubmit="return false">
-      <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number">
+      <input v-model="hymnNumber" type="number" min="1" max="613" class="input__text w-16" name="number" id="number" title="Número del himno">
       <button @click="search(hymnNumber)" title="Buscar" type="submit" class="btn w-8 h-8">
         <SearchIcon />
       </button>
