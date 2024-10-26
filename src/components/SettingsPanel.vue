@@ -122,7 +122,7 @@ async function closeDialog() {
       </div>
     </div>
     <template v-slot:footer>
-      <button type="button" class="btn ml-auto" @click="closeDialog">
+      <button title="Guardar y cerrar" type="button" class="btn ml-auto" @click="closeDialog">
         Guardar y cerrar
       </button>
     </template>

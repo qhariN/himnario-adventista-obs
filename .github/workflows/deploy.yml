@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: 🧪 E2E Test
+    name: 🧪 Test
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
         run: bun install
 
       - name: 🧑‍🔬 Run tests
-        run: bun test:e2e
+        run: bun test
 
   build-executables:
     name: 🔨 Build executables
