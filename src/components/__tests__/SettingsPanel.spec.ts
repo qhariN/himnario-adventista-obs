@@ -81,12 +81,14 @@ describe("AdminPanel component", () => {
     expect(window.localStorage.getItem('musicHostUrl')).toBe('localhost')
   })
 
-  it('set hymnal api url', async () => {
-    const hymnalApiUrl = wrapper.get('input#ha')
-    await hymnalApiUrl.setValue('https://sdah.my.to')
-    const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
-    await saveButton.trigger('click')
+  describe('hymnal api url configuration', () => {
+    it('updates the hymnal api url', async () => {
+      const hymnalApiUrl = wrapper.get('input#ha')
+      await hymnalApiUrl.setValue('https://sdah.my.to')
+      const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
+      await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('hymnalApiUrl')).toBe('https://sdah.my.to')
+      expect(window.localStorage.getItem('hymnalApiUrl')).toBe('https://sdah.my.to')
+    })
   })
 })

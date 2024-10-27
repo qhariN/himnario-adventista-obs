@@ -41,20 +41,22 @@ describe("AdminPanel component", () => {
     expect(button.text()).toContain('Desconectado')
   })
 
-  it('searches a hymn', async () => {
-    const numberInput = wrapper.get('[title="Número del himno"]')
-    const searchButton = wrapper.get('[title="Buscar"]')
-
-    await numberInput.setValue('25')
-    await searchButton.trigger('click')
-
-    const hymnTitle = wrapper.get('[data-test="hymn-title"]')
-
-    expect(hymnTitle.text()).toContain('Reproduciendo: Siento la presencia del Señor')
-
-    const sourceAudio = wrapper.get('audio>source')
-
-    expect(sourceAudio.attributes('src')).toBe('https://himnario-music.qhar.in/vocal/025%20-%20Siento%20la%20presencia%20del%20Senor.mp3')
+  describe('hymn searcher', () => {
+    it('searches a hymn', async () => {
+      const numberInput = wrapper.get('[title="Número del himno"]')
+      const searchButton = wrapper.get('[title="Buscar"]')
+  
+      await numberInput.setValue('25')
+      await searchButton.trigger('click')
+  
+      const hymnTitle = wrapper.get('[data-test="hymn-title"]')
+  
+      expect(hymnTitle.text()).toContain('Reproduciendo: Siento la presencia del Señor')
+  
+      const sourceAudio = wrapper.get('audio>source')
+  
+      expect(sourceAudio.attributes('src')).toBe('https://himnario-music.qhar.in/vocal/025%20-%20Siento%20la%20presencia%20del%20Senor.mp3')
+    })
   })
 
   it.skip('enable/disable autoplay', async () => {
