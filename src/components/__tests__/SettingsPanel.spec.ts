@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'bun:test'
+import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
 import { VueWrapper, mount } from '@vue/test-utils'
 import SettingsPanel from '../SettingsPanel.vue'
 
@@ -9,13 +9,18 @@ describe("AdminPanel component", () => {
     wrapper = mount(SettingsPanel)
   })
 
+  afterEach(() => {
+    wrapper.unmount()
+    localStorage.clear()
+  })
+
   it('enable only instrumental', async () => {
     const onlyInstrumental = wrapper.get('input#oi')
     await onlyInstrumental.setValue('true')
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('onlyInstrumental')).toBe('true')
+    expect(localStorage.getItem('onlyInstrumental')).toBe('true')
   })
 
   it('enable autoplay music', async () => {
@@ -24,7 +29,7 @@ describe("AdminPanel component", () => {
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('autoplayMusic')).toBe('true')
+    expect(localStorage.getItem('autoplayMusic')).toBe('true')
   })
 
   it('enable autodrive verses', async () => {
@@ -33,7 +38,7 @@ describe("AdminPanel component", () => {
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('autodriveVerses')).toBe('true')
+    expect(localStorage.getItem('autodriveVerses')).toBe('true')
   })
 
   it('enable switch to hymn scene on search', async () => {
@@ -42,7 +47,7 @@ describe("AdminPanel component", () => {
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('onSearchSwitchToHymnScene')).toBe('true')
+    expect(localStorage.getItem('onSearchSwitchToHymnScene')).toBe('true')
   })
 
   it.skip('set hymn scene', async () => {
@@ -51,7 +56,7 @@ describe("AdminPanel component", () => {
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('onSearchHymnScene')).toBe('Scene')
+    expect(localStorage.getItem('onSearchHymnScene')).toBe('Scene')
   })
 
   it.skip('set switch to scene on music end', async () => {
@@ -60,7 +65,7 @@ describe("AdminPanel component", () => {
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('switchToSceneOnMusicEnd')).toBe('Scene')
+    expect(localStorage.getItem('switchToSceneOnMusicEnd')).toBe('Scene')
   })
 
   it('set OBS websocket url', async () => {
@@ -69,7 +74,7 @@ describe("AdminPanel component", () => {
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('obsWebsocketUrl')).toBe('localhost:4455')
+    expect(localStorage.getItem('obsWebsocketUrl')).toBe('localhost:4455')
   })
 
   it('set music host url', async () => {
@@ -78,17 +83,15 @@ describe("AdminPanel component", () => {
     const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
     await saveButton.trigger('click')
 
-    expect(window.localStorage.getItem('musicHostUrl')).toBe('localhost')
+    expect(localStorage.getItem('musicHostUrl')).toBe('localhost')
   })
 
-  describe('hymnal api url configuration', () => {
-    it('updates the hymnal api url', async () => {
-      const hymnalApiUrl = wrapper.get('input#ha')
-      await hymnalApiUrl.setValue('https://sdah.my.to')
-      const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
-      await saveButton.trigger('click')
+  it('set hymnal api url', async () => {
+    const hymnalApiUrl = wrapper.get('input#ha')
+    await hymnalApiUrl.setValue('https://sdah.my.to')
+    const saveButton = wrapper.find('button[title="Guardar y cerrar"]')
+    await saveButton.trigger('click')
 
-      expect(window.localStorage.getItem('hymnalApiUrl')).toBe('https://sdah.my.to')
-    })
+    expect(localStorage.getItem('hymnalApiUrl')).toBe('https://sdah.my.to')
   })
 })
