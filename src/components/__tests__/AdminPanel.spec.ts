@@ -52,9 +52,9 @@ describe("AdminPanel component", () => {
 
     expect(hymnTitle.text()).toContain('Reproduciendo: Siento la presencia del Señor')
 
-    // const sourceAudio = wrapper.get('audio>source')
+    const sourceAudio = wrapper.get('audio>source')
 
-    // expect(sourceAudio.attributes('src')).toBe('https://himnario-music.qhar.in/vocal/025%20-%20Siento%20la%20presencia%20del%20Senor.mp3')
+    expect(sourceAudio.attributes('src')).toInclude('025%20-%20Siento%20la%20presencia%20del%20Senor.mp3')
   })
 
   it.skip('enable/disable autoplay', async () => {

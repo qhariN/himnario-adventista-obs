@@ -9,11 +9,6 @@ describe("AdminPanel component", () => {
     wrapper = mount(SettingsPanel)
   })
 
-  afterEach(() => {
-    wrapper.unmount()
-    localStorage.clear()
-  })
-
   it('enable only instrumental', async () => {
     const onlyInstrumental = wrapper.get('input#oi')
     await onlyInstrumental.setValue('true')
