@@ -17,8 +17,9 @@ await write(
 import type { CromoHandler } from 'cromo'
 
 export const GET: CromoHandler = ({ url, responseInit }) => {
-  const path = decodeURIComponent(url.pathname)
-  const asset = file(\`.\${path.replace('.mp3', '.ogg')}\`)
+  let path = decodeURIComponent(url.pathname)
+  path = path.replace(/_/g, ' ').replace('.mp3', '.ogg')
+  const asset = file(\`.\${path}\`)
   return new Response(asset, responseInit)
 }`,
 )

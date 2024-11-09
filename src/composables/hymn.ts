@@ -1,7 +1,7 @@
 import { type Ref, ref } from 'vue'
 import type { HymnSequence } from '../models/hymn.ts'
 import sHymn from '../services/HymnService.ts'
-import { defaultValues, store } from '../store.ts'
+import { defaultValues, SAME_HOST, store } from '../store.ts'
 
 export function useHymn() {
   const hymnIndex: Ref<number> = ref(0)
@@ -22,9 +22,12 @@ export function useHymn() {
     if (!hymnData.value) {
       return ''
     }
+    const fileName = SAME_HOST
+      ? hymnData.value.mp3Filename.replace(/ /g, '_')
+      :  hymnData.value.mp3Filename
     const hostUrl = `${store.musicHostUrl ? store.musicHostUrl : defaultValues.musicHostUrl}/${
       store.onlyInstrumental ? 'instrumental' : 'vocal'
-    }/${encodeURIComponent(hymnData.value.mp3Filename)}`
+    }/${encodeURIComponent(fileName)}`
     return hostUrl
   }
 

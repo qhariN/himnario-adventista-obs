@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 import packageJson from '../package.json'
 
-const SAME_HOST = import.meta.env.VITE_SAME_HOST === 'true'
+export const SAME_HOST = import.meta.env.VITE_SAME_HOST === 'true'
 
 export const store = reactive({
   sceneList: [] as any[],
